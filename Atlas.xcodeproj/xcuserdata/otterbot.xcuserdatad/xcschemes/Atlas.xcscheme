@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0710"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2A21DB811BBB442D00220FCF"
+               BlueprintIdentifier = "2A93C7B81BBCB4DF00B8291E"
                BuildableName = "Atlas.app"
                BlueprintName = "Atlas"
                ReferencedContainer = "container:Atlas.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2A21DB941BBB442D00220FCF"
+               BlueprintIdentifier = "2A93C7CB1BBCB4DF00B8291E"
                BuildableName = "AtlasTests.xctest"
                BlueprintName = "AtlasTests"
                ReferencedContainer = "container:Atlas.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2A21DB811BBB442D00220FCF"
+            BlueprintIdentifier = "2A93C7B81BBCB4DF00B8291E"
             BuildableName = "Atlas.app"
             BlueprintName = "Atlas"
             ReferencedContainer = "container:Atlas.xcodeproj">
@@ -65,7 +65,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2A21DB811BBB442D00220FCF"
+            BlueprintIdentifier = "2A93C7B81BBCB4DF00B8291E"
             BuildableName = "Atlas.app"
             BlueprintName = "Atlas"
             ReferencedContainer = "container:Atlas.xcodeproj">
@@ -84,7 +84,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2A21DB811BBB442D00220FCF"
+            BlueprintIdentifier = "2A93C7B81BBCB4DF00B8291E"
             BuildableName = "Atlas.app"
             BlueprintName = "Atlas"
             ReferencedContainer = "container:Atlas.xcodeproj">

@@ -7,46 +7,56 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2A21DB861BBB442D00220FCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A21DB851BBB442D00220FCF /* AppDelegate.swift */; };
-		2A21DB881BBB442D00220FCF /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A21DB871BBB442D00220FCF /* GameScene.swift */; };
-		2A21DB8A1BBB442D00220FCF /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2A21DB891BBB442D00220FCF /* GameScene.sks */; };
-		2A21DB8C1BBB442D00220FCF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A21DB8B1BBB442D00220FCF /* Assets.xcassets */; };
-		2A21DB8F1BBB442D00220FCF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A21DB8D1BBB442D00220FCF /* MainMenu.xib */; };
-		2A21DB9A1BBB442D00220FCF /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A21DB991BBB442D00220FCF /* AtlasTests.swift */; };
+		2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */; };
+		2A93C7BF1BBCB4DF00B8291E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* GameScene.swift */; };
+		2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */; };
+		2AABE78B1BBDE35B00CBF170 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE7891BBDE35B00CBF170 /* MainMenu.xib */; };
+		2AABE7941BBDE9BF00CBF170 /* 16.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE78D1BBDE9BF00CBF170 /* 16.png */; };
+		2AABE7951BBDE9BF00CBF170 /* 32.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE78E1BBDE9BF00CBF170 /* 32.png */; };
+		2AABE7961BBDE9BF00CBF170 /* 64.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE78F1BBDE9BF00CBF170 /* 64.png */; };
+		2AABE7971BBDE9BF00CBF170 /* 128.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE7901BBDE9BF00CBF170 /* 128.png */; };
+		2AABE7981BBDE9BF00CBF170 /* 256.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE7911BBDE9BF00CBF170 /* 256.png */; };
+		2AABE7991BBDE9BF00CBF170 /* 512.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE7921BBDE9BF00CBF170 /* 512.png */; };
+		2AABE79A1BBDE9BF00CBF170 /* 1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE7931BBDE9BF00CBF170 /* 1024.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		2A21DB961BBB442D00220FCF /* PBXContainerItemProxy */ = {
+		2A93C7CD1BBCB4DF00B8291E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 2A21DB7A1BBB442D00220FCF /* Project object */;
+			containerPortal = 2A93C7B11BBCB4DF00B8291E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 2A21DB811BBB442D00220FCF;
+			remoteGlobalIDString = 2A93C7B81BBCB4DF00B8291E;
 			remoteInfo = Atlas;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2A21DB821BBB442D00220FCF /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2A21DB851BBB442D00220FCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2A21DB871BBB442D00220FCF /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		2A21DB891BBB442D00220FCF /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		2A21DB8B1BBB442D00220FCF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2A21DB8E1BBB442D00220FCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		2A21DB901BBB442D00220FCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2A21DB951BBB442D00220FCF /* AtlasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AtlasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2A21DB991BBB442D00220FCF /* AtlasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasTests.swift; sourceTree = "<group>"; };
-		2A21DB9B1BBB442D00220FCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2A93C7B91BBCB4DF00B8291E /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2A93C7BE1BBCB4DF00B8291E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		2A93C7C71BBCB4DF00B8291E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2A93C7CC1BBCB4DF00B8291E /* AtlasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AtlasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasTests.swift; sourceTree = "<group>"; };
+		2A93C7D21BBCB4DF00B8291E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2AABE78A1BBDE35B00CBF170 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		2AABE78D1BBDE9BF00CBF170 /* 16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 16.png; path = Resources/Icons/16.png; sourceTree = "<group>"; };
+		2AABE78E1BBDE9BF00CBF170 /* 32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 32.png; path = Resources/Icons/32.png; sourceTree = "<group>"; };
+		2AABE78F1BBDE9BF00CBF170 /* 64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 64.png; path = Resources/Icons/64.png; sourceTree = "<group>"; };
+		2AABE7901BBDE9BF00CBF170 /* 128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 128.png; path = Resources/Icons/128.png; sourceTree = "<group>"; };
+		2AABE7911BBDE9BF00CBF170 /* 256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 256.png; path = Resources/Icons/256.png; sourceTree = "<group>"; };
+		2AABE7921BBDE9BF00CBF170 /* 512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 512.png; path = Resources/Icons/512.png; sourceTree = "<group>"; };
+		2AABE7931BBDE9BF00CBF170 /* 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 1024.png; path = Resources/Icons/1024.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		2A21DB7F1BBB442D00220FCF /* Frameworks */ = {
+		2A93C7B61BBCB4DF00B8291E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2A21DB921BBB442D00220FCF /* Frameworks */ = {
+		2A93C7C91BBCB4DF00B8291E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -56,56 +66,77 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2A21DB791BBB442D00220FCF = {
+		2A93C7B01BBCB4DF00B8291E = {
 			isa = PBXGroup;
 			children = (
-				2A21DB841BBB442D00220FCF /* Atlas */,
-				2A21DB981BBB442D00220FCF /* AtlasTests */,
-				2A21DB831BBB442D00220FCF /* Products */,
+				2A93C7BB1BBCB4DF00B8291E /* Atlas */,
+				2A93C7CF1BBCB4DF00B8291E /* AtlasTests */,
+				2A93C7BA1BBCB4DF00B8291E /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		2A21DB831BBB442D00220FCF /* Products */ = {
+		2A93C7BA1BBCB4DF00B8291E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2A21DB821BBB442D00220FCF /* Atlas.app */,
-				2A21DB951BBB442D00220FCF /* AtlasTests.xctest */,
+				2A93C7B91BBCB4DF00B8291E /* Atlas.app */,
+				2A93C7CC1BBCB4DF00B8291E /* AtlasTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2A21DB841BBB442D00220FCF /* Atlas */ = {
+		2A93C7BB1BBCB4DF00B8291E /* Atlas */ = {
 			isa = PBXGroup;
 			children = (
-				2A21DB851BBB442D00220FCF /* AppDelegate.swift */,
-				2A21DB871BBB442D00220FCF /* GameScene.swift */,
-				2A21DB891BBB442D00220FCF /* GameScene.sks */,
-				2A21DB8B1BBB442D00220FCF /* Assets.xcassets */,
-				2A21DB8D1BBB442D00220FCF /* MainMenu.xib */,
-				2A21DB901BBB442D00220FCF /* Info.plist */,
+				2AABE7881BBDD81D00CBF170 /* Resources */,
+				2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */,
+				2A93C7BE1BBCB4DF00B8291E /* GameScene.swift */,
+				2AABE7891BBDE35B00CBF170 /* MainMenu.xib */,
+				2A93C7C71BBCB4DF00B8291E /* Info.plist */,
 			);
 			path = Atlas;
 			sourceTree = "<group>";
 		};
-		2A21DB981BBB442D00220FCF /* AtlasTests */ = {
+		2A93C7CF1BBCB4DF00B8291E /* AtlasTests */ = {
 			isa = PBXGroup;
 			children = (
-				2A21DB991BBB442D00220FCF /* AtlasTests.swift */,
-				2A21DB9B1BBB442D00220FCF /* Info.plist */,
+				2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */,
+				2A93C7D21BBCB4DF00B8291E /* Info.plist */,
 			);
 			path = AtlasTests;
+			sourceTree = "<group>";
+		};
+		2AABE7881BBDD81D00CBF170 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2AABE78C1BBDE9B400CBF170 /* Icons */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		2AABE78C1BBDE9B400CBF170 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				2AABE78D1BBDE9BF00CBF170 /* 16.png */,
+				2AABE78E1BBDE9BF00CBF170 /* 32.png */,
+				2AABE78F1BBDE9BF00CBF170 /* 64.png */,
+				2AABE7901BBDE9BF00CBF170 /* 128.png */,
+				2AABE7911BBDE9BF00CBF170 /* 256.png */,
+				2AABE7921BBDE9BF00CBF170 /* 512.png */,
+				2AABE7931BBDE9BF00CBF170 /* 1024.png */,
+			);
+			name = Icons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2A21DB811BBB442D00220FCF /* Atlas */ = {
+		2A93C7B81BBCB4DF00B8291E /* Atlas */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2A21DB9E1BBB442D00220FCF /* Build configuration list for PBXNativeTarget "Atlas" */;
+			buildConfigurationList = 2A93C7D51BBCB4DF00B8291E /* Build configuration list for PBXNativeTarget "Atlas" */;
 			buildPhases = (
-				2A21DB7E1BBB442D00220FCF /* Sources */,
-				2A21DB7F1BBB442D00220FCF /* Frameworks */,
-				2A21DB801BBB442D00220FCF /* Resources */,
+				2A93C7B51BBCB4DF00B8291E /* Sources */,
+				2A93C7B61BBCB4DF00B8291E /* Frameworks */,
+				2A93C7B71BBCB4DF00B8291E /* Resources */,
 			);
 			buildRules = (
 			);
@@ -113,46 +144,46 @@
 			);
 			name = Atlas;
 			productName = Atlas;
-			productReference = 2A21DB821BBB442D00220FCF /* Atlas.app */;
+			productReference = 2A93C7B91BBCB4DF00B8291E /* Atlas.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2A21DB941BBB442D00220FCF /* AtlasTests */ = {
+		2A93C7CB1BBCB4DF00B8291E /* AtlasTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2A21DBA11BBB442D00220FCF /* Build configuration list for PBXNativeTarget "AtlasTests" */;
+			buildConfigurationList = 2A93C7D81BBCB4DF00B8291E /* Build configuration list for PBXNativeTarget "AtlasTests" */;
 			buildPhases = (
-				2A21DB911BBB442D00220FCF /* Sources */,
-				2A21DB921BBB442D00220FCF /* Frameworks */,
-				2A21DB931BBB442D00220FCF /* Resources */,
+				2A93C7C81BBCB4DF00B8291E /* Sources */,
+				2A93C7C91BBCB4DF00B8291E /* Frameworks */,
+				2A93C7CA1BBCB4DF00B8291E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				2A21DB971BBB442D00220FCF /* PBXTargetDependency */,
+				2A93C7CE1BBCB4DF00B8291E /* PBXTargetDependency */,
 			);
 			name = AtlasTests;
 			productName = AtlasTests;
-			productReference = 2A21DB951BBB442D00220FCF /* AtlasTests.xctest */;
+			productReference = 2A93C7CC1BBCB4DF00B8291E /* AtlasTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		2A21DB7A1BBB442D00220FCF /* Project object */ = {
+		2A93C7B11BBCB4DF00B8291E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Runemark;
 				TargetAttributes = {
-					2A21DB811BBB442D00220FCF = {
-						CreatedOnToolsVersion = 7.0.1;
+					2A93C7B81BBCB4DF00B8291E = {
+						CreatedOnToolsVersion = 7.1;
 					};
-					2A21DB941BBB442D00220FCF = {
-						CreatedOnToolsVersion = 7.0.1;
-						TestTargetID = 2A21DB811BBB442D00220FCF;
+					2A93C7CB1BBCB4DF00B8291E = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = 2A93C7B81BBCB4DF00B8291E;
 					};
 				};
 			};
-			buildConfigurationList = 2A21DB7D1BBB442D00220FCF /* Build configuration list for PBXProject "Atlas" */;
+			buildConfigurationList = 2A93C7B41BBCB4DF00B8291E /* Build configuration list for PBXProject "Atlas" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -160,29 +191,34 @@
 				en,
 				Base,
 			);
-			mainGroup = 2A21DB791BBB442D00220FCF;
-			productRefGroup = 2A21DB831BBB442D00220FCF /* Products */;
+			mainGroup = 2A93C7B01BBCB4DF00B8291E;
+			productRefGroup = 2A93C7BA1BBCB4DF00B8291E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2A21DB811BBB442D00220FCF /* Atlas */,
-				2A21DB941BBB442D00220FCF /* AtlasTests */,
+				2A93C7B81BBCB4DF00B8291E /* Atlas */,
+				2A93C7CB1BBCB4DF00B8291E /* AtlasTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2A21DB801BBB442D00220FCF /* Resources */ = {
+		2A93C7B71BBCB4DF00B8291E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A21DB8C1BBB442D00220FCF /* Assets.xcassets in Resources */,
-				2A21DB8A1BBB442D00220FCF /* GameScene.sks in Resources */,
-				2A21DB8F1BBB442D00220FCF /* MainMenu.xib in Resources */,
+				2AABE79A1BBDE9BF00CBF170 /* 1024.png in Resources */,
+				2AABE7981BBDE9BF00CBF170 /* 256.png in Resources */,
+				2AABE7961BBDE9BF00CBF170 /* 64.png in Resources */,
+				2AABE7991BBDE9BF00CBF170 /* 512.png in Resources */,
+				2AABE78B1BBDE35B00CBF170 /* MainMenu.xib in Resources */,
+				2AABE7971BBDE9BF00CBF170 /* 128.png in Resources */,
+				2AABE7951BBDE9BF00CBF170 /* 32.png in Resources */,
+				2AABE7941BBDE9BF00CBF170 /* 16.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2A21DB931BBB442D00220FCF /* Resources */ = {
+		2A93C7CA1BBCB4DF00B8291E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -192,38 +228,38 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2A21DB7E1BBB442D00220FCF /* Sources */ = {
+		2A93C7B51BBCB4DF00B8291E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A21DB881BBB442D00220FCF /* GameScene.swift in Sources */,
-				2A21DB861BBB442D00220FCF /* AppDelegate.swift in Sources */,
+				2A93C7BF1BBCB4DF00B8291E /* GameScene.swift in Sources */,
+				2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2A21DB911BBB442D00220FCF /* Sources */ = {
+		2A93C7C81BBCB4DF00B8291E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A21DB9A1BBB442D00220FCF /* AtlasTests.swift in Sources */,
+				2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2A21DB971BBB442D00220FCF /* PBXTargetDependency */ = {
+		2A93C7CE1BBCB4DF00B8291E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2A21DB811BBB442D00220FCF /* Atlas */;
-			targetProxy = 2A21DB961BBB442D00220FCF /* PBXContainerItemProxy */;
+			target = 2A93C7B81BBCB4DF00B8291E /* Atlas */;
+			targetProxy = 2A93C7CD1BBCB4DF00B8291E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		2A21DB8D1BBB442D00220FCF /* MainMenu.xib */ = {
+		2AABE7891BBDE35B00CBF170 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				2A21DB8E1BBB442D00220FCF /* Base */,
+				2AABE78A1BBDE35B00CBF170 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -231,7 +267,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		2A21DB9C1BBB442D00220FCF /* Debug */ = {
+		2A93C7D31BBCB4DF00B8291E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -275,7 +311,7 @@
 			};
 			name = Debug;
 		};
-		2A21DB9D1BBB442D00220FCF /* Release */ = {
+		2A93C7D41BBCB4DF00B8291E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -311,7 +347,7 @@
 			};
 			name = Release;
 		};
-		2A21DB9F1BBB442D00220FCF /* Debug */ = {
+		2A93C7D61BBCB4DF00B8291E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -323,7 +359,7 @@
 			};
 			name = Debug;
 		};
-		2A21DBA01BBB442D00220FCF /* Release */ = {
+		2A93C7D71BBCB4DF00B8291E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -335,7 +371,7 @@
 			};
 			name = Release;
 		};
-		2A21DBA21BBB442D00220FCF /* Debug */ = {
+		2A93C7D91BBCB4DF00B8291E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -349,7 +385,7 @@
 			};
 			name = Debug;
 		};
-		2A21DBA31BBB442D00220FCF /* Release */ = {
+		2A93C7DA1BBCB4DF00B8291E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -365,32 +401,34 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2A21DB7D1BBB442D00220FCF /* Build configuration list for PBXProject "Atlas" */ = {
+		2A93C7B41BBCB4DF00B8291E /* Build configuration list for PBXProject "Atlas" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2A21DB9C1BBB442D00220FCF /* Debug */,
-				2A21DB9D1BBB442D00220FCF /* Release */,
+				2A93C7D31BBCB4DF00B8291E /* Debug */,
+				2A93C7D41BBCB4DF00B8291E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2A21DB9E1BBB442D00220FCF /* Build configuration list for PBXNativeTarget "Atlas" */ = {
+		2A93C7D51BBCB4DF00B8291E /* Build configuration list for PBXNativeTarget "Atlas" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2A21DB9F1BBB442D00220FCF /* Debug */,
-				2A21DBA01BBB442D00220FCF /* Release */,
+				2A93C7D61BBCB4DF00B8291E /* Debug */,
+				2A93C7D71BBCB4DF00B8291E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		2A21DBA11BBB442D00220FCF /* Build configuration list for PBXNativeTarget "AtlasTests" */ = {
+		2A93C7D81BBCB4DF00B8291E /* Build configuration list for PBXNativeTarget "AtlasTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2A21DBA21BBB442D00220FCF /* Debug */,
-				2A21DBA31BBB442D00220FCF /* Release */,
+				2A93C7D91BBCB4DF00B8291E /* Debug */,
+				2A93C7DA1BBCB4DF00B8291E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 2A21DB7A1BBB442D00220FCF /* Project object */;
+	rootObject = 2A93C7B11BBCB4DF00B8291E /* Project object */;
 }
