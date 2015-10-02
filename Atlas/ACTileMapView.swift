@@ -9,11 +9,14 @@
 import Foundation
 import SpriteKit
 
-class MapView : SKNode
+class ACTileMapView : SKNode
 {
     var tileWidth:CGFloat
     var tileHeight:CGFloat
     var viewSize:CGSize
+    
+    var currentMap:ACTileMap?
+//    var cameraPos:
     
     init(viewSize:CGSize, tileWidth:CGFloat, tileHeight:CGFloat)
     {
@@ -23,10 +26,21 @@ class MapView : SKNode
         
         super.init()
         
-        // Simply create a grid of tiles
+        
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func loadMap()
+    {
+        currentMap = ACTileMap(x:10, y:10)
+    }
+    
+    func isoToScreen(x:Int, y:Int)
+    {
+        
     }
 }

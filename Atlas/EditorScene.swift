@@ -8,13 +8,13 @@
 
 import SpriteKit
 
-class EditorScene: SKScene {
-    
+class EditorScene: SKScene
+{
     var window:CGSize
     var center:CGPoint
     
-    override init(size:CGSize) {
-        
+    override init(size:CGSize)
+    {
         window = size
         center = CGPoint(x:window.width/2.0, y:window.height/2.0)
         
@@ -26,18 +26,23 @@ class EditorScene: SKScene {
         self.addChild(tileSprite)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func didMoveToView(view: SKView) {
+    override func didMoveToView(view: SKView)
+    {
         
     }
     
-    override func mouseDown(theEvent: NSEvent) {
+    override func mouseDown(theEvent: NSEvent)
+    {
 //        let location = theEvent.locationInNode(self)
     }
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(currentTime: CFTimeInterval)
+    {
+        
     }
 }

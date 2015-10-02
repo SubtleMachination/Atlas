@@ -11,12 +11,13 @@ import Cocoa
 import SpriteKit
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
-    
+class AppDelegate: NSObject, NSApplicationDelegate
+{
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var skView: SKView!
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(aNotification: NSNotification)
+    {
         let scene = EditorScene(size:window.maxSize)
         
         scene.scaleMode = .AspectFill
@@ -27,7 +28,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.skView!.showsNodeCount = true
     }
     
-    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool
+    {
         return true
     }
 }

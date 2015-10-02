@@ -3,7 +3,7 @@
 //  Atlas
 //
 //  Created by Dusty Artifact on 10/2/15.
-//  Copyright © 2015 Runemark. All rights reserved.
+//  Copyright © 2015 Runemark Studios. All rights reserved.
 //
 
 import Foundation
@@ -18,17 +18,15 @@ class Matrix2D<T>
     var cols:Int = 0
     var matrix:[T]
     
-    var fillerValue:T
-    
-    init(rows:Int, cols:Int, filler:T) {
-        
+    init(rows:Int, cols:Int, filler:T)
+    {
         self.rows = rows
         self.cols = cols
-        self.fillerValue = filler
         matrix = Array<T>(count:rows*cols, repeatedValue:filler)
     }
     
-    subscript(row:Int, col:Int) -> T {
+    subscript(row:Int, col:Int) -> T
+    {
         get
         {
             return matrix[cols*row + col]
@@ -42,10 +40,5 @@ class Matrix2D<T>
     func isWithinBounds(row:Int, col:Int) -> Bool
     {
         return (row >= 0 && col >= 0 && row < rows && col < cols)
-    }
-    
-    func isOnEdge(row:Int, col:Int) -> Bool
-    {
-        return (row == 0 || col == 0 || row == rows-1 || col == cols-1)
     }
 }

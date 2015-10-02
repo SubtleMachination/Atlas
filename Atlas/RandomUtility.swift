@@ -36,17 +36,18 @@ func randIntBetween(start:Int, stop:Int) -> Int
 }
 
 // Returns a random float between 0 and 1
-func randNormalFloat() -> Float {
+func randNormalFloat() -> Float
+{
     return Float(arc4random()) / Float(UINT32_MAX)
 }
 
-func randNormalDouble() -> Double {
+func randNormalDouble() -> Double
+{
     return Double(arc4random()) / Double(UINT32_MAX)
 }
 
 func randDoubleBetween(start:Double, stop:Double) -> Double
 {
     let difference = abs(start - stop)
-    
     return start + randNormalDouble()*difference
 }
