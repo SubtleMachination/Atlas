@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2A0537DE1BBED5BC005C1A36 /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DD1BBED5BC005C1A36 /* tile.png */; };
+		2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DF1BBED9D8005C1A36 /* Images.xcassets */; };
 		2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */; };
 		2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */; };
 		2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		2A0537DD1BBED5BC005C1A36 /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = Resources/Tiles/tile.png; sourceTree = "<group>"; };
+		2A0537DF1BBED9D8005C1A36 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2A93C7B91BBCB4DF00B8291E /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorScene.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */,
 				2AABE7891BBDE35B00CBF170 /* MainMenu.xib */,
 				2A93C7C71BBCB4DF00B8291E /* Info.plist */,
+				2A0537DF1BBED9D8005C1A36 /* Images.xcassets */,
 			);
 			path = Atlas;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AABE79A1BBDE9BF00CBF170 /* 1024.png in Resources */,
+				2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */,
 				2AABE7981BBDE9BF00CBF170 /* 256.png in Resources */,
 				2A0537DE1BBED5BC005C1A36 /* tile.png in Resources */,
 				2AABE7961BBDE9BF00CBF170 /* 64.png in Resources */,
