@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A0537DE1BBED5BC005C1A36 /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DD1BBED5BC005C1A36 /* tile.png */; };
 		2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */; };
-		2A93C7BF1BBCB4DF00B8291E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* GameScene.swift */; };
+		2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */; };
 		2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */; };
 		2AABE78B1BBDE35B00CBF170 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE7891BBDE35B00CBF170 /* MainMenu.xib */; };
 		2AABE7941BBDE9BF00CBF170 /* 16.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE78D1BBDE9BF00CBF170 /* 16.png */; };
@@ -31,9 +32,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A0537DD1BBED5BC005C1A36 /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = Resources/Tiles/tile.png; sourceTree = "<group>"; };
 		2A93C7B91BBCB4DF00B8291E /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2A93C7BE1BBCB4DF00B8291E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorScene.swift; sourceTree = "<group>"; };
 		2A93C7C71BBCB4DF00B8291E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2A93C7CC1BBCB4DF00B8291E /* AtlasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AtlasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasTests.swift; sourceTree = "<group>"; };
@@ -66,6 +68,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A0537DC1BBED5B5005C1A36 /* Tiles */ = {
+			isa = PBXGroup;
+			children = (
+				2A0537DD1BBED5BC005C1A36 /* tile.png */,
+			);
+			name = Tiles;
+			sourceTree = "<group>";
+		};
 		2A93C7B01BBCB4DF00B8291E = {
 			isa = PBXGroup;
 			children = (
@@ -89,7 +99,7 @@
 			children = (
 				2AABE7881BBDD81D00CBF170 /* Resources */,
 				2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */,
-				2A93C7BE1BBCB4DF00B8291E /* GameScene.swift */,
+				2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */,
 				2AABE7891BBDE35B00CBF170 /* MainMenu.xib */,
 				2A93C7C71BBCB4DF00B8291E /* Info.plist */,
 			);
@@ -108,6 +118,7 @@
 		2AABE7881BBDD81D00CBF170 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2A0537DC1BBED5B5005C1A36 /* Tiles */,
 				2AABE78C1BBDE9B400CBF170 /* Icons */,
 			);
 			name = Resources;
@@ -209,6 +220,7 @@
 			files = (
 				2AABE79A1BBDE9BF00CBF170 /* 1024.png in Resources */,
 				2AABE7981BBDE9BF00CBF170 /* 256.png in Resources */,
+				2A0537DE1BBED5BC005C1A36 /* tile.png in Resources */,
 				2AABE7961BBDE9BF00CBF170 /* 64.png in Resources */,
 				2AABE7991BBDE9BF00CBF170 /* 512.png in Resources */,
 				2AABE78B1BBDE35B00CBF170 /* MainMenu.xib in Resources */,
@@ -232,7 +244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A93C7BF1BBCB4DF00B8291E /* GameScene.swift in Sources */,
+				2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */,
 				2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

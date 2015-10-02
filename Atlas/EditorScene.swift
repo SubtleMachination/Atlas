@@ -2,16 +2,28 @@
 //  GameScene.swift
 //  Atlas
 //
-//  Created by Alicia Cicon on 9/30/15.
-//  Copyright (c) 2015 Runemark. All rights reserved.
+//  Created by Dusty Artifact on 9/30/15.
+//  Copyright (c) 2015 Runemark Studios. All rights reserved.
 //
 
 import SpriteKit
 
-class GameScene: SKScene {
+class EditorScene: SKScene {
+    
+    var window:CGSize
+    var center:CGPoint
     
     override init(size:CGSize) {
+        
+        window = size
+        center = CGPoint(x:window.width/2.0, y:window.height/2.0)
+        
         super.init(size:size)
+        
+        let tileSprite = SKSpriteNode(imageNamed:"tile.png")
+        tileSprite.position = center
+        
+        self.addChild(tileSprite)
     }
 
     required init?(coder aDecoder: NSCoder) {
