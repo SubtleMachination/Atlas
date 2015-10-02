@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		2A0537DE1BBED5BC005C1A36 /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DD1BBED5BC005C1A36 /* tile.png */; };
 		2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DF1BBED9D8005C1A36 /* Images.xcassets */; };
+		2A30145A1BBF0D5200B91E5F /* ACTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* ACTileMap.swift */; };
+		2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */; };
+		2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */; };
+		2A31087F1BBEEB81006CBA48 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* MapView.swift */; };
+		2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */; };
 		2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */; };
 		2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */; };
@@ -35,6 +40,11 @@
 /* Begin PBXFileReference section */
 		2A0537DD1BBED5BC005C1A36 /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = Resources/Tiles/tile.png; sourceTree = "<group>"; };
 		2A0537DF1BBED9D8005C1A36 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		2A3014591BBF0D5200B91E5F /* ACTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileMap.swift; sourceTree = "<group>"; };
+		2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSpriteNodeUtility.swift; sourceTree = "<group>"; };
+		2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomUtility.swift; sourceTree = "<group>"; };
+		2A31087E1BBEEB81006CBA48 /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix2D.swift; sourceTree = "<group>"; };
 		2A93C7B91BBCB4DF00B8291E /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorScene.swift; sourceTree = "<group>"; };
@@ -78,6 +88,22 @@
 			name = Tiles;
 			sourceTree = "<group>";
 		};
+		2A3014581BBF0D3D00B91E5F /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				2A3014591BBF0D5200B91E5F /* ACTileMap.swift */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
+		2A3108801BBEEB95006CBA48 /* Data Structures */ = {
+			isa = PBXGroup;
+			children = (
+				2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */,
+			);
+			name = "Data Structures";
+			sourceTree = "<group>";
+		};
 		2A93C7B01BBCB4DF00B8291E = {
 			isa = PBXGroup;
 			children = (
@@ -99,12 +125,16 @@
 		2A93C7BB1BBCB4DF00B8291E /* Atlas */ = {
 			isa = PBXGroup;
 			children = (
+				2A3014581BBF0D3D00B91E5F /* Map */,
+				2A3108801BBEEB95006CBA48 /* Data Structures */,
+				2AFD5E3F1BBEDE5E00C93E75 /* Utility */,
 				2AABE7881BBDD81D00CBF170 /* Resources */,
 				2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */,
 				2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */,
 				2AABE7891BBDE35B00CBF170 /* MainMenu.xib */,
 				2A93C7C71BBCB4DF00B8291E /* Info.plist */,
 				2A0537DF1BBED9D8005C1A36 /* Images.xcassets */,
+				2A31087E1BBEEB81006CBA48 /* MapView.swift */,
 			);
 			path = Atlas;
 			sourceTree = "<group>";
@@ -139,6 +169,15 @@
 				2AABE7931BBDE9BF00CBF170 /* 1024.png */,
 			);
 			name = Icons;
+			sourceTree = "<group>";
+		};
+		2AFD5E3F1BBEDE5E00C93E75 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */,
+				2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */,
+			);
+			name = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,7 +288,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */,
+				2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */,
+				2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */,
+				2A31087F1BBEEB81006CBA48 /* MapView.swift in Sources */,
 				2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */,
+				2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */,
+				2A30145A1BBF0D5200B91E5F /* ACTileMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
