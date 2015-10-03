@@ -106,8 +106,6 @@
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="900" height="600"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
-            <value key="minSize" type="size" width="900" height="600"/>
-            <value key="maxSize" type="size" width="900" height="600"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="900" height="600"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -125,6 +123,7 @@
                 </constraints>
                 <animations/>
             </view>
+            <point key="canvasLocation" x="487" y="394"/>
         </window>
         <customObject id="494" customClass="AppDelegate" customModule="Atlas" customModuleProvider="target">
             <connections>

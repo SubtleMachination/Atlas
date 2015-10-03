@@ -11,6 +11,10 @@
 		2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DF1BBED9D8005C1A36 /* Images.xcassets */; };
 		2A30145A1BBF0D5200B91E5F /* ACTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* ACTileMap.swift */; };
 		2A30145D1BBF293400B91E5F /* Matrix3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A30145C1BBF293400B91E5F /* Matrix3D.swift */; };
+		2A3014611BC01C2400B91E5F /* ACTileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014601BC01C2400B91E5F /* ACTileRowView.swift */; };
+		2A3014641BC0481F00B91E5F /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A3014631BC0481F00B91E5F /* square.png */; };
+		2A3014661BC04A3200B91E5F /* circle_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A3014651BC04A3200B91E5F /* circle_small.png */; };
+		2A3014681BC06ED600B91E5F /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014671BC06ED600B91E5F /* Coordinate.swift */; };
 		2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */; };
 		2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */; };
 		2A31087F1BBEEB81006CBA48 /* ACTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* ACTileMapView.swift */; };
@@ -43,6 +47,10 @@
 		2A0537DF1BBED9D8005C1A36 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2A3014591BBF0D5200B91E5F /* ACTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileMap.swift; sourceTree = "<group>"; };
 		2A30145C1BBF293400B91E5F /* Matrix3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix3D.swift; sourceTree = "<group>"; };
+		2A3014601BC01C2400B91E5F /* ACTileRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileRowView.swift; sourceTree = "<group>"; };
+		2A3014631BC0481F00B91E5F /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = square.png; path = Resources/Common/square.png; sourceTree = "<group>"; };
+		2A3014651BC04A3200B91E5F /* circle_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = circle_small.png; path = Resources/Common/circle_small.png; sourceTree = "<group>"; };
+		2A3014671BC06ED600B91E5F /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSpriteNodeUtility.swift; sourceTree = "<group>"; };
 		2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomUtility.swift; sourceTree = "<group>"; };
 		2A31087E1BBEEB81006CBA48 /* ACTileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileMapView.swift; sourceTree = "<group>"; };
@@ -102,8 +110,18 @@
 			isa = PBXGroup;
 			children = (
 				2A31087E1BBEEB81006CBA48 /* ACTileMapView.swift */,
+				2A3014601BC01C2400B91E5F /* ACTileRowView.swift */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		2A3014621BC0481100B91E5F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2A3014651BC04A3200B91E5F /* circle_small.png */,
+				2A3014631BC0481F00B91E5F /* square.png */,
+			);
+			name = Common;
 			sourceTree = "<group>";
 		};
 		2A3108801BBEEB95006CBA48 /* Data Structures */ = {
@@ -111,6 +129,7 @@
 			children = (
 				2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */,
 				2A30145C1BBF293400B91E5F /* Matrix3D.swift */,
+				2A3014671BC06ED600B91E5F /* Coordinate.swift */,
 			);
 			name = "Data Structures";
 			sourceTree = "<group>";
@@ -164,6 +183,7 @@
 			children = (
 				2A0537DC1BBED5B5005C1A36 /* Tiles */,
 				2AABE78C1BBDE9B400CBF170 /* Icons */,
+				2A3014621BC0481100B91E5F /* Common */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -276,11 +296,13 @@
 				2AABE7981BBDE9BF00CBF170 /* 256.png in Resources */,
 				2A0537DE1BBED5BC005C1A36 /* tile.png in Resources */,
 				2AABE7961BBDE9BF00CBF170 /* 64.png in Resources */,
+				2A3014661BC04A3200B91E5F /* circle_small.png in Resources */,
 				2AABE7991BBDE9BF00CBF170 /* 512.png in Resources */,
 				2AABE78B1BBDE35B00CBF170 /* MainMenu.xib in Resources */,
 				2AABE7971BBDE9BF00CBF170 /* 128.png in Resources */,
 				2AABE7951BBDE9BF00CBF170 /* 32.png in Resources */,
 				2AABE7941BBDE9BF00CBF170 /* 16.png in Resources */,
+				2A3014641BC0481F00B91E5F /* square.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,10 +323,12 @@
 				2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */,
 				2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */,
 				2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */,
+				2A3014611BC01C2400B91E5F /* ACTileRowView.swift in Sources */,
 				2A31087F1BBEEB81006CBA48 /* ACTileMapView.swift in Sources */,
 				2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */,
 				2A30145D1BBF293400B91E5F /* Matrix3D.swift in Sources */,
 				2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */,
+				2A3014681BC06ED600B91E5F /* Coordinate.swift in Sources */,
 				2A30145A1BBF0D5200B91E5F /* ACTileMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,30 +8,6 @@
 
 import Foundation
 
-struct ACPoint
-{
-    var x:Double
-    var y:Double
-    var z:Double
-    
-    func roundDown() -> ACDiscretePoint
-    {
-        return ACDiscretePoint(x:Int(floor(x)), y:Int(floor(y)), z:Int(floor(z)))
-    }
-    
-    func roundUp() -> ACDiscretePoint
-    {
-        return ACDiscretePoint(x:Int(ceil(x)), y:Int(ceil(y)), z:Int(ceil(z)))
-    }
-}
-
-struct ACDiscretePoint
-{
-    var x:Int
-    var y:Int
-    var z:Int
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // ACTileMap
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,15 +15,23 @@ struct ACDiscretePoint
 class ACTileMap
 {
     var grid:Matrix3D<Int>
+    var dimensions:ACDiscreteCoord
     
-    init(x:Int, y:Int, z:Int)
+    // "Default" map is a 10x10x1 empty grid
+    convenience init()
     {
-        grid = Matrix3D<Int>(xMax:x, yMax:y, zMax:z, filler:1)
+        self.init(x:10, y:10, z:1, filler:1)
     }
     
-    func isWithinBounds(point:ACDiscretePoint) -> Bool
+    init(x:Int, y:Int, z:Int, filler:Int)
     {
-        return isWithinBounds(point.x, y:point.y, z:point.z)
+        grid = Matrix3D<Int>(xMax:x, yMax:y, zMax:z, filler:filler)
+        dimensions = ACDiscreteCoord(x:x, y:y, z:z)
+    }
+    
+    func isWithinBounds(coord:ACDiscreteCoord) -> Bool
+    {
+        return isWithinBounds(coord.x, y:coord.y, z:coord.z)
     }
     
     func isWithinBounds(x:Int, y:Int, z:Int) -> Bool
@@ -55,9 +39,9 @@ class ACTileMap
         return grid.isWithinBounds(x, y:y, z:z)
     }
     
-    func tileAt(point:ACDiscretePoint) -> Int?
+    func tileAt(coord:ACDiscreteCoord) -> Int?
     {
-        return tileAt(point.x, y:point.y, z:point.z)
+        return tileAt(coord.x, y:coord.y, z:coord.z)
     }
     
     func tileAt(x:Int, y:Int, z:Int) -> Int?
@@ -72,9 +56,9 @@ class ACTileMap
         }
     }
     
-    func setTileAt(point:ACDiscretePoint, value:Int)
+    func setTileAt(coord:ACDiscreteCoord, value:Int)
     {
-        setTileAt(point.x, y:point.y, z:point.z, value:value)
+        setTileAt(coord.x, y:coord.y, z:coord.z, value:value)
     }
     
     func setTileAt(x:Int, y:Int, z:Int, value:Int)
