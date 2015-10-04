@@ -16,10 +16,9 @@ class EditorScene: SKScene
     
     override init(size:CGSize)
     {
-        print("EDITOR SCENE: SIZE: (\(size.width), \(size.height))")
         window = size
         center = CGPoint(x:window.width/2.0, y:window.height/2.0)
-        tileMapView = ACTileMapView(viewSize:CGSizeMake(size.width*0.5, size.height*0.5), tileWidth:CGFloat(25), tileHeight:CGFloat(25))
+        tileMapView = ACTileMapView(viewSize:CGSizeMake(size.width*0.35, size.height*0.35), tileWidth:CGFloat(100), tileHeight:CGFloat(100))
         
         super.init(size:size)
         

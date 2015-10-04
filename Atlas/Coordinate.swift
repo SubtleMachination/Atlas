@@ -30,6 +30,11 @@ struct ACDiscreteCoord
     var x:Int
     var y:Int
     var z:Int
+    
+    func makePrecise() -> ACCoord
+    {
+        return ACCoord(x:Double(x), y:Double(y), z:Double(z))
+    }
 }
 
 struct ACPoint
@@ -45,6 +50,11 @@ struct ACPoint
     func roundUp() -> ACDiscretePoint
     {
         return ACDiscretePoint(x:Int(ceil(x)), y:Int(ceil(y)))
+    }
+    
+    func toCGPoint() -> CGPoint
+    {
+        return CGPointMake(CGFloat(x), CGFloat(y))
     }
 }
 

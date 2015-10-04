@@ -18,9 +18,6 @@ class AppDelegate: NSObject, NSApplicationDelegate
     
     func applicationDidFinishLaunching(aNotification: NSNotification)
     {
-        print("LAUNCH: CONTENT VIEW BOUNDS: (\(window.contentView?.bounds)")
-        print("LAUNCH: CONTENT VIEW FRAME: (\(window.contentView?.frame)")
-        
         let scene = EditorScene(size:(window.contentView?.frame.size)!)
         
         scene.scaleMode = .AspectFill
