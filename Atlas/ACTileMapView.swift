@@ -30,7 +30,9 @@ class ACTileMapView : SKNode
     
     // Tile tilemap model is loaded completely into memory
     var tileMap:ACTileMap
-    var cameraPos:ACCoord
+    var cameraPos:DiamondCoord
+    
+    var tiles:[String:SKSpriteNode]
     
     // We store a visual buffer of tile nodes based on the viewport size
     var rows:[ACTileRowView]
@@ -42,17 +44,19 @@ class ACTileMapView : SKNode
         //////////////////////////////////////////////////////////////////////////////////////////
         
         self.tileMap = ACTileMap() // Generate a default tile map
-        self.cameraPos = ACCoord(x:5.0, y:5.0, z:0.0)
+        self.cameraPos = DiamondCoord(x:8.0, y:8.0, z:0.0)
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // View
         //////////////////////////////////////////////////////////////////////////////////////////
         
+        self.tiles = [String:SKSpriteNode]()
+        
         self.tileWidth = tileWidth
         self.tileHeight = tileHeight
         self.viewportBounds = CGRectMake(-1*viewSize.width/2, -1*viewSize.height/2, viewSize.width, viewSize.height)
         
-        let x_buffer = tileWidth/2
+        let x_buffer = tileWidth
         let y_buffer = tileHeight/2
         
         self.bufferBounds = CGRectMake(-1*(viewSize.width/2 + x_buffer), -1*(viewSize.height/2 + y_buffer), viewSize.width + 2*x_buffer, viewSize.height + 2*y_buffer)
@@ -79,16 +83,32 @@ class ACTileMapView : SKNode
         let bufferSprite = SKSpriteNode(imageNamed:"square.png")
         bufferSprite.resizeNode(bufferBounds.size.width, y:bufferBounds.size.height)
         bufferSprite.position = CGPointMake(0, 0)
-        bufferSprite.alpha = 0.25
+        bufferSprite.alpha = 0.2
         
         self.addChild(bufferSprite)
         
         let viewPortSprite = SKSpriteNode(imageNamed:"square.png")
         viewPortSprite.resizeNode(viewportBounds.size.width, y:viewportBounds.size.height)
         viewPortSprite.position = CGPointMake(0, 0)
-        viewPortSprite.alpha = 0.25
+        viewPortSprite.alpha = 0.2
         
         self.addChild(viewPortSprite)
+        
+        let crossHairThickness = CGFloat(2)
+        
+        let crossHairVerticalSprite = SKSpriteNode(imageNamed:"square.png")
+        crossHairVerticalSprite.resizeNode(crossHairThickness, y:bufferBounds.size.height)
+        crossHairVerticalSprite.position = CGPointMake(0, 0)
+        crossHairVerticalSprite.alpha = 0.2
+        
+        self.addChild(crossHairVerticalSprite)
+        
+        let crossHairHorizontalSprite = SKSpriteNode(imageNamed:"square.png")
+        crossHairHorizontalSprite.resizeNode(bufferBounds.size.width, y:crossHairThickness)
+        crossHairHorizontalSprite.position = CGPointMake(0, 0)
+        crossHairHorizontalSprite.alpha = 0.2
+        
+        self.addChild(crossHairHorizontalSprite)
         //////////////////////////////////////////////////////////////////////////////////////////
         
         regenerateRowViews()
@@ -98,17 +118,22 @@ class ACTileMapView : SKNode
     {
         for x in 0..<tileMap.grid.xMax
         {
-            for y in 0..<tileMap.grid.yMax
+            for y in (0..<tileMap.grid.yMax).reverse()
             {
                 for z in 0..<tileMap.grid.zMax
                 {
-                    let coord = ACDiscreteCoord(x:x, y:y, z:z)
+                    let coord = DiscreteDiamondCoord(x:x, y:y, z:z)
                     if (tileMap.tileAt(coord)! > 0)
                     {
                         let sprite = SKSpriteNode(imageNamed:"tile.png")
                         sprite.resizeNode(tileWidth, y:tileHeight)
-                        sprite.position = diamondToScreen(coord.makePrecise()).toCGPoint()
+                        var basePosition = diamondToScreen(coord.makePrecise())
+                        basePosition.x = basePosition.x + 0.5*Double(tileHeight)
+                        basePosition.y = basePosition.y + 0.25*Double(tileHeight)
+                        sprite.position = basePosition.toCGPoint()
                         self.addChild(sprite)
+                        
+                        tiles[tileSpriteStringAt(coord)] = sprite
                     }
                 }
             }
@@ -123,54 +148,80 @@ class ACTileMapView : SKNode
     func loadMap()
     {
         tileMap = ACTileMap()
-        cameraPos = ACCoord(x:5.0, y:5.0, z:0.0)
+        cameraPos = DiamondCoord(x:5.0, y:5.0, z:0.0)
     }
     
     func regenerateRowViews()
     {
-        // STEP 1: Determine the screen coordinates of the corners of the buffer bounds
+        // Determine the screen coordinates of the corners of the buffer bounds
         let bottom = Double(bufferBounds.origin.y)
         let top = bottom + Double(bufferBounds.size.height)
         let left = Double(bufferBounds.origin.x)
         let right = left + Double(bufferBounds.size.width)
         
-        let bottomLeftCorner = ACPoint(x:left, y:bottom)
-        let bottomRightCorner = ACPoint(x:right, y:bottom)
-        let topLeftCorner = ACPoint(x:left, y:top)
-        let topRightCorner = ACPoint(x:right, y:top)
+        // We already have the diamond camera coordinates
+        let cameraTile = cameraPos.roundDown()
         
-        // STEP 2: Determine the diamond tiles at these corners
-        let bottomLeftDiamondTile = screenToNearestDiamond(bottomLeftCorner)
-        let bottomRightDiamondTile = screenToNearestDiamond(bottomRightCorner)
-        let topLeftDiamondTile = screenToNearestDiamond(topLeftCorner)
-        let topRightDiamondTile = screenToNearestDiamond(topRightCorner)
+        // Travel horizontally until the tile position exceeds the bounds
+        var leftTileBound = cameraTile
+        var rightTileBound = cameraTile
+        var upperTileBound = cameraTile
+        var lowerTileBound = cameraTile
+
+        // Find the left tile bound
+        while (diamondToScreen(leftTileBound).x + 0.5*Double(tileWidth) > left)
+        {
+            leftTileBound.x = leftTileBound.x-1
+            leftTileBound.y = leftTileBound.y-1
+        }
         
-        let dimensions = tileMap.dimensions
+        leftTileBound.x = leftTileBound.x+1
+        leftTileBound.y = leftTileBound.y+1
         
-        // STEP 3: Determine the staggered coordiantes of these tiles
-        let bottomLeftStaggeredTile = diamondToStaggered(bottomLeftDiamondTile, dimensions:dimensions)
-        let bottomRightStaggeredTile = diamondToStaggered(bottomRightDiamondTile, dimensions:dimensions)
-        let topLeftStaggeredTile = diamondToStaggered(topLeftDiamondTile, dimensions:dimensions)
-        let topRightStaggeredTile = diamondToStaggered(topRightDiamondTile, dimensions:dimensions)
+        // Find the right tile bound
+        while (diamondToScreen(rightTileBound).x + 0.5*Double(tileWidth) < right)
+        {
+            rightTileBound.x = rightTileBound.x+1
+            rightTileBound.y = rightTileBound.y+1
+        }
         
-        // STEP 4: Determine the staggered bounds (width and height)
-        let minStaggeredX = (bottomLeftStaggeredTile.x < topLeftStaggeredTile.x) ? bottomLeftStaggeredTile.x : topLeftStaggeredTile.x
-        let maxStaggeredX = (bottomRightStaggeredTile.x > topRightStaggeredTile.x) ? bottomRightStaggeredTile.x : topRightStaggeredTile.x
-        let minStaggeredY = (bottomLeftStaggeredTile.y < bottomRightStaggeredTile.y) ? bottomLeftStaggeredTile.y : bottomRightStaggeredTile.y
-        let maxStaggeredY = (topLeftStaggeredTile.y > topRightStaggeredTile.y) ? topLeftStaggeredTile.y : topRightStaggeredTile.y
+        rightTileBound.x = rightTileBound.x-1
+        rightTileBound.y = rightTileBound.y-1
         
-        let staggeredWidth = maxStaggeredX - minStaggeredX
-        let staggeredHeight = maxStaggeredY - minStaggeredY
+        // Find the upper tile bound
+        while (diamondToScreen(upperTileBound).y + 0.25*Double(tileHeight) < top)
+        {
+            upperTileBound.x = upperTileBound.x-1
+            upperTileBound.y = upperTileBound.y+1
+        }
         
-        print("\(staggeredWidth), \(staggeredHeight)")
+        upperTileBound.x = upperTileBound.x+1
+        upperTileBound.y = upperTileBound.y-1
         
-        // STEP 5: Determine whether the first row is short or long
+        // Find the lower tile bound
+        while (diamondToScreen(lowerTileBound).y + 0.25*Double(tileHeight) > bottom)
+        {
+            lowerTileBound.x = lowerTileBound.x+1
+            lowerTileBound.y = lowerTileBound.y-1
+        }
         
-        // STEP 6: Generate alternating short and long rows (position relative to camera)
+        lowerTileBound.x = lowerTileBound.x-1
+        lowerTileBound.y = lowerTileBound.y+1
         
-        // STEP 7: FILL the rows with tiles from the tileMap
-        
-        
+        let bounds = [leftTileBound, rightTileBound, upperTileBound, lowerTileBound]
+        for bound in bounds
+        {
+            if let sprite = tiles[tileSpriteStringAt(bound)]
+            {
+                sprite.color = NSColor.blueColor()
+                sprite.colorBlendFactor = 1.0
+            }
+        }
+    }
+    
+    func tileSpriteStringAt(coord:DiscreteDiamondCoord) -> String
+    {
+        return "(\(coord.x),\(coord.y),\(coord.z))"
     }
     
     ////////////////////////////////////////////////////////////
@@ -180,40 +231,31 @@ class ACTileMapView : SKNode
     // (3) Screen - 2D-flattened coordinates on the screen
     ////////////////////////////////////////////////////////////
     
-    func diamondToStaggered(coord:ACCoord, dimensions:ACDiscreteCoord) -> ACCoord
+    func diamondToStaggered(coord:DiamondCoord, dimensions:DiscreteDiamondCoord) -> StaggeredCoord
     {
         let staggered_x = coord.y + coord.x
         let staggered_y = (coord.y - coord.x) + Double(dimensions.x) - 1.0
         
         // WARXING: does not take z into account
-        return ACCoord(x:staggered_x, y:staggered_y, z:coord.z)
+        return StaggeredCoord(x:Int(floor(staggered_x)), y:Int(floor(staggered_y)), z:Int(floor(coord.z)))
     }
     
-    func diamondToStaggered(coord:ACDiscreteCoord, dimensions:ACDiscreteCoord) -> ACDiscreteCoord
+    func diamondToStaggered(coord:DiscreteDiamondCoord, dimensions:DiscreteDiamondCoord) -> StaggeredCoord
     {
         let staggered_x = coord.y + coord.x
         let staggered_y = (coord.y - coord.x) + dimensions.x - 1
         
         // WARXING: does not take z into account
-        return ACDiscreteCoord(x:staggered_x, y:staggered_y, z:coord.z)
+        return StaggeredCoord(x:staggered_x, y:staggered_y, z:coord.z)
     }
     
-    func staggeredToDiamond(coord:ACCoord, dimensions:ACDiscreteCoord) -> ACCoord
-    {
-        let diamond_x = (Double(dimensions.x) - 1.0 - (coord.y - coord.x)) / 2.0
-        let diamond_y = ((coord.x + coord.y - 1.0) / 2.0) - 1.0
-        
-        // WARXING: does not take z into account
-        return ACCoord(x:diamond_x, y:diamond_y, z:coord.z)
-    }
-    
-    func staggeredToDiamond(coord:ACDiscreteCoord, dimensions:ACDiscreteCoord) -> ACDiscreteCoord
+    func staggeredToDiamond(coord:StaggeredCoord, dimensions:DiscreteDiamondCoord) -> DiscreteDiamondCoord
     {
         let diamond_x = (dimensions.x - 1 - (coord.y - coord.x)) / 2
         let diamond_y = ((coord.x + coord.y - 1) / 2) - 1
         
         // WARXING: does not take z into account
-        return ACDiscreteCoord(x:diamond_x, y:diamond_y, z:coord.z)
+        return DiscreteDiamondCoord(x:diamond_x, y:diamond_y, z:coord.z)
     }
     
     //////////////////////////////////////////////////////////////////////////////////////////
@@ -222,7 +264,7 @@ class ACTileMapView : SKNode
     //////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////
     
-    func screenToDiamond(point:ACPoint) -> ACCoord
+    func screenToDiamond(point:ACPoint) -> DiamondCoord
     {
         let cameraScreenPos = CGPointMake(0, 0) // For now, the camera is locked to the center
         // WARXING: does not take z into account
@@ -238,19 +280,23 @@ class ACTileMapView : SKNode
         let tile_x = tileDelta_x + cameraPos.x
         let tile_y = tileDelta_y + cameraPos.y
         
-        return ACCoord(x:tile_x, y:tile_y, z:cameraPos.z) // For now, locked to the SAME Z-PLANE AS CAMERA
+        return DiamondCoord(x:tile_x, y:tile_y, z:cameraPos.z) // For now, locked to the SAME Z-PLANE AS CAMERA
     }
     
-    func screenToNearestDiamond(point:ACPoint) -> ACDiscreteCoord
+    func screenToNearestDiamond(point:ACPoint) -> DiscreteDiamondCoord
     {
         // WARXING: does not take z into account
         let exactDiamondLoc = screenToDiamond(point)
-        return ACDiscreteCoord(x:Int(floor(exactDiamondLoc.x)), y:Int(floor(exactDiamondLoc.y)), z:Int(floor(exactDiamondLoc.z)))
+        return DiscreteDiamondCoord(x:Int(floor(exactDiamondLoc.x)), y:Int(floor(exactDiamondLoc.y)), z:Int(floor(exactDiamondLoc.z)))
+    }
+    
+    func diamondToScreen(coord:DiscreteDiamondCoord) -> ACPoint
+    {
+        return diamondToScreen(coord.makePrecise())
     }
 
-    // STILL REQUIRES RE-WRITE
     // The screen position of the CENTER of this tile (also represents the 0,0,0 corner of this tile)
-    func diamondToScreen(coord:ACCoord) -> ACPoint
+    func diamondToScreen(coord:DiamondCoord) -> ACPoint
     {
         let tileDelta_x = coord.x - cameraPos.x
         let tileDelta_y = coord.y - cameraPos.y
@@ -259,8 +305,8 @@ class ACTileMapView : SKNode
         let width = Double(tileWidth)
         let height = Double(tileHeight)
         
-        let screen_x = (tileDelta_x*(0.5*width)) + (tileDelta_y*(-0.5*width))
-        let screen_y = (tileDelta_x*(-0.25*height)) + (tileDelta_y*(-0.25*height)) + (tileDelta_z*(0.5*height))
+        let screen_x = (tileDelta_x*(0.5*width)) + (tileDelta_y*(0.5*width))
+        let screen_y = (tileDelta_x*(-0.25*height)) + (tileDelta_y*(0.25*height)) + (tileDelta_z*(0.5*height))
 
         return ACPoint(x:screen_x, y:screen_y)
     }
@@ -272,12 +318,12 @@ class ACTileMapView : SKNode
     // Retrieving model data using different coordinate systems
     ////////////////////////////////////////////////////////////
     
-    func tileAtDiamondPoint(coord:ACDiscreteCoord) -> Int?
+    func tileAtDiamondPoint(coord:DiscreteDiamondCoord) -> Int?
     {
         return tileMap.tileAt(coord)
     }
     
-    func tileAtStaggeredPoint(coord:ACDiscreteCoord) -> Int?
+    func tileAtStaggeredPoint(coord:StaggeredCoord) -> Int?
     {
         return tileAtDiamondPoint(staggeredToDiamond(coord, dimensions:tileMap.dimensions))
     }

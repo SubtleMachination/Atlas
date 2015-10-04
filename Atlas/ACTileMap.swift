@@ -15,21 +15,21 @@ import Foundation
 class ACTileMap
 {
     var grid:Matrix3D<Int>
-    var dimensions:ACDiscreteCoord
+    var dimensions:DiscreteDiamondCoord
     
     // "Default" map is a 10x10x1 empty grid
     convenience init()
     {
-        self.init(x:10, y:10, z:1, filler:1)
+        self.init(x:15, y:15, z:1, filler:1)
     }
     
     init(x:Int, y:Int, z:Int, filler:Int)
     {
         grid = Matrix3D<Int>(xMax:x, yMax:y, zMax:z, filler:filler)
-        dimensions = ACDiscreteCoord(x:x, y:y, z:z)
+        dimensions = DiscreteDiamondCoord(x:x, y:y, z:z)
     }
     
-    func isWithinBounds(coord:ACDiscreteCoord) -> Bool
+    func isWithinBounds(coord:DiscreteDiamondCoord) -> Bool
     {
         return isWithinBounds(coord.x, y:coord.y, z:coord.z)
     }
@@ -39,7 +39,7 @@ class ACTileMap
         return grid.isWithinBounds(x, y:y, z:z)
     }
     
-    func tileAt(coord:ACDiscreteCoord) -> Int?
+    func tileAt(coord:DiscreteDiamondCoord) -> Int?
     {
         return tileAt(coord.x, y:coord.y, z:coord.z)
     }
@@ -56,7 +56,7 @@ class ACTileMap
         }
     }
     
-    func setTileAt(coord:ACDiscreteCoord, value:Int)
+    func setTileAt(coord:DiscreteDiamondCoord, value:Int)
     {
         setTileAt(coord.x, y:coord.y, z:coord.z, value:value)
     }

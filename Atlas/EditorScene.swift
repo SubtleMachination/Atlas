@@ -18,7 +18,7 @@ class EditorScene: SKScene
     {
         window = size
         center = CGPoint(x:window.width/2.0, y:window.height/2.0)
-        tileMapView = ACTileMapView(viewSize:CGSizeMake(size.width*0.35, size.height*0.35), tileWidth:CGFloat(100), tileHeight:CGFloat(100))
+        tileMapView = ACTileMapView(viewSize:CGSizeMake(size.width*0.35, size.height*0.35), tileWidth:CGFloat(80), tileHeight:CGFloat(80))
         
         super.init(size:size)
         
