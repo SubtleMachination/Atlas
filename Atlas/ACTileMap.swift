@@ -12,7 +12,7 @@ import Foundation
 // ACTileMap
 ////////////////////////////////////////////////////////////////////////////////
 
-class ACTileMap
+public class ACTileMap
 {
     var grid:Matrix3D<Int>
     var dimensions:DiscreteDiamondCoord
@@ -20,7 +20,7 @@ class ACTileMap
     // "Default" map is a 10x10x1 empty grid
     convenience init()
     {
-        self.init(x:15, y:15, z:1, filler:1)
+        self.init(x:5, y:5, z:1, filler:1)
     }
     
     init(x:Int, y:Int, z:Int, filler:Int)

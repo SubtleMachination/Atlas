@@ -31,18 +31,16 @@ enum RowType
 // ROW Y: |<0> <25> <50> <75> <100> ...
 ////////////////////////////////////////////////////////////
 
-class ACTileRowView : SKNode
+public class ACTileRowView : SKNode
 {
     var rowIndex:Int
-    var colStart:Int
     var width:Int
     var type:RowType = RowType.RT_LONG
     var tiles:[Int:SKSpriteNode]
     
-    init(rowIndex:Int, colStart:Int, width:Int, type:RowType)
+    init(rowIndex:Int, width:Int, type:RowType)
     {
         self.rowIndex = rowIndex
-        self.colStart = colStart
         self.width = width
         self.type = type
         
@@ -51,7 +49,7 @@ class ACTileRowView : SKNode
         super.init()
     }
 
-    required init?(coder aDecoder: NSCoder)
+    required public init?(coder aDecoder: NSCoder)
     {
         fatalError("init(coder:) has not been implemented")
     }

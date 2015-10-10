@@ -12,7 +12,7 @@ import Foundation
 // Matrix3D
 ////////////////////////////////////////////////////////////////////////////////
 
-class Matrix3D<T>
+public class Matrix3D<T>
 {
     var xMax:Int = 0
     var yMax:Int = 0

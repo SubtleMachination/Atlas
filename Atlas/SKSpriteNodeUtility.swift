@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-extension SKSpriteNode
+public extension SKSpriteNode
 {
     func resizeNode(x:CGFloat, y:CGFloat)
     {

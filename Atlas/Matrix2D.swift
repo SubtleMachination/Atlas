@@ -12,7 +12,7 @@ import Foundation
 // Matrix2D
 ////////////////////////////////////////////////////////////////////////////////
 
-class Matrix2D<T>
+public class Matrix2D<T>
 {
     var rows:Int = 0
     var cols:Int = 0

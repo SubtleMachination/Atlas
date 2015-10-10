@@ -21,12 +21,14 @@ import SpriteKit
 // ----------------------
 ////////////////////////////////////////////////////////////
 
-class ACTileMapView : SKNode
+public class ACTileMapView : SKNode, ACTickable
 {
     var tileWidth:CGFloat
     var tileHeight:CGFloat
     var viewportBounds:CGRect // The desired size of the viewport
     var bufferBounds:CGRect // How far past the viewport size a tile may be before being removed
+    var staggeredBufferBounds:ACBoundingBox
+    var staggeredWindowWidth:Int
     
     // Tile tilemap model is loaded completely into memory
     var tileMap:ACTileMap
@@ -35,7 +37,7 @@ class ACTileMapView : SKNode
     var tiles:[String:SKSpriteNode]
     
     // We store a visual buffer of tile nodes based on the viewport size
-    var rows:[ACTileRowView]
+    var rows:[Int:ACTileRowView]
     
     init(viewSize:CGSize, tileWidth:CGFloat, tileHeight:CGFloat)
     {
@@ -43,8 +45,8 @@ class ACTileMapView : SKNode
         // Model
         //////////////////////////////////////////////////////////////////////////////////////////
         
-        self.tileMap = ACTileMap() // Generate a default tile map
-        self.cameraPos = DiamondCoord(x:8.0, y:8.0, z:0.0)
+        self.tileMap = ACTileMap()
+        self.cameraPos = DiamondCoord(x:2.0, y:2.0, z:0.0)
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // View
@@ -55,27 +57,25 @@ class ACTileMapView : SKNode
         self.tileWidth = tileWidth
         self.tileHeight = tileHeight
         self.viewportBounds = CGRectMake(-1*viewSize.width/2, -1*viewSize.height/2, viewSize.width, viewSize.height)
+        self.staggeredWindowWidth = 0
         
-        let x_buffer = tileWidth
-        let y_buffer = tileHeight/2
+        let sideBuffer = tileWidth
+        let upperBuffer = tileHeight/2
+        let lowerBuffer = tileHeight/2
         
-        self.bufferBounds = CGRectMake(-1*(viewSize.width/2 + x_buffer), -1*(viewSize.height/2 + y_buffer), viewSize.width + 2*x_buffer, viewSize.height + 2*y_buffer)
+        self.bufferBounds = CGRectMake(-1*(viewSize.width/2 + sideBuffer), -1*(viewSize.height/2 + (upperBuffer + lowerBuffer)/2), viewSize.width + 2*sideBuffer, viewSize.height + upperBuffer + lowerBuffer)
+        self.staggeredBufferBounds = ACBoundingBox(left:0, right:0, up:0, down:0)
         
-        self.rows = [ACTileRowView]()
+        self.rows = [Int:ACTileRowView]()
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Superclass Initialization
         super.init()
         
         //////////////////////////////////////////////////////////////////////////////////////////
-        // Debugging: DRAW SOME TILES UNDERNEATH
+        // Map Loading
         //////////////////////////////////////////////////////////////////////////////////////////
-        
-        drawMap()
-        
-        //////////////////////////////////////////////////////////////////////////////////////////
-        
-        
+        self.loadMap((x:20, y:20))
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Debugging: Observe the viewport and buffer sizes
@@ -83,6 +83,7 @@ class ACTileMapView : SKNode
         let bufferSprite = SKSpriteNode(imageNamed:"square.png")
         bufferSprite.resizeNode(bufferBounds.size.width, y:bufferBounds.size.height)
         bufferSprite.position = CGPointMake(0, 0)
+        bufferSprite.zPosition = 1000
         bufferSprite.alpha = 0.2
         
         self.addChild(bufferSprite)
@@ -90,6 +91,7 @@ class ACTileMapView : SKNode
         let viewPortSprite = SKSpriteNode(imageNamed:"square.png")
         viewPortSprite.resizeNode(viewportBounds.size.width, y:viewportBounds.size.height)
         viewPortSprite.position = CGPointMake(0, 0)
+        viewPortSprite.zPosition = 1000
         viewPortSprite.alpha = 0.2
         
         self.addChild(viewPortSprite)
@@ -99,6 +101,7 @@ class ACTileMapView : SKNode
         let crossHairVerticalSprite = SKSpriteNode(imageNamed:"square.png")
         crossHairVerticalSprite.resizeNode(crossHairThickness, y:bufferBounds.size.height)
         crossHairVerticalSprite.position = CGPointMake(0, 0)
+        crossHairVerticalSprite.zPosition = 1000
         crossHairVerticalSprite.alpha = 0.2
         
         self.addChild(crossHairVerticalSprite)
@@ -106,70 +109,196 @@ class ACTileMapView : SKNode
         let crossHairHorizontalSprite = SKSpriteNode(imageNamed:"square.png")
         crossHairHorizontalSprite.resizeNode(bufferBounds.size.width, y:crossHairThickness)
         crossHairHorizontalSprite.position = CGPointMake(0, 0)
+        crossHairHorizontalSprite.zPosition = 1000
         crossHairHorizontalSprite.alpha = 0.2
         
         self.addChild(crossHairHorizontalSprite)
         //////////////////////////////////////////////////////////////////////////////////////////
-        
-        regenerateRowViews()
-    }
-    
-    func drawMap()
-    {
-        for x in 0..<tileMap.grid.xMax
-        {
-            for y in (0..<tileMap.grid.yMax).reverse()
-            {
-                for z in 0..<tileMap.grid.zMax
-                {
-                    let coord = DiscreteDiamondCoord(x:x, y:y, z:z)
-                    if (tileMap.tileAt(coord)! > 0)
-                    {
-                        let sprite = SKSpriteNode(imageNamed:"tile.png")
-                        sprite.resizeNode(tileWidth, y:tileHeight)
-                        var basePosition = diamondToScreen(coord.makePrecise())
-                        basePosition.x = basePosition.x + 0.5*Double(tileHeight)
-                        basePosition.y = basePosition.y + 0.25*Double(tileHeight)
-                        sprite.position = basePosition.toCGPoint()
-                        self.addChild(sprite)
-                        
-                        tiles[tileSpriteStringAt(coord)] = sprite
-                    }
-                }
-            }
-        }
     }
 
-    required init?(coder aDecoder: NSCoder)
+    required public init?(coder aDecoder: NSCoder)
     {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func loadMap()
+    func tick(interval:NSTimeInterval)
     {
-        tileMap = ACTileMap()
-        cameraPos = DiamondCoord(x:5.0, y:5.0, z:0.0)
+        let diamondVelocity = DiamondCoord(x:0.01, y:-0.01, z:0)
+        
+        // Move the camera
+        let oldCameraPos = cameraPos
+        cameraPos += diamondVelocity
+        
+        let oldScreenPos = diamondToScreen(oldCameraPos)
+        let newScreenPos = diamondToScreen(cameraPos)
+        let screenDelta = oldScreenPos - newScreenPos
+        
+        moveMap(screenDelta)
+    }
+    
+    // WARXING: ONLY MOVES IN THE Y DIRECTION FOR NOW
+    func moveMap(screenDelta:ACPoint)
+    {
+        for (_, rowView) in rows
+        {
+            rowView.position.y += CGFloat(screenDelta.y)
+        }
+        
+        // Check bounds
+        let topRow = staggeredBufferBounds.up
+        // If the top row view has exceeded the buffer bounds
+        if let rowView = rows[topRow]
+        {
+            if (!bufferBounds.contains(rowView.position))
+            {
+                shiftUp()
+            }
+        }
+        
+        let bottomRow = staggeredBufferBounds.down
+        if let rowView = rows[bottomRow]
+        {
+            if (!bufferBounds.contains(rowView.position))
+            {
+                shiftDown()
+            }
+        }
+        
+//        let leftCol = staggeredBufferBounds.left
+        // WHICH ROWS TO UPDATE will depend on whether the violating tile is in a LONG or SHORT row.
+    }
+    
+    func shiftUp()
+    {
+        let topRowIndex = staggeredBufferBounds.up
+        // REMOVE TOP ROW
+        if let topRowView = rows[topRowIndex]
+        {
+            topRowView.removeFromParent()
+            rows.removeValueForKey(topRowIndex)
+        }
+        
+        // ADD TO BOTTOM ROW
+        let bottomRowIndex = staggeredBufferBounds.down
+        let newBottomRowType = (rows[bottomRowIndex]!.type == RowType.RT_LONG) ? RowType.RT_SHORT : RowType.RT_LONG
+        let newBottomRowIndex = bottomRowIndex-1
+        regenerateRowView(newBottomRowIndex, rowType:newBottomRowType)
+        
+        // UPDATE STAGGERED BUFFER BOUNDS
+        staggeredBufferBounds.down -= 1
+        staggeredBufferBounds.up -= 1
+    }
+    
+    func shiftDown()
+    {
+        let bottomRowIndex = staggeredBufferBounds.down
+        // REMOVE BOTTOM ROW
+        if let bottomRowView = rows[bottomRowIndex]
+        {
+            bottomRowView.removeFromParent()
+            rows.removeValueForKey(bottomRowIndex)
+        }
+        
+        // ADD TO TOP ROW
+        let topRowIndex = staggeredBufferBounds.up
+        let newTopRowType = (rows[topRowIndex]!.type == RowType.RT_LONG) ? RowType.RT_SHORT : RowType.RT_LONG
+        let newTopRowIndex = topRowIndex+1
+        regenerateRowView(newTopRowIndex, rowType:newTopRowType)
+        
+        // UPDATE STAGGERED BUFFER BOUNDS
+        staggeredBufferBounds.down += 1
+        staggeredBufferBounds.up += 1
+    }
+    
+    func loadMap(dimensions:(x:Int, y:Int))
+    {
+        tileMap = ACTileMap(x:dimensions.x, y:dimensions.y, z:1, filler:1)
+        cameraPos = DiamondCoord(x:Double(dimensions.x)/2, y:Double(dimensions.y)/2, z:0.0)
+        
+        // Regenerate the view
+        clearRowViews()
+        regenerateRowViews()
+    }
+    
+    func clearRowViews()
+    {
+        for (rowIndex, rowView) in rows
+        {
+            rows.removeValueForKey(rowIndex)
+            rowView.removeFromParent()
+        }
+    }
+    
+    func topStaggeredRow() -> Int
+    {
+        let topDiamondTile = DiscreteDiamondCoord(x:tileMap.dimensions.x-1, y:tileMap.dimensions.y-1, z:0)
+        let topStaggeredTile = diamondToStaggered(topDiamondTile)
+        
+        return topStaggeredTile.y
     }
     
     func regenerateRowViews()
     {
-        // Determine the screen coordinates of the corners of the buffer bounds
-        let bottom = Double(bufferBounds.origin.y)
-        let top = bottom + Double(bufferBounds.size.height)
-        let left = Double(bufferBounds.origin.x)
-        let right = left + Double(bufferBounds.size.width)
+        let leftTileBound = findLeftViewBound()
+        let rightTileBound = findRightViewBound()
+        let upperTileBound = findUpperViewBound()
+        let lowerTileBound = findLowerViewBound()
         
-        // We already have the diamond camera coordinates
-        let cameraTile = cameraPos.roundDown()
+        let leftStaggeredBound = diamondToStaggered(leftTileBound)
+        let rightStaggeredBound = diamondToStaggered(rightTileBound)
+        let upperStaggeredBound = diamondToStaggered(upperTileBound)
+        let lowerStaggeredBound = diamondToStaggered(lowerTileBound)
+        staggeredWindowWidth = rightStaggeredBound.x - leftStaggeredBound.x + 1
         
-        // Travel horizontally until the tile position exceeds the bounds
-        var leftTileBound = cameraTile
-        var rightTileBound = cameraTile
-        var upperTileBound = cameraTile
-        var lowerTileBound = cameraTile
-
-        // Find the left tile bound
-        while (diamondToScreen(leftTileBound).x + 0.5*Double(tileWidth) > left)
+        staggeredBufferBounds = ACBoundingBox(left:leftStaggeredBound.x, right:rightStaggeredBound.x, up:upperStaggeredBound.y, down:lowerStaggeredBound.y)
+        
+        var rowType = RowType.RT_LONG
+        // From the top to bottom, generate rows
+        for rowIndex in (lowerStaggeredBound.y...upperStaggeredBound.y).reverse()
+        {
+            regenerateRowView(rowIndex, rowType:rowType)
+            
+            // Alternate row types
+            rowType = (rowType == RowType.RT_LONG) ? RowType.RT_SHORT : RowType.RT_LONG
+        }
+    }
+    
+    func regenerateRowView(rowIndex:Int, rowType:RowType)
+    {
+        let rowView = ACTileRowView(rowIndex:rowIndex, width:staggeredWindowWidth, type:rowType)
+        rowView.position = CGPointMake(0, CGFloat(screenHeightForStaggeredRow(rowIndex)))
+        rowView.zPosition = CGFloat(screenDepthForStaggeredRow(rowIndex))
+        
+        // Add tiles to the rowView
+        let currentColMin = (rowType == RowType.RT_LONG) ? staggeredBufferBounds.left : staggeredBufferBounds.left+1
+        let colCount = (rowType == RowType.RT_LONG) ? ((staggeredWindowWidth-1)/2)+1 : ((staggeredWindowWidth-1)/2)
+        
+        var colIndex = currentColMin
+        for _ in 0..<colCount
+        {
+            let diamond = staggeredToDiamond(StaggeredCoord(x:rowIndex, y:colIndex, z:0))
+            if (tileMap.grid.isWithinBounds(diamond.x, y:diamond.y, z:diamond.z))
+            {
+                let tileSprite = SKSpriteNode(imageNamed:"tile.png")
+                tileSprite.resizeNode(tileWidth, y:tileHeight)
+                let screenPosition = diamondToScreen(staggeredToDiamond(StaggeredCoord(x:colIndex, y:rowIndex, z:0))).toCGPoint()
+                tileSprite.position = CGPointMake(CGFloat(screenPosition.x + tileWidth/2), CGFloat(0.0+tileHeight/4))
+                rowView.tiles[colIndex] = tileSprite
+                rowView.addChild(tileSprite)
+            }
+            
+            colIndex += 2
+        }
+        
+        rows[rowIndex] = rowView
+        self.addChild(rowView)
+    }
+    
+    func findLeftViewBound() -> DiscreteDiamondCoord
+    {
+        var leftTileBound = cameraPos.roundDown()
+        
+        while (diamondToScreen(leftTileBound).x + 0.5*Double(tileWidth) > Double(bufferBounds.origin.x))
         {
             leftTileBound.x = leftTileBound.x-1
             leftTileBound.y = leftTileBound.y-1
@@ -178,8 +307,14 @@ class ACTileMapView : SKNode
         leftTileBound.x = leftTileBound.x+1
         leftTileBound.y = leftTileBound.y+1
         
-        // Find the right tile bound
-        while (diamondToScreen(rightTileBound).x + 0.5*Double(tileWidth) < right)
+        return leftTileBound
+    }
+    
+    func findRightViewBound() -> DiscreteDiamondCoord
+    {
+        var rightTileBound = cameraPos.roundDown()
+        
+        while (diamondToScreen(rightTileBound).x + 0.5*Double(tileWidth) < Double(bufferBounds.origin.x) + Double(bufferBounds.size.width))
         {
             rightTileBound.x = rightTileBound.x+1
             rightTileBound.y = rightTileBound.y+1
@@ -188,18 +323,14 @@ class ACTileMapView : SKNode
         rightTileBound.x = rightTileBound.x-1
         rightTileBound.y = rightTileBound.y-1
         
-        // Find the upper tile bound
-        while (diamondToScreen(upperTileBound).y + 0.25*Double(tileHeight) < top)
-        {
-            upperTileBound.x = upperTileBound.x-1
-            upperTileBound.y = upperTileBound.y+1
-        }
+        return rightTileBound
+    }
+    
+    func findLowerViewBound() -> DiscreteDiamondCoord
+    {
+        var lowerTileBound = cameraPos.roundDown()
         
-        upperTileBound.x = upperTileBound.x+1
-        upperTileBound.y = upperTileBound.y-1
-        
-        // Find the lower tile bound
-        while (diamondToScreen(lowerTileBound).y + 0.25*Double(tileHeight) > bottom)
+        while (diamondToScreen(lowerTileBound).y + 0.25*Double(tileHeight) > Double(bufferBounds.origin.y))
         {
             lowerTileBound.x = lowerTileBound.x+1
             lowerTileBound.y = lowerTileBound.y-1
@@ -208,15 +339,23 @@ class ACTileMapView : SKNode
         lowerTileBound.x = lowerTileBound.x-1
         lowerTileBound.y = lowerTileBound.y+1
         
-        let bounds = [leftTileBound, rightTileBound, upperTileBound, lowerTileBound]
-        for bound in bounds
+        return lowerTileBound
+    }
+    
+    func findUpperViewBound() -> DiscreteDiamondCoord
+    {
+        var upperTileBound = cameraPos.roundDown()
+        
+        while (diamondToScreen(upperTileBound).y + 0.25*Double(tileHeight) < Double(bufferBounds.origin.y) + Double(bufferBounds.size.height))
         {
-            if let sprite = tiles[tileSpriteStringAt(bound)]
-            {
-                sprite.color = NSColor.blueColor()
-                sprite.colorBlendFactor = 1.0
-            }
+            upperTileBound.x = upperTileBound.x-1
+            upperTileBound.y = upperTileBound.y+1
         }
+        
+        upperTileBound.x = upperTileBound.x+1
+        upperTileBound.y = upperTileBound.y-1
+        
+        return upperTileBound
     }
     
     func tileSpriteStringAt(coord:DiscreteDiamondCoord) -> String
@@ -231,38 +370,70 @@ class ACTileMapView : SKNode
     // (3) Screen - 2D-flattened coordinates on the screen
     ////////////////////////////////////////////////////////////
     
-    func diamondToStaggered(coord:DiamondCoord, dimensions:DiscreteDiamondCoord) -> StaggeredCoord
+    func rowTypeForRow(rowIndex:Int) -> RowType
     {
-        let staggered_x = coord.y + coord.x
-        let staggered_y = (coord.y - coord.x) + Double(dimensions.x) - 1.0
+        let dimensions = tileMap.dimensions
+        var rowType = RowType.RT_LONG
         
-        // WARXING: does not take z into account
-        return StaggeredCoord(x:Int(floor(staggered_x)), y:Int(floor(staggered_y)), z:Int(floor(coord.z)))
+        if (dimensions.x % 2 == 0)
+        {
+            rowType = (rowIndex % 2 == 0) ? RowType.RT_SHORT : RowType.RT_LONG
+        }
+        else
+        {
+            rowType = (rowIndex % 2 == 0) ? RowType.RT_LONG : RowType.RT_SHORT
+        }
+        
+        return rowType
     }
     
-    func diamondToStaggered(coord:DiscreteDiamondCoord, dimensions:DiscreteDiamondCoord) -> StaggeredCoord
+    func diamondToStaggered(coord:DiscreteDiamondCoord) -> StaggeredCoord
     {
         let staggered_x = coord.y + coord.x
-        let staggered_y = (coord.y - coord.x) + dimensions.x - 1
+        let staggered_y = (coord.y - coord.x) + tileMap.dimensions.x - 1
         
         // WARXING: does not take z into account
         return StaggeredCoord(x:staggered_x, y:staggered_y, z:coord.z)
     }
     
-    func staggeredToDiamond(coord:StaggeredCoord, dimensions:DiscreteDiamondCoord) -> DiscreteDiamondCoord
+    func staggeredToDiamond(coord:StaggeredCoord) -> DiscreteDiamondCoord
     {
-        let diamond_x = (dimensions.x - 1 - (coord.y - coord.x)) / 2
-        let diamond_y = ((coord.x + coord.y - 1) / 2) - 1
+        let diamond_x = (tileMap.dimensions.x - 1 - (coord.y - coord.x)) / 2
+        let diamond_y = ((coord.x + coord.y) - (tileMap.dimensions.x-1)) / 2
         
         // WARXING: does not take z into account
         return DiscreteDiamondCoord(x:diamond_x, y:diamond_y, z:coord.z)
     }
     
-    //////////////////////////////////////////////////////////////////////////////////////////
-    // NEEDS EMERGENCY RE-WORKING FOR NEW COORDINATE SYSTEM!!!
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
+    func screenHeightForStaggeredRow(row:Int) -> Double
+    {
+        // Pick an arbitrary tile on the specified staggered row
+        let dimensions = tileMap.dimensions
+        
+        var staggeredX = 0
+        if (dimensions.x % 2 == 0)
+        {
+            staggeredX = (row % 2 == 0) ? 1 : 0
+        }
+        else
+        {
+            staggeredX = (row % 2 == 0) ? 0 : 1
+        }
+        
+        let staggeredTile = StaggeredCoord(x:staggeredX, y:row, z:0)
+        let diamondTile = staggeredToDiamond(staggeredTile)
+        let screenPosition = diamondToScreen(diamondTile)
+    
+        print("row:\(row), y:\(screenPosition.y)")
+        return screenPosition.y
+    }
+    
+    func screenDepthForStaggeredRow(row:Int) -> Double
+    {
+        // Rows closer to 0 are the deepest,
+        // Rows closer to maxRow are the shallowest
+        return Double(topStaggeredRow() - row)
+    }
     
     func screenToDiamond(point:ACPoint) -> DiamondCoord
     {
@@ -310,9 +481,6 @@ class ACTileMapView : SKNode
 
         return ACPoint(x:screen_x, y:screen_y)
     }
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
     
     ////////////////////////////////////////////////////////////
     // Retrieving model data using different coordinate systems
@@ -325,6 +493,6 @@ class ACTileMapView : SKNode
     
     func tileAtStaggeredPoint(coord:StaggeredCoord) -> Int?
     {
-        return tileAtDiamondPoint(staggeredToDiamond(coord, dimensions:tileMap.dimensions))
+        return tileAtDiamondPoint(staggeredToDiamond(coord))
     }
 }

@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct StaggeredCoord
+public struct StaggeredCoord
 {
     var x:Int
     var y:Int
     var z:Int
 }
 
-struct DiamondCoord
+public struct DiamondCoord
 {
     var x:Double
     var y:Double
@@ -32,7 +32,14 @@ struct DiamondCoord
     }
 }
 
-struct DiscreteDiamondCoord
+public func +=(inout lhs:DiamondCoord, rhs:DiamondCoord)
+{
+    lhs.x += rhs.x
+    lhs.y += rhs.y
+    lhs.z += rhs.z
+}
+
+public struct DiscreteDiamondCoord
 {
     var x:Int
     var y:Int
@@ -104,7 +111,7 @@ struct DiscreteDiamondCoord
     }
 }
 
-struct ACPoint
+public struct ACPoint
 {
     var x:Double
     var y:Double
@@ -125,8 +132,31 @@ struct ACPoint
     }
 }
 
-struct ACDiscretePoint
+public func -(lhs:ACPoint, rhs:ACPoint) -> ACPoint
+{
+    return ACPoint(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
+}
+
+public struct ACDiscretePoint
 {
     var x:Int
     var y:Int
+}
+
+public struct ACBoundingBox
+{
+    var left:Int
+    var right:Int
+    var up:Int
+    var down:Int
+}
+
+public func +(lhs:CGPoint, rhs:CGPoint) -> CGPoint
+{
+    return CGPoint(x:lhs.x + rhs.x, y:lhs.y + rhs.y)
+}
+
+public func -(lhs:CGPoint, rhs:CGPoint) -> CGPoint
+{
+    return CGPoint(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
 }

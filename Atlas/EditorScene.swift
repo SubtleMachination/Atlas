@@ -13,12 +13,16 @@ class EditorScene: SKScene
     var window:CGSize
     var center:CGPoint
     var tileMapView:ACTileMapView
+    var ticker:ACTicker
     
     override init(size:CGSize)
     {
         window = size
         center = CGPoint(x:window.width/2.0, y:window.height/2.0)
         tileMapView = ACTileMapView(viewSize:CGSizeMake(size.width*0.35, size.height*0.35), tileWidth:CGFloat(80), tileHeight:CGFloat(80))
+        
+        self.ticker = ACTicker()
+        ticker.addTickable(tileMapView)
         
         super.init(size:size)
         
@@ -46,8 +50,8 @@ class EditorScene: SKScene
 //        let location = theEvent.locationInNode(self)
     }
     
-    override func update(currentTime: CFTimeInterval)
+    override func update(currentTime:CFTimeInterval)
     {
-        
+        ticker.update(currentTime)
     }
 }
