@@ -14,31 +14,31 @@ import Foundation
 
 public class Matrix2D<T>
 {
-    var rows:Int = 0
-    var cols:Int = 0
+    var xMax:Int = 0
+    var yMax:Int = 0
     var matrix:[T]
     
-    init(rows:Int, cols:Int, filler:T)
+    init(xMax:Int, yMax:Int, filler:T)
     {
-        self.rows = rows
-        self.cols = cols
-        matrix = Array<T>(count:rows*cols, repeatedValue:filler)
+        self.xMax = xMax
+        self.yMax = yMax
+        matrix = Array<T>(count:xMax*yMax, repeatedValue:filler)
     }
     
-    subscript(row:Int, col:Int) -> T
+    subscript(x:Int, y:Int) -> T
     {
         get
         {
-            return matrix[cols*row + col]
+            return matrix[(xMax * y) + x]
         }
         set
         {
-            matrix[cols*row + col] = newValue
+            matrix[(xMax * y) + x] = newValue
         }
     }
     
-    func isWithinBounds(row:Int, col:Int) -> Bool
+    func isWithinBounds(x:Int, y:Int) -> Bool
     {
-        return (row >= 0 && col >= 0 && row < rows && col < cols)
+        return (x >= 0 && y >= 0 && x < xMax && y < yMax)
     }
 }

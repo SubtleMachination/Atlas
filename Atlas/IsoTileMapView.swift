@@ -21,7 +21,7 @@ import SpriteKit
 // ----------------------
 ////////////////////////////////////////////////////////////
 
-public class ACTileMapView : SKNode, ACTickable
+public class IsoTileMapView : SKNode, ACTickable
 {
     var tileWidth:CGFloat
     var tileHeight:CGFloat
@@ -31,14 +31,14 @@ public class ACTileMapView : SKNode, ACTickable
     var staggeredWindowWidth:Int
     
     // Tile tilemap model is loaded completely into memory
-    var tileMap:ACTileMap
+    var tileMap:IsoTileMap
     var cameraPos:DiamondCoord
     var cameraVel:DiamondCoord
     
     var tiles:[String:SKSpriteNode]
     
     // We store a visual buffer of tile nodes based on the viewport size
-    var rows:[Int:ACTileRowView]
+    var rows:[Int:IsoTileRowView]
     
     init(viewSize:CGSize, tileWidth:CGFloat, tileHeight:CGFloat)
     {
@@ -46,7 +46,7 @@ public class ACTileMapView : SKNode, ACTickable
         // Model
         //////////////////////////////////////////////////////////////////////////////////////////
         
-        self.tileMap = ACTileMap()
+        self.tileMap = IsoTileMap()
         self.cameraPos = DiamondCoord(x:2.0, y:2.0, z:0.0)
         self.cameraVel = DiamondCoord(x:0.02, y:0.01, z:0)
         
@@ -68,7 +68,7 @@ public class ACTileMapView : SKNode, ACTickable
         self.bufferBounds = CGRectMake(-1*(viewSize.width/2 + sideBuffer), -1*(viewSize.height/2 + (upperBuffer + lowerBuffer)/2), viewSize.width + 2*sideBuffer, viewSize.height + upperBuffer + lowerBuffer)
         self.staggeredBufferBounds = ACBoundingBox(left:0, right:0, up:0, down:0)
         
-        self.rows = [Int:ACTileRowView]()
+        self.rows = [Int:IsoTileRowView]()
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Superclass Initialization
@@ -173,20 +173,6 @@ public class ACTileMapView : SKNode, ACTickable
         }
     }
     
-    func arbitraryLongTileRowView() -> ACTileRowView?
-    {
-        for (_, rowView) in rows
-        {
-            if (rowView.type == RowType.RT_LONG)
-            {
-                return rowView
-                // early return upon finding a suitable rowView
-            }
-        }
-        
-        return nil
-    }
-    
     func shiftUp()
     {
         let topRowIndex = staggeredBufferBounds.up
@@ -248,7 +234,7 @@ public class ACTileMapView : SKNode, ACTickable
             else
             {
                 // ADD TO RIGHT COL
-                addTileToRowView(rowView, staggeredTile:StaggeredCoord(x:rightColIndex+1, y:rowView.rowIndex, z:0))
+                addTileToRowView(rowView, staggeredTile:StaggeredCoord(x:rightColIndex+1, y:rowView.rowIndex, z:0), slideIn:true)
             }
         }
         
@@ -278,7 +264,7 @@ public class ACTileMapView : SKNode, ACTickable
             else
             {
                 // ADD TO LEFT COL
-                addTileToRowView(rowView, staggeredTile:StaggeredCoord(x:leftColIndex-1, y:rowView.rowIndex, z:0))
+                addTileToRowView(rowView, staggeredTile:StaggeredCoord(x:leftColIndex-1, y:rowView.rowIndex, z:0), slideIn:true)
             }
         }
         
@@ -345,7 +331,7 @@ public class ACTileMapView : SKNode, ACTickable
     
     func regenerateRowView(rowIndex:Int, rowType:RowType)
     {
-        let rowView = ACTileRowView(rowIndex:rowIndex, width:staggeredWindowWidth, type:rowType)
+        let rowView = IsoTileRowView(rowIndex:rowIndex, width:staggeredWindowWidth, type:rowType)
         rowView.position = CGPointMake(0, CGFloat(screenYForStaggeredRow(rowIndex)))
         rowView.zPosition = CGFloat(screenDepthForStaggeredRow(rowIndex))
         
@@ -356,7 +342,7 @@ public class ACTileMapView : SKNode, ACTickable
         var colIndex = currentColMin
         for _ in 0..<colCount
         {
-            addTileToRowView(rowView, staggeredTile:StaggeredCoord(x:colIndex, y:rowIndex, z:0))
+            addTileToRowView(rowView, staggeredTile:StaggeredCoord(x:colIndex, y:rowIndex, z:0), slideIn:false)
             colIndex += 2
         }
         
@@ -364,19 +350,34 @@ public class ACTileMapView : SKNode, ACTickable
         self.addChild(rowView)
     }
     
-    func addTileToRowView(rowView:ACTileRowView, staggeredTile:StaggeredCoord)
+    func addTileToRowView(rowView:IsoTileRowView, staggeredTile:StaggeredCoord, slideIn:Bool)
     {
         let diamond = staggeredToDiamond(staggeredTile)
+        let fadeInDuration = CGFloat(0.25)
     
         if (tileMap.grid.isWithinBounds(diamond.x, y:diamond.y, z:diamond.z))
         {
             let tileSprite = SKSpriteNode(imageNamed:"blank.png")
             tileSprite.texture = SKTexture(imageNamed:"tile.png")
             tileSprite.resizeNode(tileWidth, y:tileHeight)
-            let screenPosition = diamondToScreen(staggeredToDiamond(staggeredTile)).toCGPoint()
-            tileSprite.position = CGPointMake(CGFloat(screenPosition.x + tileWidth/2), CGFloat(0.0+tileHeight/4))
+            let screen_x = diamondToScreen(staggeredToDiamond(staggeredTile)).toCGPoint().x
+            let screen_y = CGFloat(0.0)
+            
+            tileSprite.position = CGPointMake(CGFloat(screen_x + tileWidth/2), CGFloat(screen_y + tileHeight/4))
+            
+            if (slideIn)
+            {
+                tileSprite.alpha = 0.0
+            }
+            
             rowView.tiles[staggeredTile.x] = tileSprite
             rowView.addChild(tileSprite)
+            
+            if (slideIn)
+            {
+                let fadeAction = fadeTo(tileSprite, alpha:1.0, duration:fadeInDuration, type:CurveType.QUADRATIC_OUT)
+                tileSprite.runAction(fadeAction)
+            }
         }
     }
     

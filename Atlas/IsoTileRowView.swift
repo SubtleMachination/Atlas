@@ -31,7 +31,7 @@ enum RowType
 // ROW Y: |<0> <25> <50> <75> <100> ...
 ////////////////////////////////////////////////////////////
 
-public class ACTileRowView : SKNode
+public class IsoTileRowView : SKNode
 {
     var rowIndex:Int
     var width:Int

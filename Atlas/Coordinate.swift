@@ -8,12 +8,37 @@
 
 import Foundation
 
-public struct StaggeredCoord
+//////////////////////////////////////////////////////////////////////////////////////////
+// STANDARD COORDINATE (RECTANGULAR TILES)
+// Used for standard top-down or sidescrolling tile-based maps
+//////////////////////////////////////////////////////////////////////////////////////////
+
+public struct StandardCoord
+{
+    var x:Double
+    var y:Double
+    
+    func roundDown() -> DiscreteStandardCoord
+    {
+        return DiscreteStandardCoord(x:Int(floor(x)), y:Int(floor(y)))
+    }
+    
+    func roundUp() -> DiscreteStandardCoord
+    {
+        return DiscreteStandardCoord(x:Int(ceil(x)), y:Int(ceil(y)))
+    }
+}
+
+public struct DiscreteStandardCoord
 {
     var x:Int
     var y:Int
-    var z:Int
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// DIAMOND COORDINATE (ISOMETRIC TILES)
+// Used for isometric-view
+//////////////////////////////////////////////////////////////////////////////////////////
 
 public struct DiamondCoord
 {
@@ -32,13 +57,6 @@ public struct DiamondCoord
     }
 }
 
-public func +=(inout lhs:DiamondCoord, rhs:DiamondCoord)
-{
-    lhs.x += rhs.x
-    lhs.y += rhs.y
-    lhs.z += rhs.z
-}
-
 public struct DiscreteDiamondCoord
 {
     var x:Int
@@ -49,66 +67,24 @@ public struct DiscreteDiamondCoord
     {
         return DiamondCoord(x:Double(x), y:Double(y), z:Double(z))
     }
-    
-    mutating func moveNorth()
-    {
-        y += 1
-    }
-    
-    mutating func moveSouth()
-    {
-        y -= 1
-    }
-    
-    mutating func moveEast()
-    {
-        x += 1
-    }
-    
-    mutating func moveWest()
-    {
-        x -= 1
-    }
-    
-    mutating func moveUp()
-    {
-        z += 1
-    }
-    
-    mutating func moveDown()
-    {
-        z -= 1
-    }
-    
-    func north() -> DiscreteDiamondCoord
-    {
-        return DiscreteDiamondCoord(x:x, y:y+1, z:z)
-    }
-    
-    func south() -> DiscreteDiamondCoord
-    {
-        return DiscreteDiamondCoord(x:x, y:y-1, z:z)
-    }
-    
-    func east() -> DiscreteDiamondCoord
-    {
-        return DiscreteDiamondCoord(x:x+1, y:y, z:z)
-    }
-    
-    func west() -> DiscreteDiamondCoord
-    {
-        return DiscreteDiamondCoord(x:x-1, y:y, z:z)
-    }
-    
-    func up() -> DiscreteDiamondCoord
-    {
-        return DiscreteDiamondCoord(x:x, y:y, z:z+1)
-    }
-    
-    func down() -> DiscreteDiamondCoord
-    {
-        return DiscreteDiamondCoord(x:x, y:y, z:z-1)
-    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// STAGGERED COORDINATE (ISOMETRIC TILES)
+// Used for isometric-view
+//
+//         C0 C1 C2 C3 C4 C5 C6
+// ROW 3: <0,3> <2,3> <4,3> <6,3>
+// ROW 2:    <1,2> <3,2> <5,2>
+// ROW 1: <0,1> <2,1> <4,1> <6,1>
+// ROW 0:    <1,0> <3,0> <5,0>
+//////////////////////////////////////////////////////////////////////////////////////////
+
+public struct StaggeredCoord
+{
+    var x:Int
+    var y:Int
+    var z:Int
 }
 
 public struct ACPoint
@@ -132,11 +108,6 @@ public struct ACPoint
     }
 }
 
-public func -(lhs:ACPoint, rhs:ACPoint) -> ACPoint
-{
-    return ACPoint(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
-}
-
 public struct ACDiscretePoint
 {
     var x:Int
@@ -151,6 +122,140 @@ public struct ACBoundingBox
     var down:Int
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+// OPERATORS ON STANDARD COORDINATES
+//////////////////////////////////////////////////////////////////////////////////////////
+
+public func +=(inout lhs:StandardCoord, rhs:StandardCoord)
+{
+    lhs.x += rhs.x
+    lhs.y += rhs.y
+}
+
+public func +(lhs:StandardCoord, rhs:StandardCoord) -> StandardCoord
+{
+    return StandardCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y)
+}
+
+public func -(lhs:StandardCoord, rhs:StandardCoord) -> StandardCoord
+{
+    return StandardCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
+}
+
+public func +=(inout lhs:DiscreteStandardCoord, rhs:DiscreteStandardCoord)
+{
+    lhs.x += rhs.x
+    lhs.y += rhs.y
+}
+
+public func +(lhs:DiscreteStandardCoord, rhs:DiscreteStandardCoord) -> DiscreteStandardCoord
+{
+    return DiscreteStandardCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y)
+}
+
+public func -(lhs:DiscreteStandardCoord, rhs:DiscreteStandardCoord) -> DiscreteStandardCoord
+{
+    return DiscreteStandardCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// OPERATORS ON STAGGERED COORDINATES
+//////////////////////////////////////////////////////////////////////////////////////////
+
+public func +(lhs:StaggeredCoord, rhs:StaggeredCoord) -> StaggeredCoord
+{
+    return StaggeredCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y, z:lhs.z + rhs.z)
+}
+
+public func -(lhs:StaggeredCoord, rhs:StaggeredCoord) -> StaggeredCoord
+{
+    return StaggeredCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y, z:lhs.z - rhs.z)
+}
+
+public func +=(inout lhs:StaggeredCoord, rhs:StaggeredCoord)
+{
+    lhs.x += rhs.x
+    lhs.y += rhs.y
+    lhs.z += rhs.z
+}
+
+public func -=(inout lhs:StaggeredCoord, rhs:StaggeredCoord)
+{
+    lhs.x -= rhs.x
+    lhs.y -= rhs.y
+    lhs.z -= rhs.z
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// OPERATORS ON DIAMOND COORDINATES
+//////////////////////////////////////////////////////////////////////////////////////////
+
+public func +(lhs:DiamondCoord, rhs:DiamondCoord) -> DiamondCoord
+{
+    return DiamondCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y, z:lhs.z + rhs.z)
+}
+
+public func -(lhs:DiamondCoord, rhs:DiamondCoord) -> DiamondCoord
+{
+    return DiamondCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y, z:lhs.z - rhs.z)
+}
+
+public func +=(inout lhs:DiamondCoord, rhs:DiamondCoord)
+{
+    lhs.x += rhs.x
+    lhs.y += rhs.y
+    lhs.z += rhs.z
+}
+
+public func -=(inout lhs:DiamondCoord, rhs:DiamondCoord)
+{
+    lhs.x -= rhs.x
+    lhs.y -= rhs.y
+    lhs.z -= rhs.z
+}
+
+public func +(lhs:DiscreteDiamondCoord, rhs:DiscreteDiamondCoord) -> DiscreteDiamondCoord
+{
+    return DiscreteDiamondCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y, z:lhs.z + rhs.z)
+}
+
+public func -(lhs:DiscreteDiamondCoord, rhs:DiscreteDiamondCoord) -> DiscreteDiamondCoord
+{
+    return DiscreteDiamondCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y, z:lhs.z - rhs.z)
+}
+
+public func +=(inout lhs:DiscreteDiamondCoord, rhs:DiscreteDiamondCoord)
+{
+    lhs.x += rhs.x
+    lhs.y += rhs.y
+    lhs.z += rhs.z
+}
+
+public func -=(inout lhs:DiscreteDiamondCoord, rhs:DiscreteDiamondCoord)
+{
+    lhs.x -= rhs.x
+    lhs.y -= rhs.y
+    lhs.z -= rhs.z
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// OPERATORS ON ACPOINTS
+//////////////////////////////////////////////////////////////////////////////////////////
+
+public func +(lhs:ACPoint, rhs:ACPoint) -> ACPoint
+{
+    return ACPoint(x:lhs.x + rhs.x, y:lhs.y + rhs.y)
+}
+
+public func -(lhs:ACPoint, rhs:ACPoint) -> ACPoint
+{
+    return ACPoint(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// OPERATORS ON CGPOINTS
+//////////////////////////////////////////////////////////////////////////////////////////
+
 public func +(lhs:CGPoint, rhs:CGPoint) -> CGPoint
 {
     return CGPoint(x:lhs.x + rhs.x, y:lhs.y + rhs.y)
@@ -160,3 +265,16 @@ public func -(lhs:CGPoint, rhs:CGPoint) -> CGPoint
 {
     return CGPoint(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
 }
+
+public func +=(inout lhs:CGPoint, rhs:CGPoint)
+{
+    lhs.x += rhs.x
+    lhs.y += rhs.y
+}
+
+public func -=(inout lhs:CGPoint, rhs:CGPoint)
+{
+    lhs.x -= rhs.x
+    lhs.y -= rhs.y
+}
+

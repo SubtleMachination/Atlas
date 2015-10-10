@@ -12,14 +12,14 @@ class EditorScene: SKScene
 {
     var window:CGSize
     var center:CGPoint
-    var tileMapView:ACTileMapView
+    var tileMapView:IsoTileMapView
     var ticker:ACTicker
     
     override init(size:CGSize)
     {
         window = size
         center = CGPoint(x:window.width/2.0, y:window.height/2.0)
-        tileMapView = ACTileMapView(viewSize:CGSizeMake(size.width*0.5, size.height*0.5), tileWidth:CGFloat(75), tileHeight:CGFloat(75))
+        tileMapView = IsoTileMapView(viewSize:CGSizeMake(size.width*0.6, size.height*0.6), tileWidth:CGFloat(75), tileHeight:CGFloat(75))
         
         self.ticker = ACTicker()
         ticker.addTickable(tileMapView)

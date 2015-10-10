@@ -12,7 +12,7 @@ import Foundation
 // ACTileMap
 ////////////////////////////////////////////////////////////////////////////////
 
-public class ACTileMap
+public class IsoTileMap
 {
     var grid:Matrix3D<Int>
     var dimensions:DiscreteDiamondCoord

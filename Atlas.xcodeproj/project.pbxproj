@@ -9,26 +9,28 @@
 /* Begin PBXBuildFile section */
 		2A0537DE1BBED5BC005C1A36 /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DD1BBED5BC005C1A36 /* tile.png */; };
 		2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DF1BBED9D8005C1A36 /* Images.xcassets */; };
-		2A2BD03C1BC6079400D6E80F /* ACTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* ACTileMapView.swift */; };
-		2A2BD03D1BC6089700D6E80F /* ACTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* ACTileMap.swift */; };
-		2A2BD03E1BC6089F00D6E80F /* ACTileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014601BC01C2400B91E5F /* ACTileRowView.swift */; };
+		2A2BD03C1BC6079400D6E80F /* IsoTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */; };
+		2A2BD03D1BC6089700D6E80F /* IsoTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */; };
+		2A2BD03E1BC6089F00D6E80F /* IsoTileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */; };
 		2A2BD03F1BC608A400D6E80F /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A2BD0401BC608A900D6E80F /* Matrix3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A30145C1BBF293400B91E5F /* Matrix3D.swift */; };
 		2A2BD0411BC608FF00D6E80F /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014671BC06ED600B91E5F /* Coordinate.swift */; };
 		2A2BD0421BC6091500D6E80F /* SKSpriteNodeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */; };
-		2A30145A1BBF0D5200B91E5F /* ACTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* ACTileMap.swift */; };
+		2A30145A1BBF0D5200B91E5F /* IsoTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */; };
 		2A30145D1BBF293400B91E5F /* Matrix3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A30145C1BBF293400B91E5F /* Matrix3D.swift */; };
-		2A3014611BC01C2400B91E5F /* ACTileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014601BC01C2400B91E5F /* ACTileRowView.swift */; };
+		2A3014611BC01C2400B91E5F /* IsoTileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */; };
 		2A3014641BC0481F00B91E5F /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A3014631BC0481F00B91E5F /* square.png */; };
 		2A3014661BC04A3200B91E5F /* circle_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A3014651BC04A3200B91E5F /* circle_small.png */; };
 		2A3014681BC06ED600B91E5F /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014671BC06ED600B91E5F /* Coordinate.swift */; };
 		2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */; };
 		2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */; };
-		2A31087F1BBEEB81006CBA48 /* ACTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* ACTileMapView.swift */; };
+		2A31087F1BBEEB81006CBA48 /* IsoTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */; };
 		2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A5E914A1BC6E90A003A2A63 /* tile_test.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A5E91491BC6E90A003A2A63 /* tile_test.png */; };
 		2A766CD01BC77303002C003D /* ACTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CCF1BC77303002C003D /* ACTicker.swift */; };
 		2A766CD21BC92A1B002C003D /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A766CD11BC92A1B002C003D /* blank.png */; };
+		2A766CD41BC94C01002C003D /* ACEaseUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CD31BC94C01002C003D /* ACEaseUtility.swift */; };
+		2A766CD61BC980BD002C003D /* StandardTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CD51BC980BD002C003D /* StandardTileMap.swift */; };
 		2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */; };
 		2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */; };
 		2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */; };
@@ -55,19 +57,21 @@
 /* Begin PBXFileReference section */
 		2A0537DD1BBED5BC005C1A36 /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = Resources/Tiles/tile.png; sourceTree = "<group>"; };
 		2A0537DF1BBED9D8005C1A36 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		2A3014591BBF0D5200B91E5F /* ACTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileMap.swift; sourceTree = "<group>"; };
+		2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileMap.swift; sourceTree = "<group>"; };
 		2A30145C1BBF293400B91E5F /* Matrix3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix3D.swift; sourceTree = "<group>"; };
-		2A3014601BC01C2400B91E5F /* ACTileRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileRowView.swift; sourceTree = "<group>"; };
+		2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileRowView.swift; sourceTree = "<group>"; };
 		2A3014631BC0481F00B91E5F /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = square.png; path = Resources/Common/square.png; sourceTree = "<group>"; };
 		2A3014651BC04A3200B91E5F /* circle_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = circle_small.png; path = Resources/Common/circle_small.png; sourceTree = "<group>"; };
 		2A3014671BC06ED600B91E5F /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSpriteNodeUtility.swift; sourceTree = "<group>"; };
 		2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomUtility.swift; sourceTree = "<group>"; };
-		2A31087E1BBEEB81006CBA48 /* ACTileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileMapView.swift; sourceTree = "<group>"; };
+		2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileMapView.swift; sourceTree = "<group>"; };
 		2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix2D.swift; sourceTree = "<group>"; };
 		2A5E91491BC6E90A003A2A63 /* tile_test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile_test.png; path = Resources/Tiles/tile_test.png; sourceTree = "<group>"; };
 		2A766CCF1BC77303002C003D /* ACTicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTicker.swift; sourceTree = "<group>"; };
 		2A766CD11BC92A1B002C003D /* blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blank.png; path = Resources/Tiles/blank.png; sourceTree = "<group>"; };
+		2A766CD31BC94C01002C003D /* ACEaseUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACEaseUtility.swift; sourceTree = "<group>"; };
+		2A766CD51BC980BD002C003D /* StandardTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardTileMap.swift; sourceTree = "<group>"; };
 		2A93C7B91BBCB4DF00B8291E /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorScene.swift; sourceTree = "<group>"; };
@@ -116,7 +120,8 @@
 		2A3014581BBF0D3D00B91E5F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2A3014591BBF0D5200B91E5F /* ACTileMap.swift */,
+				2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */,
+				2A766CD51BC980BD002C003D /* StandardTileMap.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -124,8 +129,8 @@
 		2A30145B1BBF23D000B91E5F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				2A31087E1BBEEB81006CBA48 /* ACTileMapView.swift */,
-				2A3014601BC01C2400B91E5F /* ACTileRowView.swift */,
+				2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */,
+				2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -221,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */,
+				2A766CD31BC94C01002C003D /* ACEaseUtility.swift */,
 				2A766CCF1BC77303002C003D /* ACTicker.swift */,
 				2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */,
 			);
@@ -338,17 +344,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A766CD41BC94C01002C003D /* ACEaseUtility.swift in Sources */,
 				2A766CD01BC77303002C003D /* ACTicker.swift in Sources */,
 				2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */,
+				2A766CD61BC980BD002C003D /* StandardTileMap.swift in Sources */,
 				2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */,
 				2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */,
-				2A3014611BC01C2400B91E5F /* ACTileRowView.swift in Sources */,
-				2A31087F1BBEEB81006CBA48 /* ACTileMapView.swift in Sources */,
+				2A3014611BC01C2400B91E5F /* IsoTileRowView.swift in Sources */,
+				2A31087F1BBEEB81006CBA48 /* IsoTileMapView.swift in Sources */,
 				2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */,
 				2A30145D1BBF293400B91E5F /* Matrix3D.swift in Sources */,
 				2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */,
 				2A3014681BC06ED600B91E5F /* Coordinate.swift in Sources */,
-				2A30145A1BBF0D5200B91E5F /* ACTileMap.swift in Sources */,
+				2A30145A1BBF0D5200B91E5F /* IsoTileMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,11 +366,11 @@
 			files = (
 				2A2BD0411BC608FF00D6E80F /* Coordinate.swift in Sources */,
 				2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */,
-				2A2BD03D1BC6089700D6E80F /* ACTileMap.swift in Sources */,
+				2A2BD03D1BC6089700D6E80F /* IsoTileMap.swift in Sources */,
 				2A2BD0421BC6091500D6E80F /* SKSpriteNodeUtility.swift in Sources */,
 				2A2BD03F1BC608A400D6E80F /* Matrix2D.swift in Sources */,
-				2A2BD03C1BC6079400D6E80F /* ACTileMapView.swift in Sources */,
-				2A2BD03E1BC6089F00D6E80F /* ACTileRowView.swift in Sources */,
+				2A2BD03C1BC6079400D6E80F /* IsoTileMapView.swift in Sources */,
+				2A2BD03E1BC6089F00D6E80F /* IsoTileRowView.swift in Sources */,
 				2A2BD0401BC608A900D6E80F /* Matrix3D.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
