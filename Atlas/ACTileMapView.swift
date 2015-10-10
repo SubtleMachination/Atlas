@@ -33,6 +33,7 @@ public class ACTileMapView : SKNode, ACTickable
     // Tile tilemap model is loaded completely into memory
     var tileMap:ACTileMap
     var cameraPos:DiamondCoord
+    var cameraVel:DiamondCoord
     
     var tiles:[String:SKSpriteNode]
     
@@ -47,6 +48,7 @@ public class ACTileMapView : SKNode, ACTickable
         
         self.tileMap = ACTileMap()
         self.cameraPos = DiamondCoord(x:2.0, y:2.0, z:0.0)
+        self.cameraVel = DiamondCoord(x:0.02, y:0.01, z:0)
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // View
@@ -123,11 +125,9 @@ public class ACTileMapView : SKNode, ACTickable
     
     func tick(interval:NSTimeInterval)
     {
-        let diamondVelocity = DiamondCoord(x:0.01, y:-0.01, z:0)
-        
         // Move the camera
         let oldCameraPos = cameraPos
-        cameraPos += diamondVelocity
+        cameraPos += cameraVel
         
         let oldScreenPos = diamondToScreen(oldCameraPos)
         let newScreenPos = diamondToScreen(cameraPos)
@@ -136,36 +136,55 @@ public class ACTileMapView : SKNode, ACTickable
         moveMap(screenDelta)
     }
     
-    // WARXING: ONLY MOVES IN THE Y DIRECTION FOR NOW
     func moveMap(screenDelta:ACPoint)
     {
         for (_, rowView) in rows
         {
             rowView.position.y += CGFloat(screenDelta.y)
-        }
-        
-        // Check bounds
-        let topRow = staggeredBufferBounds.up
-        // If the top row view has exceeded the buffer bounds
-        if let rowView = rows[topRow]
-        {
-            if (!bufferBounds.contains(rowView.position))
+            
+            for (_, tile) in rowView.tiles
             {
-                shiftUp()
+                tile.position.x += CGFloat(screenDelta.x)
             }
         }
         
-        let bottomRow = staggeredBufferBounds.down
-        if let rowView = rows[bottomRow]
+        let lowerRow_screen_y = CGFloat(screenYForStaggeredRow(staggeredBufferBounds.down))
+        if (lowerRow_screen_y < bufferBounds.origin.x)
         {
-            if (!bufferBounds.contains(rowView.position))
+            shiftDown()
+        }
+        
+        let upperRow_screen_y = CGFloat(screenYForStaggeredRow(staggeredBufferBounds.up))
+        if (upperRow_screen_y > bufferBounds.origin.y + bufferBounds.size.height)
+        {
+            shiftUp()
+        }
+        
+        let leftCol_screen_x = CGFloat(screenXForStaggeredCol(staggeredBufferBounds.left))
+        if (leftCol_screen_x < bufferBounds.origin.x)
+        {
+            shiftLeft()
+        }
+        
+        let rightCol_screen_x = CGFloat(screenXForStaggeredCol(staggeredBufferBounds.right))
+        if (rightCol_screen_x > bufferBounds.origin.x + bufferBounds.size.width)
+        {
+            shiftRight()
+        }
+    }
+    
+    func arbitraryLongTileRowView() -> ACTileRowView?
+    {
+        for (_, rowView) in rows
+        {
+            if (rowView.type == RowType.RT_LONG)
             {
-                shiftDown()
+                return rowView
+                // early return upon finding a suitable rowView
             }
         }
         
-//        let leftCol = staggeredBufferBounds.left
-        // WHICH ROWS TO UPDATE will depend on whether the violating tile is in a LONG or SHORT row.
+        return nil
     }
     
     func shiftUp()
@@ -210,6 +229,75 @@ public class ACTileMapView : SKNode, ACTickable
         staggeredBufferBounds.up += 1
     }
     
+    func shiftLeft()
+    {
+        let leftColIndex = staggeredBufferBounds.left
+        let rightColIndex = staggeredBufferBounds.right
+        
+        for (_, rowView) in rows
+        {
+            if (rowView.type == RowType.RT_LONG)
+            {
+                // REMOVE LEFT COL
+                if let tile = rowView.tiles[leftColIndex]
+                {
+                    rowView.tiles.removeValueForKey(leftColIndex)
+                    tile.removeFromParent()
+                }
+            }
+            else
+            {
+                // ADD TO RIGHT COL
+                addTileToRowView(rowView, staggeredTile:StaggeredCoord(x:rightColIndex+1, y:rowView.rowIndex, z:0))
+            }
+        }
+        
+        toggleShortAndLongRows()
+        
+        // Update staggered bounds
+        staggeredBufferBounds.left += 1
+        staggeredBufferBounds.right += 1
+    }
+    
+    func shiftRight()
+    {
+        let rightColIndex = staggeredBufferBounds.right
+        let leftColIndex = staggeredBufferBounds.left
+        
+        for (_, rowView) in rows
+        {
+            if (rowView.type == RowType.RT_LONG)
+            {
+                // REMOVE RIGHT COL
+                if let tile = rowView.tiles[rightColIndex]
+                {
+                    rowView.tiles.removeValueForKey(rightColIndex)
+                    tile.removeFromParent()
+                }
+            }
+            else
+            {
+                // ADD TO LEFT COL
+                addTileToRowView(rowView, staggeredTile:StaggeredCoord(x:leftColIndex-1, y:rowView.rowIndex, z:0))
+            }
+        }
+        
+        toggleShortAndLongRows()
+        
+        // Update staggered bounds
+        staggeredBufferBounds.left -= 1
+        staggeredBufferBounds.right -= 1
+    }
+    
+    func toggleShortAndLongRows()
+    {
+        // LONG rows are now SHORT, SHORT rows are now LONG
+        for (_, rowView) in rows
+        {
+            rowView.type = (rowView.type == RowType.RT_LONG) ? RowType.RT_SHORT : RowType.RT_LONG
+        }
+    }
+    
     func loadMap(dimensions:(x:Int, y:Int))
     {
         tileMap = ACTileMap(x:dimensions.x, y:dimensions.y, z:1, filler:1)
@@ -227,14 +315,6 @@ public class ACTileMapView : SKNode, ACTickable
             rows.removeValueForKey(rowIndex)
             rowView.removeFromParent()
         }
-    }
-    
-    func topStaggeredRow() -> Int
-    {
-        let topDiamondTile = DiscreteDiamondCoord(x:tileMap.dimensions.x-1, y:tileMap.dimensions.y-1, z:0)
-        let topStaggeredTile = diamondToStaggered(topDiamondTile)
-        
-        return topStaggeredTile.y
     }
     
     func regenerateRowViews()
@@ -266,7 +346,7 @@ public class ACTileMapView : SKNode, ACTickable
     func regenerateRowView(rowIndex:Int, rowType:RowType)
     {
         let rowView = ACTileRowView(rowIndex:rowIndex, width:staggeredWindowWidth, type:rowType)
-        rowView.position = CGPointMake(0, CGFloat(screenHeightForStaggeredRow(rowIndex)))
+        rowView.position = CGPointMake(0, CGFloat(screenYForStaggeredRow(rowIndex)))
         rowView.zPosition = CGFloat(screenDepthForStaggeredRow(rowIndex))
         
         // Add tiles to the rowView
@@ -276,22 +356,36 @@ public class ACTileMapView : SKNode, ACTickable
         var colIndex = currentColMin
         for _ in 0..<colCount
         {
-            let diamond = staggeredToDiamond(StaggeredCoord(x:rowIndex, y:colIndex, z:0))
-            if (tileMap.grid.isWithinBounds(diamond.x, y:diamond.y, z:diamond.z))
-            {
-                let tileSprite = SKSpriteNode(imageNamed:"tile.png")
-                tileSprite.resizeNode(tileWidth, y:tileHeight)
-                let screenPosition = diamondToScreen(staggeredToDiamond(StaggeredCoord(x:colIndex, y:rowIndex, z:0))).toCGPoint()
-                tileSprite.position = CGPointMake(CGFloat(screenPosition.x + tileWidth/2), CGFloat(0.0+tileHeight/4))
-                rowView.tiles[colIndex] = tileSprite
-                rowView.addChild(tileSprite)
-            }
-            
+            addTileToRowView(rowView, staggeredTile:StaggeredCoord(x:colIndex, y:rowIndex, z:0))
             colIndex += 2
         }
         
         rows[rowIndex] = rowView
         self.addChild(rowView)
+    }
+    
+    func addTileToRowView(rowView:ACTileRowView, staggeredTile:StaggeredCoord)
+    {
+        let diamond = staggeredToDiamond(staggeredTile)
+    
+        if (tileMap.grid.isWithinBounds(diamond.x, y:diamond.y, z:diamond.z))
+        {
+            let tileSprite = SKSpriteNode(imageNamed:"blank.png")
+            tileSprite.texture = SKTexture(imageNamed:"tile.png")
+            tileSprite.resizeNode(tileWidth, y:tileHeight)
+            let screenPosition = diamondToScreen(staggeredToDiamond(staggeredTile)).toCGPoint()
+            tileSprite.position = CGPointMake(CGFloat(screenPosition.x + tileWidth/2), CGFloat(0.0+tileHeight/4))
+            rowView.tiles[staggeredTile.x] = tileSprite
+            rowView.addChild(tileSprite)
+        }
+    }
+    
+    func topStaggeredRow() -> Int
+    {
+        let topDiamondTile = DiscreteDiamondCoord(x:tileMap.dimensions.x-1, y:tileMap.dimensions.y-1, z:0)
+        let topStaggeredTile = diamondToStaggered(topDiamondTile)
+        
+        return topStaggeredTile.y
     }
     
     func findLeftViewBound() -> DiscreteDiamondCoord
@@ -405,11 +499,33 @@ public class ACTileMapView : SKNode, ACTickable
         return DiscreteDiamondCoord(x:diamond_x, y:diamond_y, z:coord.z)
     }
     
-    func screenHeightForStaggeredRow(row:Int) -> Double
+    func screenXForStaggeredCol(col:Int) -> Double
     {
-        // Pick an arbitrary tile on the specified staggered row
         let dimensions = tileMap.dimensions
         
+        // Pick an arbitrary tile on the specified staggered col
+        var staggeredY = 0
+        if (dimensions.y % 2 == 0)
+        {
+            staggeredY = (col % 2 == 0) ? 1 : 0
+        }
+        else
+        {
+            staggeredY = (col % 2 == 0) ? 0 : 1
+        }
+        
+        let staggeredTile = StaggeredCoord(x:col, y:staggeredY, z:0)
+        let diamondTile = staggeredToDiamond(staggeredTile)
+        let screenPosition = diamondToScreen(diamondTile)
+        
+        return screenPosition.x
+    }
+    
+    func screenYForStaggeredRow(row:Int) -> Double
+    {
+        let dimensions = tileMap.dimensions
+        
+        // Pick an arbitrary tile on the specified staggered row
         var staggeredX = 0
         if (dimensions.x % 2 == 0)
         {
@@ -424,7 +540,6 @@ public class ACTileMapView : SKNode, ACTickable
         let diamondTile = staggeredToDiamond(staggeredTile)
         let screenPosition = diamondToScreen(diamondTile)
     
-        print("row:\(row), y:\(screenPosition.y)")
         return screenPosition.y
     }
     

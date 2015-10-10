@@ -28,6 +28,7 @@
 		2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A5E914A1BC6E90A003A2A63 /* tile_test.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A5E91491BC6E90A003A2A63 /* tile_test.png */; };
 		2A766CD01BC77303002C003D /* ACTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CCF1BC77303002C003D /* ACTicker.swift */; };
+		2A766CD21BC92A1B002C003D /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A766CD11BC92A1B002C003D /* blank.png */; };
 		2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */; };
 		2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */; };
 		2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */; };
@@ -66,6 +67,7 @@
 		2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix2D.swift; sourceTree = "<group>"; };
 		2A5E91491BC6E90A003A2A63 /* tile_test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile_test.png; path = Resources/Tiles/tile_test.png; sourceTree = "<group>"; };
 		2A766CCF1BC77303002C003D /* ACTicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTicker.swift; sourceTree = "<group>"; };
+		2A766CD11BC92A1B002C003D /* blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blank.png; path = Resources/Tiles/blank.png; sourceTree = "<group>"; };
 		2A93C7B91BBCB4DF00B8291E /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorScene.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			children = (
 				2A0537DD1BBED5BC005C1A36 /* tile.png */,
 				2A5E91491BC6E90A003A2A63 /* tile_test.png */,
+				2A766CD11BC92A1B002C003D /* blank.png */,
 			);
 			name = Tiles;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				2AABE7971BBDE9BF00CBF170 /* 128.png in Resources */,
 				2AABE7951BBDE9BF00CBF170 /* 32.png in Resources */,
 				2AABE7941BBDE9BF00CBF170 /* 16.png in Resources */,
+				2A766CD21BC92A1B002C003D /* blank.png in Resources */,
 				2A3014641BC0481F00B91E5F /* square.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

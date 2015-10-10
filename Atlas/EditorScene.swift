@@ -19,7 +19,7 @@ class EditorScene: SKScene
     {
         window = size
         center = CGPoint(x:window.width/2.0, y:window.height/2.0)
-        tileMapView = ACTileMapView(viewSize:CGSizeMake(size.width*0.35, size.height*0.35), tileWidth:CGFloat(80), tileHeight:CGFloat(80))
+        tileMapView = ACTileMapView(viewSize:CGSizeMake(size.width*0.5, size.height*0.5), tileWidth:CGFloat(75), tileHeight:CGFloat(75))
         
         self.ticker = ACTicker()
         ticker.addTickable(tileMapView)
@@ -28,11 +28,6 @@ class EditorScene: SKScene
         
         tileMapView.position = center
         self.addChild(tileMapView)
-        
-        let circle = SKSpriteNode(imageNamed:"circle_small.png")
-        circle.resizeNode(50, y:50)
-        circle.position = CGPointMake(0,0)
-        self.addChild(circle)
     }
 
     required init?(coder aDecoder: NSCoder)
