@@ -12,12 +12,12 @@ import SpriteKit
 public class StandardTileRowView : SKNode
 {
     var rowIndex:Int
-    var tiles:[Int:SKSpriteNode]
+    var tiles:[Int:SKNode]
     
     init(rowIndex:Int)
     {
         self.rowIndex = rowIndex
-        self.tiles = [Int:SKSpriteNode]()
+        self.tiles = [Int:SKNode]()
         
         super.init()
     }

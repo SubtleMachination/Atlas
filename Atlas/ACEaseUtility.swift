@@ -22,7 +22,7 @@ public enum CurveType
 // SKAction Generators
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-public func scaleToProportion(node:SKNode, scale:CGFloat, duration:CGFloat, type:CurveType) -> SKAction
+func scaleToProportion(node:SKNode, scale:CGFloat, duration:CGFloat, type:CurveType) -> SKAction
 {
     let initialScale = node.xScale
     let actionBlock = {(node:SKNode, elapsedTime:CGFloat) -> Void in
@@ -35,7 +35,7 @@ public func scaleToProportion(node:SKNode, scale:CGFloat, duration:CGFloat, type
 }
 
 // Only applies to SKSPriteNode
-public func scaleToSize(node:SKSpriteNode, size:CGSize, duration:CGFloat, type:CurveType) -> SKAction
+func scaleToSize(node:SKSpriteNode, size:CGSize, duration:CGFloat, type:CurveType) -> SKAction
 {
     // CURRENT image size
     let initial_x = node.size.width
@@ -57,7 +57,7 @@ public func scaleToSize(node:SKSpriteNode, size:CGSize, duration:CGFloat, type:C
     return SKAction.customActionWithDuration(NSTimeInterval(duration), actionBlock:actionBlock)
 }
 
-public func fadeTo(node:SKNode, alpha:CGFloat, duration:CGFloat, type:CurveType) -> SKAction
+func fadeTo(node:SKNode, alpha:CGFloat, duration:CGFloat, type:CurveType) -> SKAction
 {
     let initialAlpha = node.alpha
     
@@ -70,7 +70,7 @@ public func fadeTo(node:SKNode, alpha:CGFloat, duration:CGFloat, type:CurveType)
     return SKAction.customActionWithDuration(NSTimeInterval(duration), actionBlock:actionBlock)
 }
 
-public func fadeTo(start:CGFloat, finish:CGFloat, duration:CGFloat, type:CurveType) -> SKAction
+func fadeTo(start:CGFloat, finish:CGFloat, duration:CGFloat, type:CurveType) -> SKAction
 {
     let actionBlock = {(node:SKNode, elapsedTime:CGFloat) -> Void in
         let t = elapsedTime/duration
@@ -82,27 +82,36 @@ public func fadeTo(start:CGFloat, finish:CGFloat, duration:CGFloat, type:CurveTy
     return SKAction.customActionWithDuration(NSTimeInterval(duration), actionBlock:actionBlock)
 }
 
-//public func moveBy(delta:CGPoint, duration:CGFloat, type:CurveType) -> SKAction
-//{
-//    let actionBlock = {(node:SKNode, elapsedTime:CGFloat) -> Void in
-//        let t = elapsedTime/duration
-//        let d = applyCurve(t, type:type)
-//        let new_x
-//    }
-//}
-
-public func moveBy(node:SKNode, finish:CGPoint, duration:CGFloat, type:CurveType) -> SKAction
+func rotateTo(start:CGFloat, finish:CGFloat, duration:CGFloat, type:CurveType) -> SKAction
 {
-    let initial_x = node.position.x
-    let initial_y = node.position.y
+    let actionBlock = {(node:SKNode, elapsedTime:CGFloat) -> Void in
+        let t = elapsedTime/duration
+        let d = applyCurve(t, type:type)
+        let newRotation = start*(1-d) + finish * d
+        node.zRotation = newRotation
+    }
+    
+    return SKAction.customActionWithDuration(NSTimeInterval(duration), actionBlock:actionBlock)
+}
+
+func rotateBy(node:SKNode, delta:CGFloat, duration:CGFloat, type:CurveType) -> SKAction
+{
+    let initialRotation = node.zRotation
     
     let actionBlock = {(node:SKNode, elapsedTime:CGFloat) -> Void in
         let t = elapsedTime/duration
         let d = applyCurve(t, type:type)
-        let new_x = initial_x * (1-d) + (finish.x * d)
-        let new_y = initial_y * (1-d) + (finish.y * d)
-        node.position.x = new_x
-        node.position.y = new_y
+        let newRotation = initialRotation + (delta * d)
+        node.zRotation = newRotation
+    }
+    
+    return SKAction.customActionWithDuration(NSTimeInterval(duration), actionBlock:actionBlock)
+}
+
+public func idle(duration:CGFloat) -> SKAction
+{
+    let actionBlock = {(node:SKNode, elapsedTime:CGFloat) -> Void in
+        // Does nothing for the specified duration
     }
     
     return SKAction.customActionWithDuration(NSTimeInterval(duration), actionBlock:actionBlock)

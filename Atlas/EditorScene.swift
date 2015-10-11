@@ -19,34 +19,41 @@ class EditorScene: SKScene
     {
         window = size
         center = CGPoint(x:window.width/2.0, y:window.height/2.0)
-        tileMapView = StandardTileMapView(viewSize:CGSizeMake(size.width*0.6, size.height*0.6), tileWidth:CGFloat(45), tileHeight:CGFloat(45))
+        tileMapView = StandardTileMapView(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(48), tileHeight:CGFloat(48))
         
         self.ticker = ACTicker()
         ticker.addTickable(tileMapView)
         
         super.init(size:size)
         
+        self.backgroundColor = NSColor(red:0.043, green:0.07, blue:0.09, alpha:1.0)
+        
         tileMapView.position = center
         self.addChild(tileMapView)
     }
 
-    required init?(coder aDecoder: NSCoder)
+    required init?(coder aDecoder:NSCoder)
     {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func didMoveToView(view: SKView)
+    override func didMoveToView(view:SKView)
     {
         
-    }
-    
-    override func mouseDown(theEvent: NSEvent)
-    {
-//        let location = theEvent.locationInNode(self)
     }
     
     override func update(currentTime:CFTimeInterval)
     {
         ticker.update(currentTime)
+    }
+    
+    
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Input
+    //////////////////////////////////////////////////////////////////////////////////////////
+    
+    override func mouseDown(theEvent:NSEvent)
+    {
+        //        let location = theEvent.locationInNode(self)
     }
 }

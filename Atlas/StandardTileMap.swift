@@ -27,6 +27,14 @@ public class StandardTileMap
     {
         grid = Matrix2D<Int>(xMax:x, yMax:y, filler:filler)
         dimensions = DiscreteStandardCoord(x:x, y:y)
+        
+        for xIndex in 0..<x
+        {
+            for yIndex in 0..<y
+            {
+                grid[xIndex,yIndex] = randIntBetween(1, stop:3)
+            }
+        }
     }
     
     func isWithinBounds(coord:DiscreteDiamondCoord) -> Bool
@@ -39,7 +47,7 @@ public class StandardTileMap
         return grid.isWithinBounds(x, y:y)
     }
     
-    func tileAt(coord:DiscreteDiamondCoord) -> Int?
+    func tileAt(coord:DiscreteStandardCoord) -> Int?
     {
         return tileAt(coord.x, y:coord.y)
     }

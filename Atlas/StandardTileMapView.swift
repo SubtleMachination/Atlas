@@ -23,7 +23,8 @@ public class StandardTileMapView : SKNode, ACTickable
     var cameraPos:StandardCoord
     var cameraVel:StandardCoord
     
-    var rows:[Int:StandardTileRowView]
+    var floorRows:[Int:StandardTileRowView]
+    var obstacleRows:[Int:StandardTileRowView]
     
     init(viewSize:CGSize, tileWidth:CGFloat, tileHeight:CGFloat)
     {
@@ -33,7 +34,7 @@ public class StandardTileMapView : SKNode, ACTickable
         
         self.tileMap = StandardTileMap()
         self.cameraPos = StandardCoord(x:0.0, y:0.0)
-        self.cameraVel = StandardCoord(x:0.02, y:0.01)
+        self.cameraVel = StandardCoord(x:0.01, y:0.005)
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // View
@@ -51,7 +52,8 @@ public class StandardTileMapView : SKNode, ACTickable
         // ViewModel
         //////////////////////////////////////////////////////////////////////////////////////////
         
-        self.rows = [Int:StandardTileRowView]()
+        self.floorRows = [Int:StandardTileRowView]()
+        self.obstacleRows = [Int:StandardTileRowView]()
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Superclass Initialization
@@ -66,39 +68,39 @@ public class StandardTileMapView : SKNode, ACTickable
         //////////////////////////////////////////////////////////////////////////////////////////
         // Debugging: Observe the viewport and buffer sizes
         //////////////////////////////////////////////////////////////////////////////////////////
-        let bufferSprite = SKSpriteNode(imageNamed:"square.png")
-        bufferSprite.resizeNode(bufferBounds.size.width, y:bufferBounds.size.height)
-        bufferSprite.position = CGPointMake(0, 0)
-        bufferSprite.zPosition = 1000
-        bufferSprite.alpha = 0.2
-        
-        self.addChild(bufferSprite)
-        
-        let viewPortSprite = SKSpriteNode(imageNamed:"square.png")
-        viewPortSprite.resizeNode(viewportBounds.size.width, y:viewportBounds.size.height)
-        viewPortSprite.position = CGPointMake(0, 0)
-        viewPortSprite.zPosition = 1000
-        viewPortSprite.alpha = 0.2
-        
-        self.addChild(viewPortSprite)
-        
-        let crossHairThickness = CGFloat(2)
-        
-        let crossHairVerticalSprite = SKSpriteNode(imageNamed:"square.png")
-        crossHairVerticalSprite.resizeNode(crossHairThickness, y:bufferBounds.size.height)
-        crossHairVerticalSprite.position = CGPointMake(0, 0)
-        crossHairVerticalSprite.zPosition = 1000
-        crossHairVerticalSprite.alpha = 0.2
-        
-        self.addChild(crossHairVerticalSprite)
-        
-        let crossHairHorizontalSprite = SKSpriteNode(imageNamed:"square.png")
-        crossHairHorizontalSprite.resizeNode(bufferBounds.size.width, y:crossHairThickness)
-        crossHairHorizontalSprite.position = CGPointMake(0, 0)
-        crossHairHorizontalSprite.zPosition = 1000
-        crossHairHorizontalSprite.alpha = 0.2
-        
-        self.addChild(crossHairHorizontalSprite)
+//        let bufferSprite = SKSpriteNode(imageNamed:"square.png")
+//        bufferSprite.resizeNode(bufferBounds.size.width, y:bufferBounds.size.height)
+//        bufferSprite.position = CGPointMake(0, 0)
+//        bufferSprite.zPosition = 1000
+//        bufferSprite.alpha = 0.2
+//        
+//        self.addChild(bufferSprite)
+//        
+//        let viewPortSprite = SKSpriteNode(imageNamed:"square.png")
+//        viewPortSprite.resizeNode(viewportBounds.size.width, y:viewportBounds.size.height)
+//        viewPortSprite.position = CGPointMake(0, 0)
+//        viewPortSprite.zPosition = 1000
+//        viewPortSprite.alpha = 0.2
+//        
+//        self.addChild(viewPortSprite)
+//        
+//        let crossHairThickness = CGFloat(2)
+//        
+//        let crossHairVerticalSprite = SKSpriteNode(imageNamed:"square.png")
+//        crossHairVerticalSprite.resizeNode(crossHairThickness, y:bufferBounds.size.height)
+//        crossHairVerticalSprite.position = CGPointMake(0, 0)
+//        crossHairVerticalSprite.zPosition = 1000
+//        crossHairVerticalSprite.alpha = 0.2
+//        
+//        self.addChild(crossHairVerticalSprite)
+//        
+//        let crossHairHorizontalSprite = SKSpriteNode(imageNamed:"square.png")
+//        crossHairHorizontalSprite.resizeNode(bufferBounds.size.width, y:crossHairThickness)
+//        crossHairHorizontalSprite.position = CGPointMake(0, 0)
+//        crossHairHorizontalSprite.zPosition = 1000
+//        crossHairHorizontalSprite.alpha = 0.2
+//        
+//        self.addChild(crossHairHorizontalSprite)
         //////////////////////////////////////////////////////////////////////////////////////////
     }
 
@@ -109,7 +111,18 @@ public class StandardTileMapView : SKNode, ACTickable
     
     func tick(interval:NSTimeInterval)
     {
-        
+        // Move the camera
+        if (cameraVel.x > 0.0001 && cameraVel.y > 0.0001)
+        {
+            let oldCameraPos = cameraPos
+            cameraPos += cameraVel
+            
+            let oldScreenPos = standardToScreen(oldCameraPos)
+            let newScreenPos = standardToScreen(cameraPos)
+            let screenDelta = oldScreenPos - newScreenPos
+            
+            moveMap(screenDelta)
+        }
     }
     
     func loadMap(dimensions:(x:Int, y:Int))
@@ -122,11 +135,18 @@ public class StandardTileMapView : SKNode, ACTickable
         regenerateRowViews()
     }
     
+    // Removes all tile content instantly
     func clearRowViews()
     {
-        for (rowIndex, rowView) in rows
+        for (rowIndex, rowView) in floorRows
         {
-            rows.removeValueForKey(rowIndex)
+            floorRows.removeValueForKey(rowIndex)
+            rowView.removeFromParent()
+        }
+        
+        for (rowIndex, rowView) in obstacleRows
+        {
+            obstacleRows.removeValueForKey(rowIndex)
             rowView.removeFromParent()
         }
     }
@@ -142,41 +162,256 @@ public class StandardTileMapView : SKNode, ACTickable
         
         for rowIndex in lowerTileBound.y...upperTileBound.y
         {
-            regenerateRowView(rowIndex)
+            regenerateRowView(rowIndex, fade:false)
         }
     }
     
-    func regenerateRowView(rowIndex:Int)
+    func regenerateRowView(rowIndex:Int, fade:Bool)
     {
-        let rowView = StandardTileRowView(rowIndex:rowIndex)
-        rowView.position = CGPointMake(0, screenYForRow(rowIndex) + tileWidth/2)
+        let floorRowView = StandardTileRowView(rowIndex:rowIndex)
+        floorRowView.position = CGPointMake(0, screenYForRow(rowIndex) + tileHeight/2)
+        floorRowView.zPosition = 0
         
-        // Add tiles to the rowView
+        // Obstacles appear 1/2 block higher than the floor
+        let obstacleRowView = StandardTileRowView(rowIndex:rowIndex)
+        obstacleRowView.position = CGPointMake(0, screenYForRow(rowIndex) + tileHeight)
+        obstacleRowView.zPosition = 1000
+        
+        // Add tiles to the rowViews
         for colIndex in tileBoundingBox.left...tileBoundingBox.right
         {
-            addTileToRowView(rowView, coord:DiscreteStandardCoord(x:colIndex, y:rowIndex))
+            let tileCoordinate = DiscreteStandardCoord(x:colIndex, y:rowIndex)
+            addTileToRowView(floorRowView, obstacleRowView:obstacleRowView, coord:tileCoordinate, fade:fade)
         }
         
-        rows[rowIndex] = rowView
-        self.addChild(rowView)
+        floorRows[rowIndex] = floorRowView
+        self.addChild(floorRowView)
+        
+        obstacleRows[rowIndex] = obstacleRowView
+        self.addChild(obstacleRowView)
     }
     
-    func addTileToRowView(rowView:StandardTileRowView, coord:DiscreteStandardCoord)
+    func addTileToRowView(floorRowView:StandardTileRowView, obstacleRowView:StandardTileRowView, coord:DiscreteStandardCoord, fade:Bool)
     {
         if (tileMap.grid.isWithinBounds(coord.x, y:coord.y))
         {
-            let tileSprite = SKSpriteNode(imageNamed:"square.png")
-            tileSprite.resizeNode(tileWidth, y:tileHeight)
+            let tileNode = SKNode()
+            let tileValue = tileMap.tileAt(coord)
+            if (tileValue > 0 && tileValue < 3)
+            {
+                // Floor Tile
+                let imageName = coinFlip() ? "floor1.png" : "floor3.png"
+                let tileSprite = SKSpriteNode(imageNamed:imageName)
+                tileSprite.resizeNode(tileWidth, y:tileHeight)
+                tileSprite.position = CGPointMake(0, 0)
+                
+                let screenPosition = standardToScreen(coord)
+                let x_pos = screenPosition.x + tileWidth/2
+                tileNode.position = CGPointMake(x_pos, 0)
+                tileNode.addChild(tileSprite)
+                
+                floorRowView.tiles[coord.x] = tileNode
+                floorRowView.addChild(tileNode)
+            }
+            else
+            {
+                // Wall Tile
+                let tileSprite = SKSpriteNode(imageNamed:"wall3d.png")
+                tileSprite.resizeNode(tileWidth, y:tileHeight)
+                tileSprite.position = CGPointMake(0, 0)
+                
+                if (!tileMap.grid.isWithinBounds(coord.x, y:coord.y-1) || tileMap.tileAt(coord.x, y:coord.y-1) < 3)
+                {
+                    let baseSprite = SKSpriteNode(imageNamed:"wall3d_base.png")
+                    baseSprite.resizeNode(tileWidth, y:tileHeight/2)
+                    baseSprite.position = CGPointMake(0, -0.75*tileHeight)
+                    tileNode.addChild(baseSprite)
+                }
+                
+                let screenPosition = standardToScreen(coord)
+                let x_pos = screenPosition.x + tileWidth/2
+                tileNode.position = CGPointMake(x_pos, 0)
+                tileNode.addChild(tileSprite)
+                
+                obstacleRowView.tiles[coord.x] = tileNode
+                obstacleRowView.addChild(tileNode)
+            }
             
-            let screenPosition = standardToScreen(coord)
-            let x_pos = screenPosition.x + tileWidth/2
+            if (fade)
+            {
+                tileNode.alpha = 0.0
+                let fadeAction = fadeTo(tileNode, alpha:1.0, duration:CGFloat(0.5), type:CurveType.QUADRATIC_OUT)
+                tileNode.runAction(fadeAction)
+            }
+        }
+    }
+    
+    func moveMap(delta:CGPoint)
+    {
+        // Move all the tiles
+        for (_, rowView) in floorRows
+        {
+            rowView.position.y += delta.y
             
-            tileSprite.position = CGPointMake(x_pos, 0)
-            tileSprite.color = randomColor()
-            tileSprite.colorBlendFactor = 1.0
+            for (_, tile) in rowView.tiles
+            {
+                tile.position.x += delta.x
+            }
+        }
+        
+        for (_, rowView) in obstacleRows
+        {
+            rowView.position.y += delta.y
             
-            rowView.tiles[coord.x] = tileSprite
-            rowView.addChild(tileSprite)
+            for (_, tile) in rowView.tiles
+            {
+                tile.position.x += delta.x
+            }
+        }
+        
+        // Check for tiles outside of the view bounaries
+        let lowerRow_screen_y = CGFloat(screenYForRow(tileBoundingBox.down))
+        if (lowerRow_screen_y < bufferBounds.origin.y)
+        {
+            shiftUp()
+        }
+
+        let upperRow_screen_y = CGFloat(screenYForRow(tileBoundingBox.up))
+        if (upperRow_screen_y > bufferBounds.origin.y + bufferBounds.size.height)
+        {
+            shiftDown()
+        }
+
+        let leftCol_screen_x = CGFloat(screenXForCol(tileBoundingBox.left))
+        if (leftCol_screen_x < bufferBounds.origin.x)
+        {
+            shiftLeft()
+        }
+        
+        let rightCol_screen_x = CGFloat(screenXForCol(tileBoundingBox.right))
+        if (rightCol_screen_x > bufferBounds.origin.x + bufferBounds.size.width)
+        {
+            shiftRight()
+        }
+    }
+    
+    func shiftDown()
+    {
+        // Remove top row
+        removeRow(tileBoundingBox.up)
+        
+        // Add bottom row
+        addRow(tileBoundingBox.down-1)
+        
+        // Update tile bounds
+        tileBoundingBox.down -= 1
+        tileBoundingBox.up -= 1
+    }
+    
+    func shiftUp()
+    {
+        // Remove bottom row
+        removeRow(tileBoundingBox.down)
+        
+        // Add top row
+        addRow(tileBoundingBox.up+1)
+        
+        // Update tile bounds
+        tileBoundingBox.down += 1
+        tileBoundingBox.up += 1
+    }
+    
+    func shiftLeft()
+    {
+        removeCol(tileBoundingBox.left)
+        addCol(tileBoundingBox.right+1)
+        
+        // Update staggered bounds
+        tileBoundingBox.left += 1
+        tileBoundingBox.right += 1
+    }
+    
+    func shiftRight()
+    {
+        removeCol(tileBoundingBox.right)
+        addCol(tileBoundingBox.left-1)
+        
+        // Update staggered bounds
+        tileBoundingBox.left -= 1
+        tileBoundingBox.right -= 1
+    }
+    
+    func removeRow(rowIndex:Int)
+    {
+        if let rowView = floorRows[rowIndex]
+        {
+            let fadeAction = fadeTo(rowView, alpha:0.0, duration:CGFloat(0.4), type:CurveType.QUADRATIC_IN)
+            
+            rowView.runAction(fadeAction, completion: {() -> Void in
+                
+                rowView.removeFromParent()
+                self.floorRows.removeValueForKey(rowIndex)
+                
+            })
+        }
+        
+        if let rowView = obstacleRows[rowIndex]
+        {
+            let fadeAction = fadeTo(rowView, alpha:0.0, duration:CGFloat(0.4), type:CurveType.QUADRATIC_IN)
+            
+            rowView.runAction(fadeAction, completion: {() -> Void in
+                
+                rowView.removeFromParent()
+                self.obstacleRows.removeValueForKey(rowIndex)
+                
+            })
+        }
+    }
+    
+    func addRow(rowIndex:Int)
+    {
+        regenerateRowView(rowIndex, fade:true)
+    }
+    
+    func removeCol(colIndex:Int)
+    {
+        for (_, rowView) in floorRows
+        {
+            if let tile = rowView.tiles[colIndex]
+            {
+                let fadeAction = fadeTo(rowView, alpha:0.0, duration:CGFloat(0.4), type:CurveType.QUADRATIC_IN)
+                
+                tile.runAction(fadeAction, completion: {() -> Void in
+                    
+                    tile.removeFromParent()
+                    rowView.tiles.removeValueForKey(colIndex)
+                    
+                })
+            }
+        }
+        
+        for (_, rowView) in obstacleRows
+        {
+            if let tile = rowView.tiles[colIndex]
+            {
+                let fadeAction = fadeTo(rowView, alpha:0.0, duration:CGFloat(0.4), type:CurveType.QUADRATIC_IN)
+                
+                tile.runAction(fadeAction, completion: {() -> Void in
+                    
+                    tile.removeFromParent()
+                    rowView.tiles.removeValueForKey(colIndex)
+                    
+                })
+            }
+        }
+    }
+    
+    func addCol(colIndex:Int)
+    {
+        for (rowIndex, floorRowView) in floorRows
+        {
+            let obstacleRowView = obstacleRows[rowIndex]!
+            addTileToRowView(floorRowView, obstacleRowView:obstacleRowView, coord:DiscreteStandardCoord(x:colIndex, y:rowIndex), fade:true)
         }
     }
     
@@ -213,7 +448,7 @@ public class StandardTileMapView : SKNode, ACTickable
     
     func tileExceedsLowerBound(coord:DiscreteStandardCoord) -> Bool
     {
-        return standardToScreen(coord).y < bufferBounds.origin.x
+        return standardToScreen(coord).y < bufferBounds.origin.y
     }
     
     func findLeftViewBound() -> DiscreteStandardCoord

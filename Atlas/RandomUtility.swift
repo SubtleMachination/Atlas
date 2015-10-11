@@ -41,6 +41,7 @@ func randNormalFloat() -> Float
     return Float(arc4random()) / Float(UINT32_MAX)
 }
 
+// Returns a random double between 0 and 1
 func randNormalDouble() -> Double
 {
     return Double(arc4random()) / Double(UINT32_MAX)
