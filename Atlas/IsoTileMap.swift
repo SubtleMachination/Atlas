@@ -17,7 +17,7 @@ public class IsoTileMap
     var grid:Matrix3D<Int>
     var dimensions:DiscreteDiamondCoord
     
-    // "Default" map is a 10x10x1 empty grid
+    // "Default" map
     convenience init()
     {
         self.init(x:5, y:5, z:1, filler:1)

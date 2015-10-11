@@ -33,6 +33,11 @@ public struct DiscreteStandardCoord
 {
     var x:Int
     var y:Int
+    
+    func makePrecise() -> StandardCoord
+    {
+        return StandardCoord(x:Double(x), y:Double(y))
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +119,7 @@ public struct ACDiscretePoint
     var y:Int
 }
 
-public struct ACBoundingBox
+public struct ACTileBoundingBox
 {
     var left:Int
     var right:Int

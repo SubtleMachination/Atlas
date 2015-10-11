@@ -27,15 +27,13 @@ public class IsoTileMapView : SKNode, ACTickable
     var tileHeight:CGFloat
     var viewportBounds:CGRect // The desired size of the viewport
     var bufferBounds:CGRect // How far past the viewport size a tile may be before being removed
-    var staggeredBufferBounds:ACBoundingBox
+    var staggeredBufferBounds:ACTileBoundingBox
     var staggeredWindowWidth:Int
     
     // Tile tilemap model is loaded completely into memory
     var tileMap:IsoTileMap
     var cameraPos:DiamondCoord
     var cameraVel:DiamondCoord
-    
-    var tiles:[String:SKSpriteNode]
     
     // We store a visual buffer of tile nodes based on the viewport size
     var rows:[Int:IsoTileRowView]
@@ -54,8 +52,6 @@ public class IsoTileMapView : SKNode, ACTickable
         // View
         //////////////////////////////////////////////////////////////////////////////////////////
         
-        self.tiles = [String:SKSpriteNode]()
-        
         self.tileWidth = tileWidth
         self.tileHeight = tileHeight
         self.viewportBounds = CGRectMake(-1*viewSize.width/2, -1*viewSize.height/2, viewSize.width, viewSize.height)
@@ -66,13 +62,14 @@ public class IsoTileMapView : SKNode, ACTickable
         let lowerBuffer = tileHeight/2
         
         self.bufferBounds = CGRectMake(-1*(viewSize.width/2 + sideBuffer), -1*(viewSize.height/2 + (upperBuffer + lowerBuffer)/2), viewSize.width + 2*sideBuffer, viewSize.height + upperBuffer + lowerBuffer)
-        self.staggeredBufferBounds = ACBoundingBox(left:0, right:0, up:0, down:0)
+        self.staggeredBufferBounds = ACTileBoundingBox(left:0, right:0, up:0, down:0)
         
         self.rows = [Int:IsoTileRowView]()
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Superclass Initialization
         super.init()
+        //////////////////////////////////////////////////////////////////////////////////////////
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Map Loading
@@ -286,7 +283,7 @@ public class IsoTileMapView : SKNode, ACTickable
     
     func loadMap(dimensions:(x:Int, y:Int))
     {
-        tileMap = ACTileMap(x:dimensions.x, y:dimensions.y, z:1, filler:1)
+        tileMap = IsoTileMap(x:dimensions.x, y:dimensions.y, z:1, filler:1)
         cameraPos = DiamondCoord(x:Double(dimensions.x)/2, y:Double(dimensions.y)/2, z:0.0)
         
         // Regenerate the view
@@ -316,7 +313,7 @@ public class IsoTileMapView : SKNode, ACTickable
         let lowerStaggeredBound = diamondToStaggered(lowerTileBound)
         staggeredWindowWidth = rightStaggeredBound.x - leftStaggeredBound.x + 1
         
-        staggeredBufferBounds = ACBoundingBox(left:leftStaggeredBound.x, right:rightStaggeredBound.x, up:upperStaggeredBound.y, down:lowerStaggeredBound.y)
+        staggeredBufferBounds = ACTileBoundingBox(left:leftStaggeredBound.x, right:rightStaggeredBound.x, up:upperStaggeredBound.y, down:lowerStaggeredBound.y)
         
         var rowType = RowType.RT_LONG
         // From the top to bottom, generate rows
