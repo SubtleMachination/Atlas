@@ -15,6 +15,8 @@ class EditorScene: SKScene
     var tileMapView:StandardTileMapView
     var ticker:ACTicker
     
+    var dragStart:CGPoint
+    
     override init(size:CGSize)
     {
         window = size
@@ -23,6 +25,8 @@ class EditorScene: SKScene
         
         self.ticker = ACTicker()
         ticker.addTickable(tileMapView)
+        
+        self.dragStart = CGPointMake(0, 0)
         
         super.init(size:size)
         
@@ -47,13 +51,21 @@ class EditorScene: SKScene
         ticker.update(currentTime)
     }
     
-    
     //////////////////////////////////////////////////////////////////////////////////////////
     // Input
     //////////////////////////////////////////////////////////////////////////////////////////
     
-    override func mouseDown(theEvent:NSEvent)
+    override func mouseDown(event:NSEvent)
     {
-        //        let location = theEvent.locationInNode(self)
+        dragStart = event.locationInNode(tileMapView)
+    }
+    
+    override func mouseDragged(event:NSEvent)
+    {
+        let newLocation = event.locationInNode(tileMapView)
+        let dragDelta = newLocation - dragStart
+        tileMapView.applyDragDelta(dragDelta)
+        
+        dragStart = newLocation
     }
 }

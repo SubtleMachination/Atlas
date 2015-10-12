@@ -27,9 +27,11 @@ public struct StandardCoord
     {
         return DiscreteStandardCoord(x:Int(ceil(x)), y:Int(ceil(y)))
     }
+    
+    
 }
 
-public struct DiscreteStandardCoord
+public struct DiscreteStandardCoord : Hashable
 {
     var x:Int
     var y:Int
@@ -37,6 +39,11 @@ public struct DiscreteStandardCoord
     func makePrecise() -> StandardCoord
     {
         return StandardCoord(x:Double(x), y:Double(y))
+    }
+    
+    public var hashValue: Int
+    {
+        return "(\(x), \(y))".hashValue
     }
 }
 
@@ -137,6 +144,12 @@ public func +=(inout lhs:StandardCoord, rhs:StandardCoord)
     lhs.y += rhs.y
 }
 
+public func -=(inout lhs:StandardCoord, rhs:StandardCoord)
+{
+    lhs.x -= rhs.x
+    lhs.y -= rhs.y
+}
+
 public func +(lhs:StandardCoord, rhs:StandardCoord) -> StandardCoord
 {
     return StandardCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y)
@@ -161,6 +174,11 @@ public func +(lhs:DiscreteStandardCoord, rhs:DiscreteStandardCoord) -> DiscreteS
 public func -(lhs:DiscreteStandardCoord, rhs:DiscreteStandardCoord) -> DiscreteStandardCoord
 {
     return DiscreteStandardCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
+}
+
+public func ==(lhs:DiscreteStandardCoord, rhs:DiscreteStandardCoord) -> Bool
+{
+    return (lhs.x == rhs.x && lhs.y == rhs.y)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
