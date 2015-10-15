@@ -52,3 +52,12 @@ func randDoubleBetween(start:Double, stop:Double) -> Double
     let difference = abs(start - stop)
     return start + randNormalDouble()*difference
 }
+
+public extension Array
+{
+    func randomElement() -> Element
+    {
+        let randomIndex = randIntBetween(0, stop:self.count-1)
+        return self[randomIndex]
+    }
+}

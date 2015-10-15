@@ -16,6 +16,9 @@ public class StandardTileMapView : SKNode, ACTickable
     var viewportBounds:CGRect
     var tileViewBounds:ACTileBoundingBox
     
+    var tileset:Tileset
+    var tilesetAtlas:SKTextureAtlas
+    
     var floorNode:SKNode
     var wallNode:SKNode
     
@@ -49,6 +52,9 @@ public class StandardTileMapView : SKNode, ACTickable
         wallNode.position = CGPointMake(0, 0)
         floorNode.position = CGPointMake(0, 0)
         
+        self.tileset = Tileset()
+        self.tilesetAtlas = SKTextureAtlas()
+        
         //////////////////////////////////////////////////////////////////////////////////////////
         // ViewModel
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +74,7 @@ public class StandardTileMapView : SKNode, ACTickable
         //////////////////////////////////////////////////////////////////////////////////////////
         // Map Loading
         //////////////////////////////////////////////////////////////////////////////////////////
-        self.loadMap((x:30, y:30))
+//        self.loadMap((x:30, y:30))
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Debugging: to check viewport bounds
@@ -123,8 +129,12 @@ public class StandardTileMapView : SKNode, ACTickable
         moveMap(delta)
     }
     
-    func loadMap(dimensions:(x:Int, y:Int))
+    func loadMap(dimensions:(x:Int, y:Int), tileset:Tileset)
     {
+        self.tileset = tileset
+        // Load the atlas based on the tileset info
+        self.tilesetAtlas = SKTextureAtlas(named:self.tileset.atlas)
+        
         tileMap = StandardTileMap(x:dimensions.x, y:dimensions.y, filler:1)
         cameraPos = StandardCoord(x:Double(dimensions.x)/2, y:Double(dimensions.y)/2)
         
@@ -185,13 +195,59 @@ public class StandardTileMapView : SKNode, ACTickable
         if (tileMap.grid.isWithinBounds(coord.x, y:coord.y))
         {
             let tileNode = SKNode()
-            let tileValue = tileMap.tileAt(coord)
+            let tileValue = tileMap.tileAt(coord)!
             
-            if (tileValue > 0 && tileValue < 3)
+            // Is the tileValue in the tileset?
+            if (tileValue == 0)
             {
-                // Floor Tile
-                let imageName = coinFlip() ? "floor1.png" : "floor3.png"
-                let tileSprite = SKSpriteNode(imageNamed:imageName)
+                // No action required
+            }
+            else if let spriteOptions = tileset.tiles[tileValue]
+            {
+                if (spriteOptions.wall)
+                {
+                    // Wall Tile
+                    let tileSourceSpriteNames = tileset.tiles[tileValue]!.tile
+                    let tileSprite = SKSpriteNode(texture:tilesetAtlas.textureNamed(tileSourceSpriteNames.randomElement()))
+                    tileSprite.resizeNode(tileWidth, y:tileHeight)
+                    tileSprite.position = CGPointMake(0, 0)
+                    
+                    if (shouldPlaceWallBase(coord))
+                    {
+                        let baseSourceSpriteNames = tileset.tiles[tileValue]!.base
+                        let baseSprite = SKSpriteNode(texture:tilesetAtlas.textureNamed(baseSourceSpriteNames.randomElement()))
+                        baseSprite.resizeNode(tileWidth, y:tileHeight/2)
+                        baseSprite.position = CGPointMake(0, -0.75*tileHeight)
+                        tileNode.addChild(baseSprite)
+                    }
+                    
+                    let tilePosition = standardToScreen(coord)
+                    tileNode.position = CGPointMake(tilePosition.x + tileWidth/2, tilePosition.y + tileHeight)
+                    tileNode.addChild(tileSprite)
+                    
+                    tiles[coord] = tileNode
+                    wallNode.addChild(tileNode)
+                }
+                else
+                {
+                    // Floor Tile
+                    let tileSourceSpriteNames = tileset.tiles[tileValue]!.tile
+                    let tileSprite = SKSpriteNode(texture:tilesetAtlas.textureNamed(tileSourceSpriteNames.randomElement()))
+                    tileSprite.resizeNode(tileWidth, y:tileHeight)
+                    tileSprite.position = CGPointMake(0, 0)
+                    
+                    let tilePosition = standardToScreen(coord)
+                    tileNode.position = CGPointMake(tilePosition.x + tileWidth/2, tilePosition.y + tileHeight/2)
+                    tileNode.addChild(tileSprite)
+                    
+                    tiles[coord] = tileNode
+                    floorNode.addChild(tileNode)
+                }
+            }
+            else
+            {
+                // No tileset options defined for this value (substitute with a PLACEHOLDER TILE)
+                let tileSprite = SKSpriteNode(imageNamed:"placeholder.png")
                 tileSprite.resizeNode(tileWidth, y:tileHeight)
                 tileSprite.position = CGPointMake(0, 0)
                 
@@ -201,28 +257,6 @@ public class StandardTileMapView : SKNode, ACTickable
                 
                 tiles[coord] = tileNode
                 floorNode.addChild(tileNode)
-            }
-            else
-            {
-                // Wall Tile
-                let tileSprite = SKSpriteNode(imageNamed:"wall3d.png")
-                tileSprite.resizeNode(tileWidth, y:tileHeight)
-                tileSprite.position = CGPointMake(0, 0)
-                
-                if (!tileMap.grid.isWithinBounds(coord.x, y:coord.y-1) || tileMap.tileAt(coord.x, y:coord.y-1) < 3)
-                {
-                    let baseSprite = SKSpriteNode(imageNamed:"wall3d_base.png")
-                    baseSprite.resizeNode(tileWidth, y:tileHeight/2)
-                    baseSprite.position = CGPointMake(0, -0.75*tileHeight)
-                    tileNode.addChild(baseSprite)
-                }
-                
-                let tilePosition = standardToScreen(coord)
-                tileNode.position = CGPointMake(tilePosition.x + tileWidth/2, tilePosition.y + tileHeight)
-                tileNode.addChild(tileSprite)
-                
-                tiles[coord] = tileNode
-                wallNode.addChild(tileNode)
             }
             
             if (fade)
@@ -234,13 +268,36 @@ public class StandardTileMapView : SKNode, ACTickable
         }
     }
     
+    func shouldPlaceWallBase(coord:DiscreteStandardCoord) -> Bool
+    {
+        let tileBelowIsWithinBounds = tileMap.grid.isWithinBounds(coord.x, y:coord.y-1)
+        
+        if (tileBelowIsWithinBounds)
+        {
+            // If there is NOT a wall directly below this tile
+            if let tileInfo = tileset.tiles[tileMap.tileAt(coord.x, y:coord.y-1)!]
+            {
+                if (!tileInfo.wall)
+                {
+                    return true
+                }
+            }
+            
+            return false
+        }
+        else
+        {
+            return true
+        }
+    }
+    
     func removeTileFromView(coord:DiscreteStandardCoord, tile:SKNode)
     {
         // Put tile in the "RemovedTile" buffer
         removedTiles[coord] = tile
         tiles.removeValueForKey(coord)
         
-        let fadeAction = fadeTo(tile, alpha:0.0, duration:CGFloat(0.5), type:CurveType.QUADRATIC_IN)
+        let fadeAction = fadeTo(tile, alpha:0.0, duration:CGFloat(0.25), type:CurveType.QUADRATIC_IN)
         
         tile.runAction(fadeAction, completion: {() -> Void in
             

@@ -32,7 +32,7 @@ public class StandardTileMap
         {
             for yIndex in 0..<y
             {
-                grid[xIndex,yIndex] = randIntBetween(1, stop:3)
+                grid[xIndex,yIndex] = randIntBetween(1, stop:2)
             }
         }
     }

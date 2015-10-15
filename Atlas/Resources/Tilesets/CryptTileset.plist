@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>Crypt</string>
+	<key>atlas</key>
+	<string>Crypt</string>
+	<key>tiles</key>
+	<dict>
+		<key>1</key>
+		<dict>
+			<key>wall</key>
+			<false/>
+			<key>tile</key>
+			<array>
+				<string>dirt_1</string>
+				<string>dirt_2</string>
+			</array>
+			<key>base</key>
+			<array/>
+		</dict>
+		<key>2</key>
+		<dict>
+			<key>wall</key>
+			<true/>
+			<key>tile</key>
+			<array>
+				<string>dirtwall_1</string>
+				<string>dirtwall_2</string>
+			</array>
+			<key>base</key>
+			<array>
+				<string>dirtwall_base_1</string>
+				<string>dirtwall_base_2</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>
