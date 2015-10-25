@@ -35,6 +35,32 @@
 				<string>dirtwall_base_2</string>
 			</array>
 		</dict>
+		<key>3</key>
+		<dict>
+			<key>wall</key>
+			<true/>
+			<key>tile</key>
+			<array>
+				<string>stonewall_1</string>
+			</array>
+			<key>base</key>
+			<array>
+				<string>stonewall_base_1</string>
+			</array>
+		</dict>
+		<key>4</key>
+		<dict>
+			<key>wall</key>
+			<true/>
+			<key>tile</key>
+			<array>
+				<string>goldwall_1</string>
+			</array>
+			<key>base</key>
+			<array>
+				<string>goldwall_base_1</string>
+			</array>
+		</dict>
 	</dict>
 </dict>
 </plist>

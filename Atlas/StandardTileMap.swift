@@ -20,7 +20,7 @@ public class StandardTileMap
     // "Default" map
     convenience init()
     {
-        self.init(x:5, y:5, filler:1)
+        self.init(x:5, y:5, filler:0)
     }
     
     init(x:Int, y:Int, filler:Int)
@@ -28,16 +28,16 @@ public class StandardTileMap
         grid = Matrix2D<Int>(xMax:x, yMax:y, filler:filler)
         dimensions = DiscreteStandardCoord(x:x, y:y)
         
-        for xIndex in 0..<x
-        {
-            for yIndex in 0..<y
-            {
-                grid[xIndex,yIndex] = randIntBetween(1, stop:2)
-            }
-        }
+//        for xIndex in 0..<x
+//        {
+//            for yIndex in 0..<y
+//            {
+//                grid[xIndex,yIndex] = randIntBetween(1, stop:2)
+//            }
+//        }
     }
     
-    func isWithinBounds(coord:DiscreteDiamondCoord) -> Bool
+    func isWithinBounds(coord:DiscreteStandardCoord) -> Bool
     {
         return isWithinBounds(coord.x, y:coord.y)
     }
@@ -64,12 +64,12 @@ public class StandardTileMap
         }
     }
     
-    func setTileAt(coord:DiscreteDiamondCoord, value:Int)
+    func setTileAt(coord:DiscreteStandardCoord, value:Int)
     {
-        setTileAt(coord.x, y:coord.y, z:coord.z, value:value)
+        setTileAt(coord.x, y:coord.y, value:value)
     }
     
-    func setTileAt(x:Int, y:Int, z:Int, value:Int)
+    func setTileAt(x:Int, y:Int, value:Int)
     {
         if (grid.isWithinBounds(x, y:y))
         {

@@ -28,9 +28,12 @@
 		2A766CD01BC77303002C003D /* ACTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CCF1BC77303002C003D /* ACTicker.swift */; };
 		2A766CD41BC94C01002C003D /* ACEaseUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CD31BC94C01002C003D /* ACEaseUtility.swift */; };
 		2A766CD61BC980BD002C003D /* StandardTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CD51BC980BD002C003D /* StandardTileMap.swift */; };
+		2A8715951BDBD3330056A814 /* ACHoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A8715941BDBD3330056A814 /* ACHoverButton.swift */; };
 		2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */; };
 		2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */; };
 		2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */; };
+		2A96B2C01BD524660079B2F2 /* StandardTileMapIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A96B2BF1BD524660079B2F2 /* StandardTileMapIO.swift */; };
+		2A96B2C21BD52BB50079B2F2 /* DirectoryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A96B2C11BD52BB50079B2F2 /* DirectoryUtility.swift */; };
 		2A97217A1BCD7E8900CB282E /* Tileset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9721791BCD7E8900CB282E /* Tileset.swift */; };
 		2A97217F1BCD7F0900CB282E /* CryptTileset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A97217E1BCD7F0900CB282E /* CryptTileset.plist */; };
 		2AA690011BCF4623005D0D61 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AA690001BCF4623005D0D61 /* blank.png */; };
@@ -46,6 +49,9 @@
 		2AABE79A1BBDE9BF00CBF170 /* 1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE7931BBDE9BF00CBF170 /* 1024.png */; };
 		2AAD20B41BC9C07A00D960FB /* StandardTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AAD20B31BC9C07A00D960FB /* StandardTileMapView.swift */; };
 		2AAD20B81BC9E53400D960FB /* ColorUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AAD20B71BC9E53400D960FB /* ColorUtility.swift */; };
+		2ABD826A1BDB3D8F001AA63A /* load.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ABD82681BDB3D8F001AA63A /* load.png */; };
+		2ABD826B1BDB3D8F001AA63A /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ABD82691BDB3D8F001AA63A /* save.png */; };
+		2ABD826D1BDBCDC1001AA63A /* smooth_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ABD826C1BDBCDC1001AA63A /* smooth_square.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +79,7 @@
 		2A766CCF1BC77303002C003D /* ACTicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTicker.swift; sourceTree = "<group>"; };
 		2A766CD31BC94C01002C003D /* ACEaseUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACEaseUtility.swift; sourceTree = "<group>"; };
 		2A766CD51BC980BD002C003D /* StandardTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardTileMap.swift; sourceTree = "<group>"; };
+		2A8715941BDBD3330056A814 /* ACHoverButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACHoverButton.swift; sourceTree = "<group>"; };
 		2A93C7B91BBCB4DF00B8291E /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorScene.swift; sourceTree = "<group>"; };
@@ -80,6 +87,8 @@
 		2A93C7CC1BBCB4DF00B8291E /* AtlasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AtlasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasTests.swift; sourceTree = "<group>"; };
 		2A93C7D21BBCB4DF00B8291E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2A96B2BF1BD524660079B2F2 /* StandardTileMapIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardTileMapIO.swift; sourceTree = "<group>"; };
+		2A96B2C11BD52BB50079B2F2 /* DirectoryUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryUtility.swift; sourceTree = "<group>"; };
 		2A9721791BCD7E8900CB282E /* Tileset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tileset.swift; sourceTree = "<group>"; };
 		2A97217E1BCD7F0900CB282E /* CryptTileset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = CryptTileset.plist; path = Resources/Tilesets/CryptTileset.plist; sourceTree = "<group>"; };
 		2AA690001BCF4623005D0D61 /* blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blank.png; path = Resources/Common/blank.png; sourceTree = "<group>"; };
@@ -95,6 +104,9 @@
 		2AABE7931BBDE9BF00CBF170 /* 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 1024.png; path = Resources/Icons/1024.png; sourceTree = "<group>"; };
 		2AAD20B31BC9C07A00D960FB /* StandardTileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardTileMapView.swift; sourceTree = "<group>"; };
 		2AAD20B71BC9E53400D960FB /* ColorUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorUtility.swift; sourceTree = "<group>"; };
+		2ABD82681BDB3D8F001AA63A /* load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = load.png; path = "Resources/UI Icons/load.png"; sourceTree = "<group>"; };
+		2ABD82691BDB3D8F001AA63A /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = save.png; path = "Resources/UI Icons/save.png"; sourceTree = "<group>"; };
+		2ABD826C1BDBCDC1001AA63A /* smooth_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = smooth_square.png; path = Resources/Common/smooth_square.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +132,7 @@
 			children = (
 				2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */,
 				2A766CD51BC980BD002C003D /* StandardTileMap.swift */,
+				2A96B2BF1BD524660079B2F2 /* StandardTileMapIO.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -131,6 +144,7 @@
 				2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */,
 				2AAD20B31BC9C07A00D960FB /* StandardTileMapView.swift */,
 				2A9721791BCD7E8900CB282E /* Tileset.swift */,
+				2A8715931BDBD3230056A814 /* UI */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -141,6 +155,7 @@
 				2AA690021BCF465B005D0D61 /* tile.png */,
 				2AA690001BCF4623005D0D61 /* blank.png */,
 				2A3014651BC04A3200B91E5F /* circle_small.png */,
+				2ABD826C1BDBCDC1001AA63A /* smooth_square.png */,
 				2A3014631BC0481F00B91E5F /* square.png */,
 			);
 			name = Common;
@@ -154,6 +169,14 @@
 				2A3014671BC06ED600B91E5F /* Coordinate.swift */,
 			);
 			name = "Data Structures";
+			sourceTree = "<group>";
+		};
+		2A8715931BDBD3230056A814 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2A8715941BDBD3330056A814 /* ACHoverButton.swift */,
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 		2A93C7B01BBCB4DF00B8291E = {
@@ -204,8 +227,8 @@
 			isa = PBXGroup;
 			children = (
 				2AD884C11BCC2ECE0075DADA /* Tilesets */,
-				2AD884BE1BCC16FC0075DADA /* Tilemaps */,
 				2AABE78C1BBDE9B400CBF170 /* Icons */,
+				2ABD82671BDB3D74001AA63A /* UI Icons */,
 				2A3014621BC0481100B91E5F /* Common */,
 			);
 			name = Resources;
@@ -225,11 +248,13 @@
 			name = Icons;
 			sourceTree = "<group>";
 		};
-		2AD884BE1BCC16FC0075DADA /* Tilemaps */ = {
+		2ABD82671BDB3D74001AA63A /* UI Icons */ = {
 			isa = PBXGroup;
 			children = (
+				2ABD82681BDB3D8F001AA63A /* load.png */,
+				2ABD82691BDB3D8F001AA63A /* save.png */,
 			);
-			name = Tilemaps;
+			name = "UI Icons";
 			sourceTree = "<group>";
 		};
 		2AD884C11BCC2ECE0075DADA /* Tilesets */ = {
@@ -249,6 +274,7 @@
 				2A766CCF1BC77303002C003D /* ACTicker.swift */,
 				2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */,
 				2AAD20B71BC9E53400D960FB /* ColorUtility.swift */,
+				2A96B2C11BD52BB50079B2F2 /* DirectoryUtility.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -343,10 +369,13 @@
 				2AABE7991BBDE9BF00CBF170 /* 512.png in Resources */,
 				2AABE78B1BBDE35B00CBF170 /* MainMenu.xib in Resources */,
 				2AABE7971BBDE9BF00CBF170 /* 128.png in Resources */,
+				2ABD826B1BDB3D8F001AA63A /* save.png in Resources */,
 				2A97217F1BCD7F0900CB282E /* CryptTileset.plist in Resources */,
+				2ABD826A1BDB3D8F001AA63A /* load.png in Resources */,
 				2AABE7951BBDE9BF00CBF170 /* 32.png in Resources */,
 				2AABE7941BBDE9BF00CBF170 /* 16.png in Resources */,
 				2A3014641BC0481F00B91E5F /* square.png in Resources */,
+				2ABD826D1BDBCDC1001AA63A /* smooth_square.png in Resources */,
 				2AA690031BCF465B005D0D61 /* tile.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,11 +394,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A8715951BDBD3330056A814 /* ACHoverButton.swift in Sources */,
 				2AAD20B81BC9E53400D960FB /* ColorUtility.swift in Sources */,
 				2A766CD41BC94C01002C003D /* ACEaseUtility.swift in Sources */,
 				2A97217A1BCD7E8900CB282E /* Tileset.swift in Sources */,
 				2A766CD01BC77303002C003D /* ACTicker.swift in Sources */,
+				2A96B2C21BD52BB50079B2F2 /* DirectoryUtility.swift in Sources */,
 				2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */,
+				2A96B2C01BD524660079B2F2 /* StandardTileMapIO.swift in Sources */,
 				2A766CD61BC980BD002C003D /* StandardTileMap.swift in Sources */,
 				2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */,
 				2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */,
