@@ -35,3 +35,40 @@ func applicationSupportDirectory() -> NSURL?
     
     return dirPath
 }
+
+func savedMaps() -> [String]
+{
+    var maps = [String]()
+    
+    if let appSupport = applicationSupportDirectory()
+    {
+        let fm = NSFileManager.defaultManager()
+        let mapDirectory = appSupport.URLByAppendingPathComponent("maps")
+        
+        if (!fm.fileExistsAtPath(mapDirectory.path!))
+        {
+            do
+            {
+                try fm.createDirectoryAtURL(mapDirectory, withIntermediateDirectories:true, attributes:nil)
+            }
+            catch
+            {
+                
+            }
+        }
+        else
+        {
+            do
+            {
+                // Retrieve all of the saved maps
+                maps += try fm.contentsOfDirectoryAtPath(mapDirectory.path!)
+            }
+            catch
+            {
+                
+            }
+        }
+    }
+    
+    return maps
+}
