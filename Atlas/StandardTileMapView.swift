@@ -129,27 +129,22 @@ public class StandardTileMapView : SKNode, ACTickable
         moveMap(delta)
     }
     
-//    func loadMap(dimensions:(x:Int, y:Int), tileset:Tileset)
-//    {
-//        self.tileset = tileset
-//        // Load the atlas based on the tileset info
-//        self.tilesetAtlas = SKTextureAtlas(named:self.tileset.atlas)
-//        
-//        tileMap = StandardTileMap(x:dimensions.x, y:dimensions.y, filler:1)
-//        cameraPos = StandardCoord(x:Double(dimensions.x)/2, y:Double(dimensions.y)/2)
-//        
-//        updateTileViewBounds()
-//        
-//        removeAllTiles()
-//        regenerateTiles(false)
-//    }
-    
-    func loadMap(tileset:Tileset)
+    func loadMap(name:String?, tileset:Tileset)
     {
         self.tileset = tileset
         self.tilesetAtlas = SKTextureAtlas(named:self.tileset.atlas)
         
-        tileMap = fileToMap("crypt1")
+        if let mapName = name
+        {
+            tileMap = fileToMap(mapName)
+        }
+        else
+        {
+            // Default map
+            tileMap = StandardTileMap(x:10, y:10, filler:1)
+        }
+        
+        // Defaults to the center of the map
         cameraPos = StandardCoord(x:Double(tileMap.grid.xMax)/2, y:Double(tileMap.grid.yMax)/2)
         
         updateTileViewBounds()

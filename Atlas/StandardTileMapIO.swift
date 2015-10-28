@@ -87,7 +87,7 @@ func stringToMap(mapString:String) -> StandardTileMap
 
 func fileToMap(mapName:String) -> StandardTileMap
 {
-    let mapsURL = applicationSupportDirectory()!
+    let mapsURL = applicationSupportDirectory()!.URLByAppendingPathComponent("maps")
     let fileURL = mapsURL.URLByAppendingPathComponent("\(mapName).map")
     
     do

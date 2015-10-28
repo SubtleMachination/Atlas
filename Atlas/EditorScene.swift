@@ -14,7 +14,7 @@ enum TileSelection
     case WALL, FLOOR, STONE, GOLD, VOID, MOVE
 }
 
-class EditorScene: SKScene, ButtonDelegate
+class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate
 {
     var window:CGSize
     var center:CGPoint
@@ -24,7 +24,8 @@ class EditorScene: SKScene, ButtonDelegate
     var ui_menuBG:SKSpriteNode
     var ui_loadButton:ACHoverButton
     var ui_saveButton:ACHoverButton
-    var ui_openMapWindow:ACOpenMapView
+    var ui_newButton:ACHoverButton
+    var ui_openMapWindow:ACOpenMapView?
     
     var tileSelection:TileSelection = .MOVE
     var selectionRect:SKSpriteNode
@@ -36,11 +37,6 @@ class EditorScene: SKScene, ButtonDelegate
         window = size
         center = CGPoint(x:window.width/2.0, y:window.height/2.0)
         
-        tileMapView = StandardTileMapView(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(35), tileHeight:CGFloat(35))
-        
-        self.ticker = ACTicker()
-        ticker.addTickable(tileMapView)
-        
         self.dragStart = CGPointMake(0, 0)
 
         selectionRect = SKSpriteNode(imageNamed:"square.png")
@@ -49,20 +45,28 @@ class EditorScene: SKScene, ButtonDelegate
         
         let menuBarHeight = CGFloat(40)
         let iconSize = menuBarHeight*0.75
+        let hoverButtonSize = CGSize(width:iconSize, height:iconSize)
         
-        ui_loadButton = ACHoverButton(size:CGSize(width:iconSize, height:iconSize), iconName:"load", identifier:"load")
+        ui_loadButton = ACHoverButton(size:hoverButtonSize, iconName:"load", identifier:"load")
         ui_loadButton.position = CGPointMake(iconSize, size.height - menuBarHeight/2)
         ui_loadButton.zPosition = 1001
             
-        ui_saveButton = ACHoverButton(size:CGSize(width:iconSize, height:iconSize), iconName:"save", identifier:"save")
+        ui_saveButton = ACHoverButton(size:hoverButtonSize, iconName:"save", identifier:"save")
         ui_saveButton.position = CGPointMake(iconSize*2.25, size.height - menuBarHeight/2)
         ui_saveButton.zPosition = 1001
         
-        ui_openMapWindow = ACOpenMapView(size:CGSizeMake(window.width*0.75, window.height*0.75))
-        ui_openMapWindow.position = center
-        ui_openMapWindow.zPosition = 1002
+        ui_newButton = ACHoverButton(size:hoverButtonSize, iconName:"save", identifier:"new")
+        ui_newButton.position = CGPointMake(iconSize*3.5, size.height - menuBarHeight/2)
+        ui_newButton.zPosition = 1001
+        
+        tileMapView = StandardTileMapView(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(35), tileHeight:CGFloat(35))
+        
+        self.ticker = ACTicker()
+        ticker.addTickable(tileMapView)
         
         super.init(size:size)
+        
+        reloadMap(nil)
         
         ui_loadButton.setButtonDelegate(self)
         ui_saveButton.setButtonDelegate(self)
@@ -76,11 +80,7 @@ class EditorScene: SKScene, ButtonDelegate
     
         self.addChild(ui_loadButton)
         self.addChild(ui_saveButton)
-        self.addChild(ui_openMapWindow)
-        
-        let tileset = Tileset(plistName:"CryptTileset")
-//        tileMapView.loadMap((x:30, y:31), tileset:tileset)
-//        tileMapView.loadMap(tileset)
+        self.addChild(ui_newButton)
         
         self.backgroundColor = NSColor(red:0.043, green:0.07, blue:0.09, alpha:1.0)
         
@@ -138,6 +138,8 @@ class EditorScene: SKScene, ButtonDelegate
         
         ui_loadButton.mouseDown(event)
         ui_saveButton.mouseDown(event)
+        
+        ui_openMapWindow?.mouseDown(event)
     }
     
     override func mouseUp(event:NSEvent)
@@ -176,21 +178,46 @@ class EditorScene: SKScene, ButtonDelegate
     
     func trigger(identifier:String)
     {
-        print("Button Triggered in Scene: \(identifier)")
         if (identifier == "load")
         {
             openLoadWindow()
         }
     }
     
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Map Opener Delegate Methods
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    func loadMap(name:String)
+    {
+        print("loading map: \(name)")
+        reloadMap(name)
+    }
+    
+    func reloadMap(name:String?)
+    {
+        let tileset = Tileset(plistName:"CryptTileset")
+        tileMapView.loadMap(name, tileset:tileset)
+    }
+    
+    func closeMapSelectionWindow()
+    {
+        closeLoadWindow()
+    }
+    
     func openLoadWindow()
     {
+        ui_openMapWindow = ACOpenMapView(size:CGSizeMake(window.width*0.75, window.height*0.75))
+        ui_openMapWindow!.position = center
+        ui_openMapWindow!.zPosition = 1002
+        ui_openMapWindow!.setMapOpenerDelegate(self)
         
+        self.addChild(ui_openMapWindow!)
     }
     
     func closeLoadWindow()
     {
-        
+        ui_openMapWindow?.removeFromParent()
     }
     
     func swapTile(mapViewLocation:CGPoint)

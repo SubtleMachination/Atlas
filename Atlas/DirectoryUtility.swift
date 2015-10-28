@@ -38,7 +38,7 @@ func applicationSupportDirectory() -> NSURL?
 
 func savedMaps() -> [String]
 {
-    var maps = [String]()
+    var mapNames = [String]()
     
     if let appSupport = applicationSupportDirectory()
     {
@@ -61,7 +61,16 @@ func savedMaps() -> [String]
             do
             {
                 // Retrieve all of the saved maps
-                maps += try fm.contentsOfDirectoryAtPath(mapDirectory.path!)
+                let mapFiles = try fm.contentsOfDirectoryAtPath(mapDirectory.path!)
+                
+                for mapFile in mapFiles
+                {
+                    let components = mapFile.componentsSeparatedByString(".")
+                    if (components.count == 2 && components[1] == "map")
+                    {
+                        mapNames.append(components[0])
+                    }
+                }
             }
             catch
             {
@@ -70,5 +79,5 @@ func savedMaps() -> [String]
         }
     }
     
-    return maps
+    return mapNames
 }

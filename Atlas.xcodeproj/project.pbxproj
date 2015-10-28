@@ -26,6 +26,7 @@
 		2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */; };
 		2A31087F1BBEEB81006CBA48 /* IsoTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */; };
 		2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
+		2A5A8A1A1BE074A1001C3470 /* ACQuickButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */; };
 		2A766CD01BC77303002C003D /* ACTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CCF1BC77303002C003D /* ACTicker.swift */; };
 		2A766CD41BC94C01002C003D /* ACEaseUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CD31BC94C01002C003D /* ACEaseUtility.swift */; };
 		2A766CD61BC980BD002C003D /* StandardTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CD51BC980BD002C003D /* StandardTileMap.swift */; };
@@ -79,6 +80,7 @@
 		2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomUtility.swift; sourceTree = "<group>"; };
 		2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileMapView.swift; sourceTree = "<group>"; };
 		2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix2D.swift; sourceTree = "<group>"; };
+		2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACQuickButton.swift; sourceTree = "<group>"; };
 		2A766CCF1BC77303002C003D /* ACTicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTicker.swift; sourceTree = "<group>"; };
 		2A766CD31BC94C01002C003D /* ACEaseUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACEaseUtility.swift; sourceTree = "<group>"; };
 		2A766CD51BC980BD002C003D /* StandardTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardTileMap.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 			children = (
 				2A8715941BDBD3330056A814 /* ACHoverButton.swift */,
 				2AB718971BE0393C00A75867 /* ACOpenMapView.swift */,
+				2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 				2A766CD41BC94C01002C003D /* ACEaseUtility.swift in Sources */,
 				2A97217A1BCD7E8900CB282E /* Tileset.swift in Sources */,
 				2A766CD01BC77303002C003D /* ACTicker.swift in Sources */,
+				2A5A8A1A1BE074A1001C3470 /* ACQuickButton.swift in Sources */,
 				2A96B2C21BD52BB50079B2F2 /* DirectoryUtility.swift in Sources */,
 				2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */,
 				2A96B2C01BD524660079B2F2 /* StandardTileMapIO.swift in Sources */,
