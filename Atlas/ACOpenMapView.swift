@@ -232,7 +232,6 @@ class ACOpenMapView : SKNode
     
     func cancel()
     {
-        print("cancel")
         delegate?.closeMapSelectionWindow()
     }
 

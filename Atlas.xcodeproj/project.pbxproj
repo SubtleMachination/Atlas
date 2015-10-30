@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DF1BBED9D8005C1A36 /* Images.xcassets */; };
 		2A10238A1BDF132A00B681B9 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A1023891BDF132A00B681B9 /* circle.png */; };
+		2A15DE411BE30FAA002E4641 /* ACTileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A15DE401BE30FAA002E4641 /* ACTileButton.swift */; };
 		2A2BD03C1BC6079400D6E80F /* IsoTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */; };
 		2A2BD03D1BC6089700D6E80F /* IsoTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */; };
 		2A2BD03E1BC6089F00D6E80F /* IsoTileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */; };
@@ -27,9 +28,12 @@
 		2A31087F1BBEEB81006CBA48 /* IsoTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */; };
 		2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A5A8A1A1BE074A1001C3470 /* ACQuickButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */; };
+		2A67BEAA1BE093C20057C790 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A67BEA91BE093C20057C790 /* add.png */; };
+		2A67BEAC1BE117B60057C790 /* ACNewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A67BEAB1BE117B60057C790 /* ACNewMapView.swift */; };
 		2A766CD01BC77303002C003D /* ACTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CCF1BC77303002C003D /* ACTicker.swift */; };
 		2A766CD41BC94C01002C003D /* ACEaseUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CD31BC94C01002C003D /* ACEaseUtility.swift */; };
 		2A766CD61BC980BD002C003D /* StandardTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A766CD51BC980BD002C003D /* StandardTileMap.swift */; };
+		2A7FC0E91BE2952C001A800A /* ACSaveMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7FC0E81BE2952C001A800A /* ACSaveMapView.swift */; };
 		2A8715951BDBD3330056A814 /* ACHoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A8715941BDBD3330056A814 /* ACHoverButton.swift */; };
 		2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */; };
 		2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */; };
@@ -70,6 +74,7 @@
 /* Begin PBXFileReference section */
 		2A0537DF1BBED9D8005C1A36 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2A1023891BDF132A00B681B9 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
+		2A15DE401BE30FAA002E4641 /* ACTileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileButton.swift; sourceTree = "<group>"; };
 		2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileMap.swift; sourceTree = "<group>"; };
 		2A30145C1BBF293400B91E5F /* Matrix3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix3D.swift; sourceTree = "<group>"; };
 		2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileRowView.swift; sourceTree = "<group>"; };
@@ -81,9 +86,12 @@
 		2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileMapView.swift; sourceTree = "<group>"; };
 		2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix2D.swift; sourceTree = "<group>"; };
 		2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACQuickButton.swift; sourceTree = "<group>"; };
+		2A67BEA91BE093C20057C790 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add.png; path = "Resources/UI Icons/add.png"; sourceTree = "<group>"; };
+		2A67BEAB1BE117B60057C790 /* ACNewMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACNewMapView.swift; sourceTree = "<group>"; };
 		2A766CCF1BC77303002C003D /* ACTicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTicker.swift; sourceTree = "<group>"; };
 		2A766CD31BC94C01002C003D /* ACEaseUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACEaseUtility.swift; sourceTree = "<group>"; };
 		2A766CD51BC980BD002C003D /* StandardTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardTileMap.swift; sourceTree = "<group>"; };
+		2A7FC0E81BE2952C001A800A /* ACSaveMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACSaveMapView.swift; sourceTree = "<group>"; };
 		2A8715941BDBD3330056A814 /* ACHoverButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACHoverButton.swift; sourceTree = "<group>"; };
 		2A93C7B91BBCB4DF00B8291E /* Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -178,12 +186,22 @@
 			name = "Data Structures";
 			sourceTree = "<group>";
 		};
+		2A51389F1BE3C38D00C1700D /* Analysis */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Analysis;
+			sourceTree = "<group>";
+		};
 		2A8715931BDBD3230056A814 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				2A8715941BDBD3330056A814 /* ACHoverButton.swift */,
 				2AB718971BE0393C00A75867 /* ACOpenMapView.swift */,
+				2A67BEAB1BE117B60057C790 /* ACNewMapView.swift */,
+				2A7FC0E81BE2952C001A800A /* ACSaveMapView.swift */,
 				2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */,
+				2A15DE401BE30FAA002E4641 /* ACTileButton.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -209,6 +227,7 @@
 		2A93C7BB1BBCB4DF00B8291E /* Atlas */ = {
 			isa = PBXGroup;
 			children = (
+				2A51389F1BE3C38D00C1700D /* Analysis */,
 				2A30145B1BBF23D000B91E5F /* View */,
 				2A3014581BBF0D3D00B91E5F /* Model */,
 				2A3108801BBEEB95006CBA48 /* Data Structures */,
@@ -260,6 +279,7 @@
 		2ABD82671BDB3D74001AA63A /* UI Icons */ = {
 			isa = PBXGroup;
 			children = (
+				2A67BEA91BE093C20057C790 /* add.png */,
 				2ABD82681BDB3D8F001AA63A /* load.png */,
 				2ABD82691BDB3D8F001AA63A /* save.png */,
 			);
@@ -371,6 +391,7 @@
 				2AABE79A1BBDE9BF00CBF170 /* 1024.png in Resources */,
 				2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */,
 				2AA690051BCF4676005D0D61 /* Crypt.atlas in Resources */,
+				2A67BEAA1BE093C20057C790 /* add.png in Resources */,
 				2AA690011BCF4623005D0D61 /* blank.png in Resources */,
 				2AABE7981BBDE9BF00CBF170 /* 256.png in Resources */,
 				2AABE7961BBDE9BF00CBF170 /* 64.png in Resources */,
@@ -406,10 +427,13 @@
 			files = (
 				2A8715951BDBD3330056A814 /* ACHoverButton.swift in Sources */,
 				2AAD20B81BC9E53400D960FB /* ColorUtility.swift in Sources */,
+				2A7FC0E91BE2952C001A800A /* ACSaveMapView.swift in Sources */,
+				2A15DE411BE30FAA002E4641 /* ACTileButton.swift in Sources */,
 				2A766CD41BC94C01002C003D /* ACEaseUtility.swift in Sources */,
 				2A97217A1BCD7E8900CB282E /* Tileset.swift in Sources */,
 				2A766CD01BC77303002C003D /* ACTicker.swift in Sources */,
 				2A5A8A1A1BE074A1001C3470 /* ACQuickButton.swift in Sources */,
+				2A67BEAC1BE117B60057C790 /* ACNewMapView.swift in Sources */,
 				2A96B2C21BD52BB50079B2F2 /* DirectoryUtility.swift in Sources */,
 				2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */,
 				2A96B2C01BD524660079B2F2 /* StandardTileMapIO.swift in Sources */,

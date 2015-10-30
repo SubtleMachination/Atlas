@@ -61,6 +61,19 @@
 				<string>goldwall_base_1</string>
 			</array>
 		</dict>
+		<key>5</key>
+		<dict>
+			<key>wall</key>
+			<true/>
+			<key>tile</key>
+			<array>
+				<string>palewall_1</string>
+			</array>
+			<key>base</key>
+			<array>
+				<string>palewall_base_1</string>
+			</array>
+		</dict>
 	</dict>
 </dict>
 </plist>

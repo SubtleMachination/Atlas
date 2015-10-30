@@ -153,6 +153,22 @@ public class StandardTileMapView : SKNode, ACTickable
         regenerateTiles(false)
     }
     
+    func loadBlankMap(x:Int, y:Int, tileset:Tileset)
+    {
+        self.tileset = tileset
+        self.tilesetAtlas = SKTextureAtlas(named:self.tileset.atlas)
+        
+        tileMap = StandardTileMap(x:x, y:y, filler:1)
+        
+        // Defaults to the center of the map
+        cameraPos = StandardCoord(x:Double(tileMap.grid.xMax)/2, y:Double(tileMap.grid.yMax)/2)
+        
+        updateTileViewBounds()
+        
+        removeAllTiles()
+        regenerateTiles(false)
+    }
+    
     func removeAllTiles()
     {
         floorNode.removeAllChildren()
