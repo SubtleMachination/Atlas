@@ -29,14 +29,14 @@ public class StandardTileMapView : SKNode, ACTickable
     var tiles:[DiscreteStandardCoord:SKNode]
     var removedTiles:[DiscreteStandardCoord:SKNode]
     
-    init(viewSize:CGSize, tileWidth:CGFloat, tileHeight:CGFloat)
+    init(viewSize:CGSize, tileWidth:CGFloat, tileHeight:CGFloat, tileMap:StandardTileMap)
     {
         //////////////////////////////////////////////////////////////////////////////////////////
         // Model
         //////////////////////////////////////////////////////////////////////////////////////////
         
-        self.tileMap = StandardTileMap()
-        self.cameraPos = StandardCoord(x:0.0, y:0.0)
+        self.tileMap = tileMap
+        self.cameraPos = StandardCoord(x:Double(tileMap.fetchDimensions().x), y:Double(tileMap.fetchDimensions().y))
         self.cameraVel = StandardCoord(x:0.00, y:0.00)
         
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -70,11 +70,6 @@ public class StandardTileMapView : SKNode, ACTickable
         
         self.addChild(floorNode)
         self.addChild(wallNode)
-        
-        //////////////////////////////////////////////////////////////////////////////////////////
-        // Map Loading
-        //////////////////////////////////////////////////////////////////////////////////////////
-//        self.loadMap((x:30, y:30))
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Debugging: to check viewport bounds
@@ -129,23 +124,16 @@ public class StandardTileMapView : SKNode, ACTickable
         moveMap(delta)
     }
     
-    func loadMap(name:String?, tileset:Tileset)
+    func reloadTileset(tileset:Tileset)
     {
         self.tileset = tileset
         self.tilesetAtlas = SKTextureAtlas(named:self.tileset.atlas)
-        
-        if let mapName = name
-        {
-            tileMap = fileToMap(mapName)
-        }
-        else
-        {
-            // Default map
-            tileMap = StandardTileMap(x:10, y:10, filler:1)
-        }
-        
+    }
+    
+    func reloadMap()
+    {
         // Defaults to the center of the map
-        cameraPos = StandardCoord(x:Double(tileMap.grid.xMax)/2, y:Double(tileMap.grid.yMax)/2)
+        cameraPos = StandardCoord(x:Double(tileMap.fetchDimensions().x)/2, y:Double(tileMap.fetchDimensions().y)/2)
         
         updateTileViewBounds()
         
@@ -161,7 +149,7 @@ public class StandardTileMapView : SKNode, ACTickable
         tileMap = StandardTileMap(x:x, y:y, filler:1)
         
         // Defaults to the center of the map
-        cameraPos = StandardCoord(x:Double(tileMap.grid.xMax)/2, y:Double(tileMap.grid.yMax)/2)
+        cameraPos = StandardCoord(x:Double(tileMap.fetchDimensions().x)/2, y:Double(tileMap.fetchDimensions().y)/2)
         
         updateTileViewBounds()
         
@@ -275,7 +263,7 @@ public class StandardTileMapView : SKNode, ACTickable
     
     func addTileToView(coord:DiscreteStandardCoord, fade:Bool)
     {
-        if (tileMap.grid.isWithinBounds(coord.x, y:coord.y))
+        if (tileMap.isWithinBounds(coord.x, y:coord.y))
         {
             let tileNode = SKNode()
             let tileValue = tileMap.tileAt(coord)!
@@ -366,7 +354,7 @@ public class StandardTileMapView : SKNode, ACTickable
     
     func shouldPlaceWallBase(coord:DiscreteStandardCoord) -> Bool
     {
-        let tileBelowIsWithinBounds = tileMap.grid.isWithinBounds(coord.x, y:coord.y-1)
+        let tileBelowIsWithinBounds = tileMap.isWithinBounds(coord.x, y:coord.y-1)
         
         if (tileBelowIsWithinBounds)
         {

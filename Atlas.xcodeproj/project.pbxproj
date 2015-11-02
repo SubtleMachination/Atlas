@@ -8,24 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DF1BBED9D8005C1A36 /* Images.xcassets */; };
+		2A08D7011BE3C73D0004A0D5 /* AnalysisScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A08D7001BE3C73D0004A0D5 /* AnalysisScene.swift */; };
 		2A10238A1BDF132A00B681B9 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A1023891BDF132A00B681B9 /* circle.png */; };
 		2A15DE411BE30FAA002E4641 /* ACTileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A15DE401BE30FAA002E4641 /* ACTileButton.swift */; };
-		2A2BD03C1BC6079400D6E80F /* IsoTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */; };
 		2A2BD03D1BC6089700D6E80F /* IsoTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */; };
-		2A2BD03E1BC6089F00D6E80F /* IsoTileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */; };
 		2A2BD03F1BC608A400D6E80F /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A2BD0401BC608A900D6E80F /* Matrix3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A30145C1BBF293400B91E5F /* Matrix3D.swift */; };
 		2A2BD0411BC608FF00D6E80F /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014671BC06ED600B91E5F /* Coordinate.swift */; };
 		2A2BD0421BC6091500D6E80F /* SKSpriteNodeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */; };
 		2A30145A1BBF0D5200B91E5F /* IsoTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */; };
 		2A30145D1BBF293400B91E5F /* Matrix3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A30145C1BBF293400B91E5F /* Matrix3D.swift */; };
-		2A3014611BC01C2400B91E5F /* IsoTileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */; };
 		2A3014641BC0481F00B91E5F /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A3014631BC0481F00B91E5F /* square.png */; };
 		2A3014661BC04A3200B91E5F /* circle_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A3014651BC04A3200B91E5F /* circle_small.png */; };
 		2A3014681BC06ED600B91E5F /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014671BC06ED600B91E5F /* Coordinate.swift */; };
 		2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */; };
 		2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */; };
-		2A31087F1BBEEB81006CBA48 /* IsoTileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */; };
 		2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A5A8A1A1BE074A1001C3470 /* ACQuickButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */; };
 		2A67BEAA1BE093C20057C790 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A67BEA91BE093C20057C790 /* add.png */; };
@@ -38,7 +35,6 @@
 		2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */; };
 		2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */; };
 		2A93C7D11BBCB4DF00B8291E /* AtlasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */; };
-		2A96B2C01BD524660079B2F2 /* StandardTileMapIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A96B2BF1BD524660079B2F2 /* StandardTileMapIO.swift */; };
 		2A96B2C21BD52BB50079B2F2 /* DirectoryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A96B2C11BD52BB50079B2F2 /* DirectoryUtility.swift */; };
 		2A97217A1BCD7E8900CB282E /* Tileset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9721791BCD7E8900CB282E /* Tileset.swift */; };
 		2A97217F1BCD7F0900CB282E /* CryptTileset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A97217E1BCD7F0900CB282E /* CryptTileset.plist */; };
@@ -73,17 +69,16 @@
 
 /* Begin PBXFileReference section */
 		2A0537DF1BBED9D8005C1A36 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		2A08D7001BE3C73D0004A0D5 /* AnalysisScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisScene.swift; sourceTree = "<group>"; };
 		2A1023891BDF132A00B681B9 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
 		2A15DE401BE30FAA002E4641 /* ACTileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileButton.swift; sourceTree = "<group>"; };
 		2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileMap.swift; sourceTree = "<group>"; };
 		2A30145C1BBF293400B91E5F /* Matrix3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix3D.swift; sourceTree = "<group>"; };
-		2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileRowView.swift; sourceTree = "<group>"; };
 		2A3014631BC0481F00B91E5F /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = square.png; path = Resources/Common/square.png; sourceTree = "<group>"; };
 		2A3014651BC04A3200B91E5F /* circle_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = circle_small.png; path = Resources/Common/circle_small.png; sourceTree = "<group>"; };
 		2A3014671BC06ED600B91E5F /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		2A31087A1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSpriteNodeUtility.swift; sourceTree = "<group>"; };
 		2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomUtility.swift; sourceTree = "<group>"; };
-		2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileMapView.swift; sourceTree = "<group>"; };
 		2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix2D.swift; sourceTree = "<group>"; };
 		2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACQuickButton.swift; sourceTree = "<group>"; };
 		2A67BEA91BE093C20057C790 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add.png; path = "Resources/UI Icons/add.png"; sourceTree = "<group>"; };
@@ -100,7 +95,6 @@
 		2A93C7CC1BBCB4DF00B8291E /* AtlasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AtlasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A93C7D01BBCB4DF00B8291E /* AtlasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasTests.swift; sourceTree = "<group>"; };
 		2A93C7D21BBCB4DF00B8291E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2A96B2BF1BD524660079B2F2 /* StandardTileMapIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardTileMapIO.swift; sourceTree = "<group>"; };
 		2A96B2C11BD52BB50079B2F2 /* DirectoryUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryUtility.swift; sourceTree = "<group>"; };
 		2A9721791BCD7E8900CB282E /* Tileset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tileset.swift; sourceTree = "<group>"; };
 		2A97217E1BCD7F0900CB282E /* CryptTileset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = CryptTileset.plist; path = Resources/Tilesets/CryptTileset.plist; sourceTree = "<group>"; };
@@ -146,7 +140,6 @@
 			children = (
 				2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */,
 				2A766CD51BC980BD002C003D /* StandardTileMap.swift */,
-				2A96B2BF1BD524660079B2F2 /* StandardTileMapIO.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -154,8 +147,6 @@
 		2A30145B1BBF23D000B91E5F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				2A31087E1BBEEB81006CBA48 /* IsoTileMapView.swift */,
-				2A3014601BC01C2400B91E5F /* IsoTileRowView.swift */,
 				2AAD20B31BC9C07A00D960FB /* StandardTileMapView.swift */,
 				2A9721791BCD7E8900CB282E /* Tileset.swift */,
 				2A8715931BDBD3230056A814 /* UI */,
@@ -235,6 +226,7 @@
 				2AABE7881BBDD81D00CBF170 /* Resources */,
 				2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */,
 				2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */,
+				2A08D7001BE3C73D0004A0D5 /* AnalysisScene.swift */,
 				2AABE7891BBDE35B00CBF170 /* MainMenu.xib */,
 				2A93C7C71BBCB4DF00B8291E /* Info.plist */,
 				2A0537DF1BBED9D8005C1A36 /* Images.xcassets */,
@@ -434,15 +426,13 @@
 				2A766CD01BC77303002C003D /* ACTicker.swift in Sources */,
 				2A5A8A1A1BE074A1001C3470 /* ACQuickButton.swift in Sources */,
 				2A67BEAC1BE117B60057C790 /* ACNewMapView.swift in Sources */,
+				2A08D7011BE3C73D0004A0D5 /* AnalysisScene.swift in Sources */,
 				2A96B2C21BD52BB50079B2F2 /* DirectoryUtility.swift in Sources */,
 				2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */,
-				2A96B2C01BD524660079B2F2 /* StandardTileMapIO.swift in Sources */,
 				2A766CD61BC980BD002C003D /* StandardTileMap.swift in Sources */,
 				2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */,
 				2AB718981BE0393C00A75867 /* ACOpenMapView.swift in Sources */,
 				2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */,
-				2A3014611BC01C2400B91E5F /* IsoTileRowView.swift in Sources */,
-				2A31087F1BBEEB81006CBA48 /* IsoTileMapView.swift in Sources */,
 				2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */,
 				2A30145D1BBF293400B91E5F /* Matrix3D.swift in Sources */,
 				2AAD20B41BC9C07A00D960FB /* StandardTileMapView.swift in Sources */,
@@ -461,8 +451,6 @@
 				2A2BD03D1BC6089700D6E80F /* IsoTileMap.swift in Sources */,
 				2A2BD0421BC6091500D6E80F /* SKSpriteNodeUtility.swift in Sources */,
 				2A2BD03F1BC608A400D6E80F /* Matrix2D.swift in Sources */,
-				2A2BD03C1BC6079400D6E80F /* IsoTileMapView.swift in Sources */,
-				2A2BD03E1BC6089F00D6E80F /* IsoTileRowView.swift in Sources */,
 				2A2BD0401BC608A900D6E80F /* Matrix3D.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

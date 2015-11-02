@@ -16,7 +16,7 @@ public class StandardTileMap
 {
     var grid:Matrix2D<Int>
     var dimensions:DiscreteStandardCoord
-    
+
     // "Default" map
     convenience init()
     {
@@ -27,14 +27,11 @@ public class StandardTileMap
     {
         grid = Matrix2D<Int>(xMax:x, yMax:y, filler:filler)
         dimensions = DiscreteStandardCoord(x:x, y:y)
-        
-//        for xIndex in 0..<x
-//        {
-//            for yIndex in 0..<y
-//            {
-//                grid[xIndex,yIndex] = randIntBetween(1, stop:2)
-//            }
-//        }
+    }
+    
+    func fetchDimensions() -> DiscreteStandardCoord
+    {
+        return dimensions
     }
     
     func isWithinBounds(coord:DiscreteStandardCoord) -> Bool
@@ -75,5 +72,109 @@ public class StandardTileMap
         {
             grid[x,y] = value
         }
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Load TileMap from File
+    //////////////////////////////////////////////////////////////////////////////////////////
+    
+    func loadDefault()
+    {
+        grid = Matrix2D<Int>(xMax:5, yMax:5, filler:1)
+        dimensions = DiscreteStandardCoord(x:5, y:5)
+    }
+    
+    func loadFromFile(mapName:String)
+    {
+        let mapsURL = applicationSupportDirectory()!.URLByAppendingPathComponent("maps")
+        let fileURL = mapsURL.URLByAppendingPathComponent("\(mapName).map")
+        
+        do
+        {
+            let contents = try NSString(contentsOfURL:fileURL, encoding:NSUTF8StringEncoding) as String
+            stringToMap(contents)
+        }
+        catch
+        {
+            print("FILE IMPORT FAILED")
+        }
+    }
+    
+    func stringToMap(mapString:String)
+    {
+        let fileComponents = mapString.componentsSeparatedByString("-")
+        
+        if (fileComponents.count == 2)
+        {
+            let metaData = fileComponents[0]
+            let mapData = fileComponents[1]
+            
+            let metaDataComponents = metaData.componentsSeparatedByString("x")
+            let tileRows = mapData.componentsSeparatedByString(",")
+            
+            if (metaDataComponents.count == 2)
+            {
+                if let xMax = Int(metaDataComponents[0])
+                {
+                    if let yMax = Int(metaDataComponents[1])
+                    {
+                        grid = Matrix2D<Int>(xMax:xMax, yMax:yMax, filler:1)
+                        dimensions = DiscreteStandardCoord(x:xMax, y:yMax)
+                        
+                        var y = 0
+                        
+                        for tileRow in tileRows
+                        {
+                            let tileColumns = tileRow.componentsSeparatedByString(".")
+                            
+                            var x = 0
+                            
+                            for tileCol in tileColumns
+                            {
+                                let tileValue = Int(tileCol)!
+                                setTileAt(x, y:y, value:tileValue)
+                                
+                                x++
+                            }
+                            
+                            y++
+                        }
+                    }
+                }
+            }
+            else
+            {
+                print("MALFORMED METADATA")
+            }
+        }
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // Save TileMap from String
+    //////////////////////////////////////////////////////////////////////////////////////////
+    
+    func toString() -> String
+    {
+        var mapString = "\(grid.xMax)x\(grid.yMax)-"
+        
+        for y in 0..<grid.yMax
+        {
+            for x in 0..<grid.xMax
+            {
+                mapString += "\(tileAt(x, y:y)!)"
+                
+                if (x < grid.xMax-1)
+                {
+                    mapString += "."
+                }
+            }
+            
+            if (y < grid.yMax-1)
+            {
+                mapString += ","
+            }
+        }
+        
+        return mapString
     }
 }

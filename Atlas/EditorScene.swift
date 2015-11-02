@@ -14,11 +14,12 @@ enum TileSelection
     case MOVE, VOID, DIRT, DIRTWALL, STONEWALL, GOLD, PALE
 }
 
-class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDelegate, ACMapSaverDelegate, NSTextFieldDelegate
+class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDelegate, ACMapSaverDelegate
 {
     var window:CGSize
     var center:CGPoint
     var tileMapView:StandardTileMapView
+    var tileMap:StandardTileMap
     var ticker:ACTicker
     
     var ui_menuBG:SKSpriteNode
@@ -75,7 +76,8 @@ class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDel
         ui_newButton.position = CGPointMake(iconSize*3.5, size.height - menuBarHeight/2)
         ui_newButton.zPosition = 1001
         
-        tileMapView = StandardTileMapView(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(35), tileHeight:CGFloat(35))
+        tileMap = StandardTileMap()
+        tileMapView = StandardTileMapView(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(35), tileHeight:CGFloat(35), tileMap:tileMap)
         
         self.ticker = ACTicker()
         ticker.addTickable(tileMapView)
@@ -184,7 +186,7 @@ class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDel
 
         do
         {
-            let mapString = mapToString(tileMapView.tileMap)
+            let mapString = tileMap.toString()
             try mapString.writeToURL(fileURL, atomically:true, encoding:NSUTF8StringEncoding)
         }
         catch
@@ -314,9 +316,18 @@ class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDel
     func reloadMap(name:String?)
     {
         let tileset = Tileset(plistName:"CryptTileset")
-        tileMapView.loadMap(name, tileset:tileset)
         
-        // PERFORM ANALYSIS
+        if let mapName = name
+        {
+            tileMap.loadFromFile(mapName)
+        }
+        else
+        {
+            tileMap.loadDefault()
+        }
+        
+        tileMapView.reloadTileset(tileset)
+        tileMapView.reloadMap()
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
