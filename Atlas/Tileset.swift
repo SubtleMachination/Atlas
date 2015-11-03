@@ -11,12 +11,14 @@ import Foundation
 class TileOptions
 {
     var wall:Bool
+    var path:Bool
     var tile:[String]
     var base:[String]
     
-    init(wall:Bool)
+    init(wall:Bool, path:Bool)
     {
         self.wall = wall
+        self.path = path
         self.tile = [String]()
         self.base = [String]()
     }
@@ -62,10 +64,11 @@ class Tileset
                 let tileDictionary = tileContents.valueForKey(tileIDString) as! NSDictionary
                 
                 let wall = tileDictionary.valueForKey("wall") as! Bool
+                let pathable = tileDictionary.valueForKey("pathable") as! Bool
                 let tileSourceInfo = tileDictionary.valueForKey("tile") as! NSArray
                 let baseSourceInfo = tileDictionary.valueForKey("base") as! NSArray
                 
-                let tileOptions = TileOptions(wall:wall)
+                let tileOptions = TileOptions(wall:wall, path:pathable)
                 
                 for index in 0..<tileSourceInfo.count
                 {

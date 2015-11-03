@@ -48,6 +48,42 @@ public struct DiscreteStandardCoord : Hashable
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
+// STAGGERED COORDINATE (RECTANGULAR TILES)
+// Used for standard top-down or sidescrolling tile-based maps with staggered tiles
+//////////////////////////////////////////////////////////////////////////////////////////
+public struct StaggeredCoord
+{
+    var x:Double
+    var y:Double
+    
+    func roundDown() -> DiscreteStaggeredCoord
+    {
+        return DiscreteStaggeredCoord(x:Int(floor(x)), y:Int(floor(y)))
+    }
+    
+    func roundUp() -> DiscreteStaggeredCoord
+    {
+        return DiscreteStaggeredCoord(x:Int(ceil(x)), y:Int(ceil(y)))
+    }
+}
+
+public struct DiscreteStaggeredCoord : Hashable
+{
+    var x:Int
+    var y:Int
+    
+    func makePrecise() -> StaggeredCoord
+    {
+        return StaggeredCoord(x:Double(x), y:Double(y))
+    }
+    
+    public var hashValue: Int
+    {
+        return "(\(x), \(y))".hashValue
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
 // DIAMOND COORDINATE (ISOMETRIC TILES)
 // Used for isometric-view
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -81,23 +117,23 @@ public struct DiscreteDiamondCoord
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
-// STAGGERED COORDINATE (ISOMETRIC TILES)
-// Used for isometric-view
+////////////////////////////////////////////////////////////////////////////////////////////
+//// STAGGERED COORDINATE (ISOMETRIC TILES)
+//// Used for isometric-view
+////
+////         C0 C1 C2 C3 C4 C5 C6
+//// ROW 3: <0,3> <2,3> <4,3> <6,3>
+//// ROW 2:    <1,2> <3,2> <5,2>
+//// ROW 1: <0,1> <2,1> <4,1> <6,1>
+//// ROW 0:    <1,0> <3,0> <5,0>
+////////////////////////////////////////////////////////////////////////////////////////////
 //
-//         C0 C1 C2 C3 C4 C5 C6
-// ROW 3: <0,3> <2,3> <4,3> <6,3>
-// ROW 2:    <1,2> <3,2> <5,2>
-// ROW 1: <0,1> <2,1> <4,1> <6,1>
-// ROW 0:    <1,0> <3,0> <5,0>
-//////////////////////////////////////////////////////////////////////////////////////////
-
-public struct StaggeredCoord
-{
-    var x:Int
-    var y:Int
-    var z:Int
-}
+//public struct StaggeredCoord
+//{
+//    var x:Int
+//    var y:Int
+//    var z:Int
+//}
 
 public struct ACPoint
 {
@@ -181,33 +217,106 @@ public func ==(lhs:DiscreteStandardCoord, rhs:DiscreteStandardCoord) -> Bool
     return (lhs.x == rhs.x && lhs.y == rhs.y)
 }
 
+public func !=(lhs:DiscreteStandardCoord, rhs:DiscreteStandardCoord) -> Bool
+{
+    return (lhs.x != rhs.x || lhs.y != rhs.y)
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 // OPERATORS ON STAGGERED COORDINATES
 //////////////////////////////////////////////////////////////////////////////////////////
 
 public func +(lhs:StaggeredCoord, rhs:StaggeredCoord) -> StaggeredCoord
 {
-    return StaggeredCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y, z:lhs.z + rhs.z)
+    return StaggeredCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y)
 }
 
 public func -(lhs:StaggeredCoord, rhs:StaggeredCoord) -> StaggeredCoord
 {
-    return StaggeredCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y, z:lhs.z - rhs.z)
+    return StaggeredCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
 }
 
 public func +=(inout lhs:StaggeredCoord, rhs:StaggeredCoord)
 {
     lhs.x += rhs.x
     lhs.y += rhs.y
-    lhs.z += rhs.z
 }
 
 public func -=(inout lhs:StaggeredCoord, rhs:StaggeredCoord)
 {
     lhs.x -= rhs.x
     lhs.y -= rhs.y
-    lhs.z -= rhs.z
 }
+
+public func ==(lhs:StaggeredCoord, rhs:StaggeredCoord) -> Bool
+{
+    return (lhs.x == rhs.x && lhs.y == rhs.y)
+}
+
+public func !=(lhs:StaggeredCoord, rhs:StaggeredCoord) -> Bool
+{
+    return (lhs.x != rhs.x || lhs.y != rhs.y)
+}
+
+public func +(lhs:DiscreteStaggeredCoord, rhs:DiscreteStaggeredCoord) -> DiscreteStaggeredCoord
+{
+    return DiscreteStaggeredCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y)
+}
+
+public func -(lhs:DiscreteStaggeredCoord, rhs:DiscreteStaggeredCoord) -> DiscreteStaggeredCoord
+{
+    return DiscreteStaggeredCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y)
+}
+
+public func +=(inout lhs:DiscreteStaggeredCoord, rhs:DiscreteStaggeredCoord)
+{
+    lhs.x += rhs.x
+    lhs.y += rhs.y
+}
+
+public func -=(inout lhs:DiscreteStaggeredCoord, rhs:DiscreteStaggeredCoord)
+{
+    lhs.x -= rhs.x
+    lhs.y -= rhs.y
+}
+
+public func ==(lhs:DiscreteStaggeredCoord, rhs:DiscreteStaggeredCoord) -> Bool
+{
+    return (lhs.x == rhs.x && lhs.y == rhs.y)
+}
+
+public func !=(lhs:DiscreteStaggeredCoord, rhs:DiscreteStaggeredCoord) -> Bool
+{
+    return (lhs.x != rhs.x || lhs.y != rhs.y)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// OPERATORS ON ISOMETRIC STAGGERED COORDINATES
+//////////////////////////////////////////////////////////////////////////////////////////
+
+//public func +(lhs:StaggeredCoord, rhs:StaggeredCoord) -> StaggeredCoord
+//{
+//    return StaggeredCoord(x:lhs.x + rhs.x, y:lhs.y + rhs.y, z:lhs.z + rhs.z)
+//}
+//
+//public func -(lhs:StaggeredCoord, rhs:StaggeredCoord) -> StaggeredCoord
+//{
+//    return StaggeredCoord(x:lhs.x - rhs.x, y:lhs.y - rhs.y, z:lhs.z - rhs.z)
+//}
+//
+//public func +=(inout lhs:StaggeredCoord, rhs:StaggeredCoord)
+//{
+//    lhs.x += rhs.x
+//    lhs.y += rhs.y
+//    lhs.z += rhs.z
+//}
+//
+//public func -=(inout lhs:StaggeredCoord, rhs:StaggeredCoord)
+//{
+//    lhs.x -= rhs.x
+//    lhs.y -= rhs.y
+//    lhs.z -= rhs.z
+//}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // OPERATORS ON DIAMOND COORDINATES

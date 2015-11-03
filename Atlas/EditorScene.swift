@@ -18,7 +18,7 @@ class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDel
 {
     var window:CGSize
     var center:CGPoint
-    var tileMapView:StandardTileMapView
+    var tileMapView:TileMapLayer
     var tileMap:StandardTileMap
     var ticker:ACTicker
     
@@ -77,7 +77,7 @@ class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDel
         ui_newButton.zPosition = 1001
         
         tileMap = StandardTileMap()
-        tileMapView = StandardTileMapView(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(35), tileHeight:CGFloat(35), tileMap:tileMap)
+        tileMapView = TileMapLayer(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(35), tileHeight:CGFloat(35), tileMap:tileMap)
         
         self.ticker = ACTicker()
         ticker.addTickable(tileMapView)
@@ -326,8 +326,7 @@ class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDel
             tileMap.loadDefault()
         }
         
-        tileMapView.reloadTileset(tileset)
-        tileMapView.reloadMap()
+        tileMapView.reloadMapWithNewTileset(tileset)
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

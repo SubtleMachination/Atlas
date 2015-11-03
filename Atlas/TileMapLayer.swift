@@ -9,25 +9,34 @@
 import SpriteKit
 import Foundation
 
-public class StandardTileMapView : SKNode, ACTickable
+public class TileMapLayer : SKNode, ACTickable
 {
     var tileWidth:CGFloat
     var tileHeight:CGFloat
     var viewportBounds:CGRect
     var tileViewBounds:ACTileBoundingBox
+    var flowViewBounds:ACTileBoundingBox
     
     var tileset:Tileset
     var tilesetAtlas:SKTextureAtlas
+    let commonAtlas:SKTextureAtlas
     
     var floorNode:SKNode
     var wallNode:SKNode
     
+    // The tileMap exists in the Model (this is just a POINTER to it)
     var tileMap:StandardTileMap
     var cameraPos:StandardCoord
     var cameraVel:StandardCoord
     
     var tiles:[DiscreteStandardCoord:SKNode]
     var removedTiles:[DiscreteStandardCoord:SKNode]
+    var flowPoints:[DiscreteStaggeredCoord:SKNode]
+    
+    // The flow map exists only within the view
+    var flowMap:StaggeredPointMap
+    var showGrid:Bool
+    var flowPointNode:SKNode
     
     init(viewSize:CGSize, tileWidth:CGFloat, tileHeight:CGFloat, tileMap:StandardTileMap)
     {
@@ -47,6 +56,10 @@ public class StandardTileMapView : SKNode, ACTickable
         self.tileHeight = tileHeight
         self.viewportBounds = CGRectMake(-1*viewSize.width/2, -1*viewSize.height/2, viewSize.width, viewSize.height)
         
+        self.showGrid = false
+        self.flowPointNode = SKNode()
+        flowPointNode.position = CGPointMake(0, 0)
+        
         self.floorNode = SKNode()
         self.wallNode = SKNode()
         wallNode.position = CGPointMake(0, 0)
@@ -54,6 +67,7 @@ public class StandardTileMapView : SKNode, ACTickable
         
         self.tileset = Tileset(plistName:nil)
         self.tilesetAtlas = SKTextureAtlas()
+        self.commonAtlas = SKTextureAtlas(named:"Common")
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // ViewModel
@@ -61,7 +75,11 @@ public class StandardTileMapView : SKNode, ACTickable
         
         self.tiles = [DiscreteStandardCoord:SKNode]()
         self.removedTiles = [DiscreteStandardCoord:SKNode]()
+        self.flowPoints = [DiscreteStaggeredCoord:SKNode]()
         self.tileViewBounds = ACTileBoundingBox(left:0, right:0, up:0, down:0)
+        self.flowViewBounds = ACTileBoundingBox(left:0, right:0, up:0, down:0)
+        
+        self.flowMap = StaggeredPointMap(xTileWidth:tileMap.fetchDimensions().x, yTileHeight:tileMap.fetchDimensions().y, filler:0)
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Superclass Initialization
@@ -70,6 +88,8 @@ public class StandardTileMapView : SKNode, ACTickable
         
         self.addChild(floorNode)
         self.addChild(wallNode)
+        
+        self.addChild(flowPointNode)
         
         //////////////////////////////////////////////////////////////////////////////////////////
         // Debugging: to check viewport bounds
@@ -124,10 +144,24 @@ public class StandardTileMapView : SKNode, ACTickable
         moveMap(delta)
     }
     
-    func reloadTileset(tileset:Tileset)
+    func reloadMapWithNewTileset(tileset:Tileset)
     {
         self.tileset = tileset
         self.tilesetAtlas = SKTextureAtlas(named:self.tileset.atlas)
+
+        reloadMap()
+    }
+    
+    func changeTilesetAndRefresh(tileset:Tileset)
+    {
+        self.tileset = tileset
+        self.tilesetAtlas = SKTextureAtlas(named:self.tileset.atlas)
+        
+        removeAllTiles()
+        regenerateTiles(false)
+        
+        removeAllPoints()
+        regeneratePoints()
     }
     
     func reloadMap()
@@ -139,6 +173,15 @@ public class StandardTileMapView : SKNode, ACTickable
         
         removeAllTiles()
         regenerateTiles(false)
+        
+        // Regenerate flow map from current tileMap
+        flowMap = StaggeredPointMap(xTileWidth:tileMap.fetchDimensions().x, yTileHeight:tileMap.fetchDimensions().y, filler:0)
+        flowMap.computeSkeletonFromPathMap(tileMap.binaryPaths())
+        
+        updateFlowViewBounds()
+        
+        removeAllPoints()
+        regeneratePoints()
     }
     
     func loadBlankMap(x:Int, y:Int, tileset:Tileset)
@@ -148,13 +191,7 @@ public class StandardTileMapView : SKNode, ACTickable
         
         tileMap = StandardTileMap(x:x, y:y, filler:1)
         
-        // Defaults to the center of the map
-        cameraPos = StandardCoord(x:Double(tileMap.fetchDimensions().x)/2, y:Double(tileMap.fetchDimensions().y)/2)
-        
-        updateTileViewBounds()
-        
-        removeAllTiles()
-        regenerateTiles(false)
+        reloadMap()
     }
     
     func removeAllTiles()
@@ -164,6 +201,13 @@ public class StandardTileMapView : SKNode, ACTickable
         
         tiles.removeAll()
         removedTiles.removeAll()
+    }
+    
+    func removeAllPoints()
+    {
+        flowPointNode.removeAllChildren()
+        
+        flowPoints.removeAll()
     }
     
     func regenerateTiles(fadeIn:Bool)
@@ -189,6 +233,39 @@ public class StandardTileMapView : SKNode, ACTickable
             if (!tileIsWithinViewBounds(coord))
             {
                 removeTileFromView(coord, tile:tileNode, fade:true)
+            }
+        }
+    }
+    
+    func regeneratePoints()
+    {
+        for staggered_x in flowViewBounds.left...flowViewBounds.right
+        {
+            for staggered_y in flowViewBounds.down...flowViewBounds.up
+            {
+                let x_even = staggered_x % 2 == 0
+                let y_even = staggered_y % 2 == 0
+                
+                if ((x_even && y_even) || (!x_even && !y_even))
+                {
+                    let staggered_coord = DiscreteStaggeredCoord(x:staggered_x, y:staggered_y)
+                    
+                    if flowPoints[staggered_coord] == nil
+                    {
+                        addPointToView(staggered_coord)
+                    }
+                }
+            }
+        }
+    }
+    
+    func degeneratePoints()
+    {
+        for (coord, pointNode) in flowPoints
+        {
+            if (!viewportBounds.contains(pointNode.position))
+            {
+                removePointFromView(coord, point:pointNode)
             }
         }
     }
@@ -259,6 +336,16 @@ public class StandardTileMapView : SKNode, ACTickable
     func tileIsWithinViewBounds(x:Int, y:Int) -> Bool
     {
         return (x >= tileViewBounds.left && x <= tileViewBounds.right && y <= tileViewBounds.up && y >= tileViewBounds.down)
+    }
+    
+    func pointIsWithinViewBounds(coord:DiscreteStaggeredCoord) -> Bool
+    {
+        return tileIsWithinViewBounds(coord.x, y:coord.y)
+    }
+    
+    func pointIsWithinViewBounds(x:Int, y:Int) -> Bool
+    {
+        return (x >= flowViewBounds.left && x <= flowViewBounds.right && y <= flowViewBounds.up && y >= flowViewBounds.down)
     }
     
     func addTileToView(coord:DiscreteStandardCoord, fade:Bool)
@@ -352,6 +439,29 @@ public class StandardTileMapView : SKNode, ACTickable
         }
     }
     
+    func addPointToView(coord:DiscreteStaggeredCoord)
+    {
+        if (flowMap.isWithinBounds(coord))
+        {
+            let strength = flowMap.tileAt(coord)!
+            
+            if (strength > 0)
+            {
+                let size = CGFloat((strength + 1) * 2)
+                
+                let pointSprite = SKSpriteNode(texture:commonAtlas.textureNamed("diamond_small"))
+                
+                pointSprite.resizeNode(size, y:size)
+                pointSprite.position = staggeredToScreen(coord)
+                
+                flowPoints[coord] = pointSprite
+                
+                flowPointNode.addChild(pointSprite)
+            }
+            
+        }
+    }
+    
     func shouldPlaceWallBase(coord:DiscreteStandardCoord) -> Bool
     {
         let tileBelowIsWithinBounds = tileMap.isWithinBounds(coord.x, y:coord.y-1)
@@ -401,6 +511,12 @@ public class StandardTileMapView : SKNode, ACTickable
             tile.removeFromParent()
             tiles.removeValueForKey(coord)
         }
+    }
+    
+    func removePointFromView(coord:DiscreteStaggeredCoord, point:SKNode)
+    {
+        point.removeFromParent()
+        flowPoints.removeValueForKey(coord)
     }
     
     func updateTileViewBounds()
@@ -459,6 +575,61 @@ public class StandardTileMapView : SKNode, ACTickable
         return lowerTileBound+1
     }
     
+    func updateFlowViewBounds()
+    {
+        flowViewBounds.left = findLeftFlowBound()
+        flowViewBounds.right = findRightFlowBound()
+        flowViewBounds.up = findUpperFlowBound()
+        flowViewBounds.down = findLowerFlowBound()
+    }
+    
+    func findLeftFlowBound() -> Int
+    {
+        var leftFlowBound = standardToStaggered(cameraPos).roundDown().x
+        
+        while (screenXForStaggeredCol(leftFlowBound) > viewportBounds.origin.x)
+        {
+            leftFlowBound -= 1
+        }
+        
+        return leftFlowBound+1
+    }
+    
+    func findRightFlowBound() -> Int
+    {
+        var rightFlowBound = standardToStaggered(cameraPos).roundDown().x
+        
+        while (screenXForStaggeredCol(rightFlowBound) < viewportBounds.origin.x + viewportBounds.size.width)
+        {
+            rightFlowBound += 1
+        }
+        
+        return rightFlowBound-1
+    }
+    
+    func findUpperFlowBound() -> Int
+    {
+        var upperFlowBound = standardToStaggered(cameraPos).roundDown().y
+        
+        while (screenYForStaggeredRow(upperFlowBound) < viewportBounds.origin.y + viewportBounds.size.height)
+        {
+            upperFlowBound += 1
+        }
+        
+        return upperFlowBound-1
+    }
+    
+    func findLowerFlowBound() -> Int
+    {
+        var lowerFlowBound = standardToStaggered(cameraPos).roundDown().y
+        
+        while (screenYForStaggeredRow(lowerFlowBound) > viewportBounds.origin.y)
+        {
+            lowerFlowBound -= 1
+        }
+        
+        return lowerFlowBound+1
+    }
     
     func moveMap(delta:CGPoint)
     {
@@ -475,13 +646,28 @@ public class StandardTileMapView : SKNode, ACTickable
             tileNode.position.y += delta.y
         }
         
+        for pointNode in flowPointNode.children
+        {
+            pointNode.position.x += delta.x
+            pointNode.position.y += delta.y
+        }
+        
         updateTileViewBounds()
         
         // Remove out-of-bounds tiles
         degenerateTiles()
-        
+
         // Regenerate in-bounds tiles
         regenerateTiles(true)
+        
+        
+        updateFlowViewBounds()
+        
+        // Remove out-of-bounds points
+        degeneratePoints()
+        
+        // Regenerate in-bounds points
+        regeneratePoints()
     }
     
     func screenYForRow(row:Int) -> CGFloat
@@ -498,6 +684,22 @@ public class StandardTileMapView : SKNode, ACTickable
         let screenPosition = standardToScreen(arbitraryTileInCol)
         
         return screenPosition.x
+    }
+    
+    func screenYForStaggeredRow(row:Int) -> CGFloat
+    {
+        let arbitraryPointInRow = DiscreteStaggeredCoord(x:0, y:row)
+        let screenPosition = staggeredToScreen(arbitraryPointInRow)
+        
+        return screenPosition.y
+    }
+    
+    func screenXForStaggeredCol(col:Int) -> CGFloat
+    {
+        let arbitraryPointInCol = DiscreteStaggeredCoord(x:col, y:0)
+        let screenPositon = staggeredToScreen(arbitraryPointInCol)
+        
+        return screenPositon.x
     }
     
     func standardToScreen(coord:StandardCoord) -> CGPoint
@@ -532,5 +734,34 @@ public class StandardTileMapView : SKNode, ACTickable
         let standard_y = Double(screenDelta.y) / Double(tileHeight)
         
         return StandardCoord(x:standard_x, y:standard_y)
+    }
+    
+    
+    
+    func staggeredToStandard(coord:StaggeredCoord) -> StandardCoord
+    {
+        let standard_x = coord.x / 2
+        let standard_y = coord.y / 2
+        
+        return StandardCoord(x:standard_x, y:standard_y)
+    }
+    
+    func standardToStaggered(coord:StandardCoord) -> StaggeredCoord
+    {
+        let staggered_x = coord.x * 2
+        let staggered_y = coord.y * 2
+        
+        return StaggeredCoord(x:staggered_x, y:staggered_y)
+    }
+    
+    func staggeredToScreen(coord:DiscreteStaggeredCoord) -> CGPoint
+    {
+        return staggeredToScreen(coord.makePrecise())
+    }
+    
+    func staggeredToScreen(coord:StaggeredCoord) -> CGPoint
+    {
+        let standardPosition = staggeredToStandard(coord)
+        return standardToScreen(standardPosition)
     }
 }

@@ -9,11 +9,16 @@
 import Foundation
 import SpriteKit
 
+enum AnalysisMode
+{
+    case Standard, Analyze
+}
+
 class AnalysisScene: SKScene, ButtonDelegate, ACMapOpenerDelegate
 {
     var window:CGSize
     var center:CGPoint
-    var tileMapView:StandardTileMapView
+    var tileMapView:TileMapLayer
     var tileMap:StandardTileMap
     var ticker:ACTicker
     
@@ -21,6 +26,8 @@ class AnalysisScene: SKScene, ButtonDelegate, ACMapOpenerDelegate
     var ui_loadButton:ACHoverButton
     var ui_analyzeButton:ACHoverButton
     var ui_openMapWindow:ACOpenMapView?
+    
+    var mode:AnalysisMode = AnalysisMode.Standard
     
     var dragStart:CGPoint
     
@@ -51,7 +58,7 @@ class AnalysisScene: SKScene, ButtonDelegate, ACMapOpenerDelegate
         ui_analyzeButton.zPosition = 1001
         
         tileMap = StandardTileMap()
-        tileMapView = StandardTileMapView(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(25), tileHeight:CGFloat(25), tileMap:tileMap)
+        tileMapView = TileMapLayer(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(35), tileHeight:CGFloat(35), tileMap:tileMap)
         
         self.ticker = ACTicker()
         ticker.addTickable(tileMapView)
@@ -145,7 +152,8 @@ class AnalysisScene: SKScene, ButtonDelegate, ACMapOpenerDelegate
     
     func reloadMap(name:String?)
     {
-        let tileset = Tileset(plistName:"CryptTileset")
+        let plistName = (mode == .Analyze) ? "CryptAnalysisTileset" : "CryptTileset"
+        let tileset = Tileset(plistName:plistName)
         
         if let mapName = name
         {
@@ -156,17 +164,23 @@ class AnalysisScene: SKScene, ButtonDelegate, ACMapOpenerDelegate
             tileMap.loadDefault()
         }
         
-        tileMapView.reloadTileset(tileset)
-        tileMapView.reloadMap()
+        tileMapView.reloadMapWithNewTileset(tileset)
     }
     
     func analyzeMap()
     {
-//        let flow = MapFlow(tileMap:tileMapView.tileMap.grid, tileSet:tileMapView.tileset)
-//        
-//        let tileset = Tileset(plistName:"CryptAnalysisTileset")
-
+        mode = (mode == .Analyze) ? .Standard : .Analyze
         
+        if (mode == .Analyze)
+        {
+            let tileset = Tileset(plistName:"CryptAnalysisTileset")
+            tileMapView.changeTilesetAndRefresh(tileset)
+        }
+        else
+        {
+            let tileset = Tileset(plistName:"CryptTileset")
+            tileMapView.changeTilesetAndRefresh(tileset)
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -12,6 +12,8 @@
 		<dict>
 			<key>wall</key>
 			<false/>
+			<key>pathable</key>
+			<true/>
 			<key>tile</key>
 			<array>
 				<string>dirt_1</string>
@@ -24,6 +26,8 @@
 		<dict>
 			<key>wall</key>
 			<true/>
+			<key>pathable</key>
+			<false/>
 			<key>tile</key>
 			<array>
 				<string>dirtwall_1</string>
@@ -39,6 +43,8 @@
 		<dict>
 			<key>wall</key>
 			<true/>
+			<key>pathable</key>
+			<false/>
 			<key>tile</key>
 			<array>
 				<string>stonewall_1</string>
@@ -52,6 +58,8 @@
 		<dict>
 			<key>wall</key>
 			<true/>
+			<key>pathable</key>
+			<false/>
 			<key>tile</key>
 			<array>
 				<string>goldwall_1</string>
@@ -65,6 +73,8 @@
 		<dict>
 			<key>wall</key>
 			<true/>
+			<key>pathable</key>
+			<false/>
 			<key>tile</key>
 			<array>
 				<string>palewall_1</string>

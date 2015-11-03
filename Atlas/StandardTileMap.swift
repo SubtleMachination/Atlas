@@ -74,6 +74,25 @@ public class StandardTileMap
         }
     }
     
+    // 0: unpathable, 1: pathable
+    func binaryPaths() -> Matrix2D<Bool>
+    {
+        let paths = Matrix2D<Bool>(xMax:grid.xMax, yMax:grid.yMax, filler:false)
+        
+        for x in 0..<grid.xMax
+        {
+            for y in 0..<grid.yMax
+            {
+                if grid[x,y] == 1
+                {
+                    paths[x,y] = true
+                }
+            }
+        }
+        
+        return paths
+    }
+    
     //////////////////////////////////////////////////////////////////////////////////////////
     // Load TileMap from File
     //////////////////////////////////////////////////////////////////////////////////////////
