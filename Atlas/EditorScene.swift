@@ -354,7 +354,9 @@ class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDel
     func createMapWithDimensions(x:Int, y:Int)
     {
         let tileset = Tileset(plistName:"CryptTileset")
-        tileMapView.loadBlankMap(x, y:y, tileset:tileset)
+        tileMap.loadBlank(x, yMax:y, filler:1)
+        
+        tileMapView.reloadMapWithNewTileset(tileset)
         
         closeNewMapWindow()
     }
@@ -372,6 +374,7 @@ class EditorScene: SKScene, ButtonDelegate, ACMapOpenerDelegate, ACMapCreatorDel
     {
         mapName = (name.isEmpty) ? "Default" : name
         saveMap()
+        closeSaveMapWindow()
     }
     
     func closeSaveMapWindow()

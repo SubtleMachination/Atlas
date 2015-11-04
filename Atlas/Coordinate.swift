@@ -170,6 +170,46 @@ public struct ACTileBoundingBox
     var down:Int
 }
 
+public struct ACTileSurround
+{
+    var left:Bool
+    var right:Bool
+    var up:Bool
+    var down:Bool
+    var upperLeft:Bool
+    var upperRight:Bool
+    var lowerRight:Bool
+    var lowerLeft:Bool
+    
+    var sides:Int
+    var corners:Int
+    
+    func oppositeCorners() -> Bool
+    {
+        return (upperLeft && lowerRight) || (upperRight && lowerLeft)
+    }
+    
+    func oppositeSides() -> Bool
+    {
+        return (up && down) || (left && right)
+    }
+    
+    func sidesBetweenCorners() -> Int
+    {
+        var sidesBetween = 0
+        
+        if (corners > 1)
+        {
+            if (lowerLeft && lowerRight && down) { sidesBetween++ }
+            if (lowerRight && upperRight && right) { sidesBetween++ }
+            if (upperLeft && upperRight && up) { sidesBetween++ }
+            if (upperLeft && lowerLeft && left) { sidesBetween++ }
+        }
+    
+        return sidesBetween
+    }
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 // OPERATORS ON STANDARD COORDINATES
 //////////////////////////////////////////////////////////////////////////////////////////

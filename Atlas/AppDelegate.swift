@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Runemark Studios. All rights reserved.
 //
 
-
 import Cocoa
 import SpriteKit
 

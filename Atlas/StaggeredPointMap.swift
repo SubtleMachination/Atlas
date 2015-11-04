@@ -135,6 +135,11 @@ public class StaggeredPointMap
                 
                 let specifics = generalToSpecific(staggeredCenter)
                 
+                if (staggeredCenter.x == 7 && staggeredCenter.y == 7)
+                {
+                    print("derp")
+                }
+                
                 if (!specifics.corner)
                 {
                     if (pathMap[specifics.x, specifics.y])
@@ -191,7 +196,6 @@ public class StaggeredPointMap
         return (isCritical:isCritical, radius:radius)
     }
     
-    
     // 0: keep expanding, 1: critical point found, 2: cancel
     func sidesSurrounded(pathMap:Matrix2D<Bool>, staggeredCenter:DiscreteStaggeredCoord, radius:Int) -> Int
     {
@@ -205,10 +209,10 @@ public class StaggeredPointMap
         let tileCenter = DiscreteStandardCoord(x:tileCenter_x, y:tileCenter_y)
         
         // Check the diagonals
-        let upperLeft = DiscreteStandardCoord(x:tileCenter.x - 1, y:tileCenter.y + 1)
-        let upperRight = DiscreteStandardCoord(x:tileCenter.x + 1, y:tileCenter.y + 1)
-        let lowerRight = DiscreteStandardCoord(x:tileCenter.x + 1, y:tileCenter.y - 1)
-        let lowerLeft = DiscreteStandardCoord(x:tileCenter.x - 1, y:tileCenter.y - 1)
+        let upperLeft = DiscreteStandardCoord(x:tileCenter.x - radius, y:tileCenter.y + radius)
+        let upperRight = DiscreteStandardCoord(x:tileCenter.x + radius, y:tileCenter.y + radius)
+        let lowerRight = DiscreteStandardCoord(x:tileCenter.x + radius, y:tileCenter.y - radius)
+        let lowerLeft = DiscreteStandardCoord(x:tileCenter.x - radius, y:tileCenter.y - radius)
         
         let upperLeftBounded = (!pathMap.isWithinBounds(upperLeft.x, y:upperLeft.y) || !pathMap[upperLeft.x, upperLeft.y])
         let upperRightBounded = (!pathMap.isWithinBounds(upperRight.x, y:upperRight.y) || !pathMap[upperRight.x, upperRight.y])
@@ -269,28 +273,26 @@ public class StaggeredPointMap
         if (leftBounded) { sideBoundCount++ }
         if (rightBounded) { sideBoundCount++ }
         
+        let info = ACTileSurround(left:leftBounded, right:rightBounded, up:upperBounded, down:lowerBounded, upperLeft:upperLeftBounded, upperRight:upperRightBounded, lowerRight:lowerRightBounded, lowerLeft:lowerLeftBounded, sides:sideBoundCount, corners:cornerBoundCount)
+        
         var returnValue = 0
         
-        if (!upperLeftBounded && !upperRightBounded && !lowerRightBounded && !lowerLeftBounded && sideBoundCount == 0)
+        if (info.corners == 0 && info.sides == 0)
         {
             // Keep expanding
+            returnValue = 0
         }
-        else if (cornerBoundCount == 4)
+        else if (info.corners == 4 || info.sides > 2)
         {
             // Critical point
             returnValue = 1
         }
-        else if (cornerBoundCount == 2 && ((upperLeftBounded && lowerRightBounded) || (upperRightBounded && lowerLeftBounded)))
+        else if (info.oppositeCorners() && info.sidesBetweenCorners() < info.sides)
         {
             // Critical point
             returnValue = 1
         }
-        else if ((leftBounded && rightBounded) || (upperBounded && lowerBounded))
-        {
-            // Critical point
-            returnValue = 1
-        }
-        else if (sideBoundCount > 2)
+        else if (info.oppositeSides())
         {
             // Critical point
             returnValue = 1

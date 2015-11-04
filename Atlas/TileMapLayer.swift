@@ -184,16 +184,6 @@ public class TileMapLayer : SKNode, ACTickable
         regeneratePoints()
     }
     
-    func loadBlankMap(x:Int, y:Int, tileset:Tileset)
-    {
-        self.tileset = tileset
-        self.tilesetAtlas = SKTextureAtlas(named:self.tileset.atlas)
-        
-        tileMap = StandardTileMap(x:x, y:y, filler:1)
-        
-        reloadMap()
-    }
-    
     func removeAllTiles()
     {
         floorNode.removeAllChildren()

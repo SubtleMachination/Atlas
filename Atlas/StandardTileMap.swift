@@ -103,6 +103,12 @@ public class StandardTileMap
         dimensions = DiscreteStandardCoord(x:5, y:5)
     }
     
+    func loadBlank(xMax:Int, yMax:Int, filler:Int)
+    {
+        grid = Matrix2D<Int>(xMax:xMax, yMax:yMax, filler:filler)
+        dimensions = DiscreteStandardCoord(x:xMax, y:yMax)
+    }
+    
     func loadFromFile(mapName:String)
     {
         let mapsURL = applicationSupportDirectory()!.URLByAppendingPathComponent("maps")
