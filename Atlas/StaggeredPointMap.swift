@@ -12,10 +12,14 @@ import Foundation
 // StaggeredPointMap
 ////////////////////////////////////////////////////////////////////////////////
 
+enum PointType
+{
+    case MID, CORNER, INVALID
+}
+
 public class StaggeredPointMap
 {
-    var cornerGrid:Matrix2D<Int>
-    var midpointGrid:Matrix2D<Int>
+    var grid:Matrix2D<Int>
     
     // "Default" map
     convenience init()
@@ -25,26 +29,15 @@ public class StaggeredPointMap
     
     init(xTileWidth:Int, yTileHeight:Int, filler:Int)
     {
-        cornerGrid = Matrix2D<Int>(xMax:xTileWidth+1, yMax:yTileHeight+1, filler:filler)
-        midpointGrid = Matrix2D<Int>(xMax:xTileWidth, yMax:yTileHeight, filler:filler)
+        grid = Matrix2D<Int>(xMax:(xTileWidth*2)+1, yMax:(yTileHeight*2)+1, filler:filler)
     }
     
+    // Checks whether the staggered coord is within bounds (also must be valid -- both even or both odd)
     func isWithinBounds(coord:DiscreteStaggeredCoord) -> Bool
     {
-        let specificCoord = generalToSpecific(coord)
+        let type = pointType(coord)
         
-        var withinBounds = false
-        
-        if (specificCoord.corner)
-        {
-            withinBounds = cornerGrid.isWithinBounds(specificCoord.x, y:specificCoord.y)
-        }
-        else
-        {
-            withinBounds = midpointGrid.isWithinBounds(specificCoord.x, y: specificCoord.y)
-        }
-        
-        return withinBounds
+        return grid.isWithinBounds(coord.x, y:coord.y) && type != .INVALID
     }
     
     func isWithinBounds(staggered_x:Int, staggered_y:Int) -> Bool
@@ -59,21 +52,9 @@ public class StaggeredPointMap
     
     func tileAt(staggered_x:Int, staggered_y:Int) -> Int?
     {
-        let specifics = generalToSpecific(staggered_x, staggered_y:staggered_y)
-        
-        if (specifics.corner)
+        if (grid.isWithinBounds(staggered_x, y:staggered_y))
         {
-            if (cornerGrid.isWithinBounds(specifics.x, y:specifics.y))
-            {
-                return cornerGrid[specifics.x, specifics.y]
-            }
-        }
-        else
-        {
-            if (midpointGrid.isWithinBounds(specifics.x, y:specifics.y))
-            {
-                return midpointGrid[specifics.x, specifics.y]
-            }
+            return grid[staggered_x, staggered_y]
         }
         
         return nil
@@ -86,126 +67,200 @@ public class StaggeredPointMap
     
     func setTileAt(staggered_x:Int, staggered_y:Int, value:Int)
     {
-        let specifics = generalToSpecific(staggered_x, staggered_y:staggered_y)
-        
-        if (specifics.corner)
+        if (grid.isWithinBounds(staggered_x, y:staggered_y))
         {
-            if (cornerGrid.isWithinBounds(specifics.x, y:specifics.y))
-            {
-                cornerGrid[specifics.x, specifics.y] = value
-            }
+            grid[staggered_x, staggered_y] = value
         }
-        else
-        {
-            if (midpointGrid.isWithinBounds(specifics.x, y:specifics.y))
-            {
-                midpointGrid[specifics.x, specifics.y] = value
-            }
-        }
-    }
-    
-    func generalToSpecific(coord:DiscreteStaggeredCoord) -> (x:Int, y:Int, corner:Bool)
-    {
-        return generalToSpecific(coord.x, staggered_y:coord.y)
-    }
-    
-    func generalToSpecific(staggered_x:Int, staggered_y:Int) -> (x:Int, y:Int, corner:Bool)
-    {
-        let corner = (staggered_y % 2 == 0) ? true : false
-        
-        let temp_x = (corner) ? staggered_x : staggered_x - 1
-        let temp_y = (corner) ? staggered_y : staggered_y - 1
-        
-        let x = Int(Double(temp_x) / 2)
-        let y = Int(Double(temp_y) / 2)
-        
-        return (x:x, y:y, corner:corner)
     }
     
     func computeSkeletonFromPathMap(pathMap:Matrix2D<Bool>)
     {
-        let staggered_x_max = (cornerGrid.xMax - 1)*2
-        let staggered_y_max = (cornerGrid.yMax - 1)*2
-        
-        for staggered_x in 0..<staggered_x_max
+        for staggered_x in 0..<grid.xMax
         {
-            for staggered_y in 0..<staggered_y_max
+            for staggered_y in 0..<grid.yMax
             {
                 let staggeredCenter = DiscreteStaggeredCoord(x:staggered_x, y:staggered_y)
-                
-                let specifics = generalToSpecific(staggeredCenter)
-                
-                if (staggeredCenter.x == 7 && staggeredCenter.y == 7)
-                {
-                    print("derp")
-                }
-                
-                if (!specifics.corner)
-                {
-                    if (pathMap[specifics.x, specifics.y])
-                    {
-                        // Mid Cases
-                        let criticalInfo = midPointIsCritical(pathMap, midPoint:staggeredCenter)
-                        if (criticalInfo.isCritical)
-                        {
-                            setMidPointAsCritical(staggeredCenter, radius:criticalInfo.radius)
-                        }
-                    }
-                }
-//                else if (!x_even && !y_even)
-//                {
-//                    // Corner Case
-//                }
-            }
-        }
-    }
-    
-    func setMidPointAsCritical(midPoint:DiscreteStaggeredCoord, radius:Int)
-    {
-        let specifics = generalToSpecific(midPoint)
-        midpointGrid[specifics.x, specifics.y] = radius
-    }
-    
-    func midPointIsCritical(pathMap:Matrix2D<Bool>, midPoint:DiscreteStaggeredCoord) -> (isCritical:Bool, radius:Int)
-    {
-        var isCritical = false
-        var decisionReached = false
-        var radius = 1
-        
-        while (!decisionReached)
-        {
-            // Start at radius 1 and keep increasing
-            let returnValue = sidesSurrounded(pathMap, staggeredCenter:midPoint, radius:radius)
             
-            if (returnValue == 0)
-            {
-                radius++
+                let criticalInfo = pointInfo(pathMap, point:staggeredCenter)
+                if (criticalInfo.isCritical)
+                {
+                    setPointAsCritical(staggeredCenter, radius:criticalInfo.radius)
+                }
             }
-            else if (returnValue == 1)
+        }
+    }
+    
+    func setPointAsCritical(point:DiscreteStaggeredCoord, radius:Int)
+    {
+        if (grid.isWithinBounds(point.x, y:point.y))
+        {
+            grid[point.x, point.y] = radius
+        }
+    }
+    
+    func pointInfo(pathMap:Matrix2D<Bool>, point:DiscreteStaggeredCoord) -> (isCritical:Bool, radius:Int)
+    {
+        let type = pointType(point)
+        var shouldCheck = false
+        
+        // Preprocessing (should we even check this point?)
+        if (type == .MID)
+        {
+            // Convert to tile position
+            let tile_x = Int(Double(point.x - 1) / 2)
+            let tile_y = Int(Double(point.y - 1) / 2)
+            if (pathMap[tile_x, tile_y])
             {
-                isCritical = true
-                decisionReached = true
+                shouldCheck = true
             }
-            else if (returnValue == 2)
+        }
+        else if (type == .CORNER)
+        {
+            let tileCenter_x = Int(Double(point.x) / 2)
+            let tileCenter_y = Int(Double(point.y) / 2)
+            let upperRight = DiscreteStandardCoord(x:tileCenter_x, y:tileCenter_y)
+            let upperLeft = DiscreteStandardCoord(x:upperRight.x - 1, y:upperRight.y)
+            let lowerLeft = DiscreteStandardCoord(x:upperRight.x - 1, y:upperRight.y - 1)
+            let lowerRight = DiscreteStandardCoord(x:upperRight.x, y:upperRight.y - 1)
+            
+            let ur_path = isPathableWithinBounds(pathMap, coord:upperRight)
+            let ul_path = isPathableWithinBounds(pathMap, coord:upperLeft)
+            let ll_path = isPathableWithinBounds(pathMap, coord:lowerLeft)
+            let lr_path = isPathableWithinBounds(pathMap, coord:lowerRight)
+            
+            if (ur_path && ul_path && ll_path && lr_path)
             {
-                isCritical = false
-                decisionReached = true
+                shouldCheck = true
             }
         }
         
-        return (isCritical:isCritical, radius:radius)
+        if (shouldCheck)
+        {
+            var isCritical = false
+            var radius = 1
+            
+            var decisionReached = false
+            
+            while (!decisionReached)
+            {
+                // Start at radius 1 and keep increasing
+                let status = criticalStatus(pathMap, staggeredCenter:point, radius:radius)
+                
+                if (status == 0)
+                {
+                    radius++
+                }
+                else if (status == 1)
+                {
+                    isCritical = true
+                    decisionReached = true
+                }
+                else if (status == 2)
+                {
+                    isCritical = false
+                    decisionReached = true
+                }
+            }
+            
+            return (isCritical:isCritical, radius:radius)
+        }
+        else
+        {
+            return (isCritical:false, radius:0)
+        }
     }
     
-    // 0: keep expanding, 1: critical point found, 2: cancel
-    func sidesSurrounded(pathMap:Matrix2D<Bool>, staggeredCenter:DiscreteStaggeredCoord, radius:Int) -> Int
+    func surroundInfoForCorner(pathMap:Matrix2D<Bool>, staggeredCorner:DiscreteStaggeredCoord, radius:Int) -> ACTileSurround
     {
         var leftBounded = false
         var rightBounded = false
         var upperBounded = false
         var lowerBounded = false
         
-        let tileCenter_x = Int(Double(staggeredCenter.x - 1) / 2)
-        let tileCenter_y = Int(Double(staggeredCenter.y - 1) / 2)
+        let tileCenter_x = Int(Double(staggeredCorner.x) / 2)
+        let tileCenter_y = Int(Double(staggeredCorner.y) / 2)
+        let upperRight = DiscreteStandardCoord(x:tileCenter_x + radius-1, y:tileCenter_y + radius-1)
+        let sideDelta = (2*radius) - 1
+        
+        // Check the diagonals
+        let upperLeft = DiscreteStandardCoord(x:upperRight.x - sideDelta, y:upperRight.y)
+        let lowerRight = DiscreteStandardCoord(x:upperRight.x, y:upperRight.y - sideDelta)
+        let lowerLeft = DiscreteStandardCoord(x:upperRight.x - sideDelta, y:upperRight.y - sideDelta)
+        
+        let upperLeftBounded = (!pathMap.isWithinBounds(upperLeft.x, y:upperLeft.y) || !pathMap[upperLeft.x, upperLeft.y])
+        let upperRightBounded = (!pathMap.isWithinBounds(upperRight.x, y:upperRight.y) || !pathMap[upperRight.x, upperRight.y])
+        let lowerRightBounded = (!pathMap.isWithinBounds(lowerRight.x, y:lowerRight.y) || !pathMap[lowerRight.x, lowerRight.y])
+        let lowerLeftBounded = (!pathMap.isWithinBounds(lowerLeft.x, y:lowerLeft.y) || !pathMap[lowerLeft.x, lowerLeft.y])
+        
+        var cornerBoundCount = 0
+        
+        if (upperLeftBounded) { cornerBoundCount++ }
+        if (upperRightBounded) { cornerBoundCount++ }
+        if (lowerRightBounded) { cornerBoundCount++ }
+        if (lowerLeftBounded) { cornerBoundCount++ }
+        
+        if (radius > 1)
+        {
+            // Check all the elements of the left bound
+            for y in (lowerLeft.y + 1)...(upperLeft.y - 1)
+            {
+                if (!pathMap.isWithinBounds(lowerLeft.x, y:y) || !pathMap[lowerLeft.x, y])
+                {
+                    leftBounded = true
+                    break
+                }
+            }
+            
+            // Check all the elements of the right bound
+            for y in (lowerRight.y + 1)...(upperRight.y - 1)
+            {
+                if (!pathMap.isWithinBounds(lowerRight.x, y:y) || !pathMap[lowerRight.x, y])
+                {
+                    rightBounded = true
+                    break
+                }
+            }
+            
+            // Check all the elements of the upper bound
+            for x in (upperLeft.x + 1)...(upperRight.x - 1)
+            {
+                if (!pathMap.isWithinBounds(x, y:upperLeft.y) || !pathMap[x, upperLeft.y])
+                {
+                    upperBounded = true
+                    break
+                }
+            }
+            
+            // Check all the elements of the upper bound
+            for x in (lowerLeft.x + 1)...(lowerRight.x - 1)
+            {
+                if (!pathMap.isWithinBounds(x, y:lowerLeft.y) || !pathMap[x, lowerLeft.y])
+                {
+                    lowerBounded = true
+                    break
+                }
+            }
+        }
+        
+        var sideBoundCount = 0
+        
+        if (upperBounded) { sideBoundCount++ }
+        if (lowerBounded) { sideBoundCount++ }
+        if (leftBounded) { sideBoundCount++ }
+        if (rightBounded) { sideBoundCount++ }
+        
+        return ACTileSurround(left:leftBounded, right:rightBounded, up:upperBounded, down:lowerBounded, upperLeft:upperLeftBounded, upperRight:upperRightBounded, lowerRight:lowerRightBounded, lowerLeft:lowerLeftBounded, sides:sideBoundCount, corners:cornerBoundCount)
+    }
+    
+    func surroundInfoForMidpoint(pathMap:Matrix2D<Bool>, staggeredMidpoint:DiscreteStaggeredCoord, radius:Int) -> ACTileSurround
+    {
+        var leftBounded = false
+        var rightBounded = false
+        var upperBounded = false
+        var lowerBounded = false
+        
+        let tileCenter_x = Int(Double(staggeredMidpoint.x - 1) / 2)
+        let tileCenter_y = Int(Double(staggeredMidpoint.y - 1) / 2)
         let tileCenter = DiscreteStandardCoord(x:tileCenter_x, y:tileCenter_y)
         
         // Check the diagonals
@@ -273,8 +328,34 @@ public class StaggeredPointMap
         if (leftBounded) { sideBoundCount++ }
         if (rightBounded) { sideBoundCount++ }
         
-        let info = ACTileSurround(left:leftBounded, right:rightBounded, up:upperBounded, down:lowerBounded, upperLeft:upperLeftBounded, upperRight:upperRightBounded, lowerRight:lowerRightBounded, lowerLeft:lowerLeftBounded, sides:sideBoundCount, corners:cornerBoundCount)
+        return ACTileSurround(left:leftBounded, right:rightBounded, up:upperBounded, down:lowerBounded, upperLeft:upperLeftBounded, upperRight:upperRightBounded, lowerRight:lowerRightBounded, lowerLeft:lowerLeftBounded, sides:sideBoundCount, corners:cornerBoundCount)
+    }
+    
+    // 0: keep expanding, 1: critical point found, 2: cancel
+    func criticalStatus(pathMap:Matrix2D<Bool>, staggeredCenter:DiscreteStaggeredCoord, radius:Int) -> Int
+    {
+        let type = pointType(staggeredCenter)
         
+        var info:ACTileSurround
+        
+        if (type == .CORNER)
+        {
+            info = surroundInfoForCorner(pathMap, staggeredCorner:staggeredCenter, radius:radius)
+            return returnValueForInfo(info)
+        }
+        else if (type == .MID)
+        {
+            info = surroundInfoForMidpoint(pathMap, staggeredMidpoint:staggeredCenter, radius:radius)
+            return returnValueForInfo(info)
+        }
+        else
+        {
+            return 2
+        }
+    }
+    
+    func returnValueForInfo(info:ACTileSurround) -> Int
+    {
         var returnValue = 0
         
         if (info.corners == 0 && info.sides == 0)
@@ -304,5 +385,74 @@ public class StaggeredPointMap
         }
         
         return returnValue
+    }
+    
+    func pointType(point:DiscreteStaggeredCoord) -> PointType
+    {
+        return pointType(point.x, staggered_y:point.y)
+    }
+    
+    func pointType(staggered_x:Int, staggered_y:Int) -> PointType
+    {
+        let even_x = staggered_x % 2 == 0
+        let even_y = staggered_y % 2 == 0
+        
+        if (even_x && even_y)
+        {
+            return PointType.CORNER
+        }
+        else if (!even_x && !even_y)
+        {
+            return PointType.MID
+        }
+        else
+        {
+            return PointType.INVALID
+        }
+    }
+    
+    func isPathableWithinBounds(pathMap:Matrix2D<Bool>, coord:DiscreteStandardCoord) -> Bool
+    {
+        return pathMap.isWithinBounds(coord.x, y:coord.y) && pathMap[coord.x, coord.y]
+    }
+    
+    func strengthDistribution() -> [Int:Double]
+    {
+        var distribution = [Int:Double]()
+        var totalNonZeroPoints = 0.0
+        
+        for staggered_x in 0..<grid.xMax
+        {
+            for staggered_y in 0..<grid.yMax
+            {
+                let type = pointType(staggered_x, staggered_y:staggered_y)
+                
+                if (type != .INVALID)
+                {
+                    let strength = grid[staggered_x, staggered_y]
+                    if (strength > 0)
+                    {
+                        totalNonZeroPoints++
+                        
+                        // If it exists in our distribution
+                        if let currentCount = distribution[strength]
+                        {
+                            distribution[strength] = currentCount + 1
+                        }
+                        else
+                        {
+                            distribution[strength] = 1
+                        }
+                    }
+                }
+            }
+        }
+        
+        for (strength, value) in distribution
+        {
+            distribution[strength] = value / totalNonZeroPoints
+        }
+        
+        return distribution
     }
 }

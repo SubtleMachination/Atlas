@@ -10,6 +10,7 @@
 		2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DF1BBED9D8005C1A36 /* Images.xcassets */; };
 		2A08D7011BE3C73D0004A0D5 /* AnalysisScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A08D7001BE3C73D0004A0D5 /* AnalysisScene.swift */; };
 		2A15DE411BE30FAA002E4641 /* ACTileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A15DE401BE30FAA002E4641 /* ACTileButton.swift */; };
+		2A1677531BEAD7DB00CADA2C /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1677521BEAD7DB00CADA2C /* Stopwatch.swift */; };
 		2A2BD03D1BC6089700D6E80F /* IsoTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */; };
 		2A2BD03F1BC608A400D6E80F /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A2BD0401BC608A900D6E80F /* Matrix3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A30145C1BBF293400B91E5F /* Matrix3D.swift */; };
@@ -68,6 +69,7 @@
 		2A0537DF1BBED9D8005C1A36 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2A08D7001BE3C73D0004A0D5 /* AnalysisScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisScene.swift; sourceTree = "<group>"; };
 		2A15DE401BE30FAA002E4641 /* ACTileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileButton.swift; sourceTree = "<group>"; };
+		2A1677521BEAD7DB00CADA2C /* Stopwatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
 		2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileMap.swift; sourceTree = "<group>"; };
 		2A30145C1BBF293400B91E5F /* Matrix3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix3D.swift; sourceTree = "<group>"; };
 		2A3014671BC06ED600B91E5F /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */,
 				2AAD20B71BC9E53400D960FB /* ColorUtility.swift */,
 				2A96B2C11BD52BB50079B2F2 /* DirectoryUtility.swift */,
+				2A1677521BEAD7DB00CADA2C /* Stopwatch.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -414,6 +417,7 @@
 				2AB718981BE0393C00A75867 /* ACOpenMapView.swift in Sources */,
 				2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */,
 				2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */,
+				2A1677531BEAD7DB00CADA2C /* Stopwatch.swift in Sources */,
 				2A30145D1BBF293400B91E5F /* Matrix3D.swift in Sources */,
 				2AAD20B41BC9C07A00D960FB /* TileMapLayer.swift in Sources */,
 				2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */,
