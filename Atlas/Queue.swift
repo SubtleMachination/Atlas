@@ -65,4 +65,9 @@ class Queue<T>
         let nextValue = next?.value
         return nextValue
     }
+    
+    func isEmpty() -> Bool
+    {
+        return (count == 0)
+    }
 }

@@ -77,7 +77,8 @@ class Atlas
     //////////////////////////////////////////////////////////////////////////////////////////
     // Deliberate slowdown to a human-observable pace. 1 = 60fps, 2 = 30fps, 3 = 20fps...
     var tick:Int = 0
-    var tickSkip:Int = 1
+    var actionRateLimit:Int = 5
+    var thoughRateLimit:Int = 2
     //////////////////////////////////////////////////////////////////////////////////////////
     
     var runningState:RunningState = RunningState.HALTED
@@ -86,6 +87,8 @@ class Atlas
     
     var tasks:Queue<Task>
     var actions:Queue<Action>
+    
+    var actionThreshold:Int
     var currentTask:Task?
     
     init()
@@ -95,6 +98,8 @@ class Atlas
         
         tasks = Queue<Task>()
         actions = Queue<Action>()
+        
+        actionThreshold = 10
 
         centralLogicTimer = NSTimer()
         initializeCentralLogicTimer()
@@ -111,49 +116,76 @@ class Atlas
     
     @objc func logicalCore(timer: NSTimer)
     {
-        tick = (tick > 10000) ? 0 : tick
+        incrementTick()
+        
+//        print("LC")
         
         if (runningState == .RUNNING)
         {
             // Perform a single action (rate-limited)
-            if (tick % tickSkip == 0)
+            if (tick % actionRateLimit == 0)
             {
-                if let nextAction = actions.dequeue()
+                if (!actions.isEmpty())
                 {
-                    performAction(nextAction)
+                    performAction(actions.dequeue()!)
                 }
             }
             
-            // Decide what to do next
             if (operatingState == .READY)
             {
-                if (tasks.count == 0)
+                if (tick % thoughRateLimit == 0)
                 {
-                    // No more tasks, halt.
-                    self.pause()
-                }
-                else
-                {
-                    getNextTask()
-                    proceedWithTask()
+                    // Decide what to do next
+                    if (tasks.count == 0)
+                    {
+                        // No more tasks, halt.
+                        self.pause()
+                    }
+                    else
+                    {
+                        if (actions.count < actionThreshold)
+                        {
+                            getNextTask()
+                            proceedWithTask()
+                        }
+                        else
+                        {
+                            // Hold your horses -- you've got too many actions queued up.
+                            // Give them a chance to clear out before you decide what to do next.
+//                            print("Holding up")
+                        }
+                    }
                 }
             }
         }
     }
     
+    func incrementTick()
+    {
+        tick++
+        tick = (tick > 10000) ? 0 : tick
+    }
+    
     // Assumes that Atlas CAN and SHOULD act
     func proceedWithTask()
     {
-        print("    Proceeding with Task")
+//        print("    Proceeding with Task")
+        operatingState = .BUSY
         
+        // Let's take a look at the next task on our list
         if (currentTask!.type == .RANDOMNESS)
         {
-            operatingState = .BUSY
+            // It's a square. How's our square coming, by the way?
             
-            randomAction()
-            
-            operatingState = .READY
+            // Let's perform 1000 random actions to stress the logical core.
+            // In theory, that could end up making a perfect square, right? ... right?
+            for _ in 1...100
+            {
+                randomAction()
+            }
         }
+        
+        operatingState = .READY
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -184,7 +216,7 @@ class Atlas
         let randomValue = randIntBetween(tileInfo.min, stop:tileInfo.max)
         
         let action = Action(x:randomX, y:randomY, val:randomValue)
-        performAction(action)
+        actions.enqueue(action)
     }
     
     // Assumes that Atlas CAN and SHOULD act
