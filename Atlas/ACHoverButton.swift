@@ -67,6 +67,11 @@ class ACHoverButton : SKNode
         self.addChild(clickable)
     }
     
+    func switchIcon(newIconName:String)
+    {
+        icon.texture = SKTexture(imageNamed:"\(newIconName).png")
+    }
+    
     func setButtonDelegate(delegate:ButtonDelegate)
     {
         self.delegate = delegate

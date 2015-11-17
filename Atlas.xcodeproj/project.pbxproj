@@ -9,8 +9,12 @@
 /* Begin PBXBuildFile section */
 		2A0537E01BBED9D8005C1A36 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A0537DF1BBED9D8005C1A36 /* Images.xcassets */; };
 		2A08D7011BE3C73D0004A0D5 /* AnalysisScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A08D7001BE3C73D0004A0D5 /* AnalysisScene.swift */; };
+		2A1566201BF43BBF0046C63B /* SimilarityScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A15661F1BF43BBF0046C63B /* SimilarityScene.swift */; };
 		2A15DE411BE30FAA002E4641 /* ACTileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A15DE401BE30FAA002E4641 /* ACTileButton.swift */; };
 		2A1677531BEAD7DB00CADA2C /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1677521BEAD7DB00CADA2C /* Stopwatch.swift */; };
+		2A1677561BEAE15D00CADA2C /* CreationScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1677551BEAE15D00CADA2C /* CreationScene.swift */; };
+		2A1677581BEAFA2200CADA2C /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A1677571BEAFA2200CADA2C /* pause.png */; };
+		2A16775A1BEB00B400CADA2C /* CryptStaticTileset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A1677591BEB00B400CADA2C /* CryptStaticTileset.plist */; };
 		2A2BD03D1BC6089700D6E80F /* IsoTileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */; };
 		2A2BD03F1BC608A400D6E80F /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A2BD0401BC608A900D6E80F /* Matrix3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A30145C1BBF293400B91E5F /* Matrix3D.swift */; };
@@ -23,6 +27,8 @@
 		2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */; };
 		2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */; };
 		2A3B5C051BE854F4002E4B78 /* Common.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 2A3B5C041BE854F4002E4B78 /* Common.atlas */; };
+		2A5245CF1BFA9BC1006721B5 /* Atlas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5245CE1BFA9BC1006721B5 /* Atlas.swift */; };
+		2A5245D11BFA9ED2006721B5 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5245D01BFA9ED2006721B5 /* Stack.swift */; };
 		2A5A8A1A1BE074A1001C3470 /* ACQuickButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */; };
 		2A67BEAA1BE093C20057C790 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A67BEA91BE093C20057C790 /* add.png */; };
 		2A67BEAC1BE117B60057C790 /* ACNewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A67BEAB1BE117B60057C790 /* ACNewMapView.swift */; };
@@ -37,6 +43,7 @@
 		2A96B2C21BD52BB50079B2F2 /* DirectoryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A96B2C11BD52BB50079B2F2 /* DirectoryUtility.swift */; };
 		2A97217A1BCD7E8900CB282E /* Tileset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9721791BCD7E8900CB282E /* Tileset.swift */; };
 		2A97217F1BCD7F0900CB282E /* CryptTileset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A97217E1BCD7F0900CB282E /* CryptTileset.plist */; };
+		2AA5AF8C1BEBCA86007BC950 /* IntUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA5AF8B1BEBCA86007BC950 /* IntUtility.swift */; };
 		2AA690051BCF4676005D0D61 /* Crypt.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 2AA690041BCF4676005D0D61 /* Crypt.atlas */; };
 		2AABE78B1BBDE35B00CBF170 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE7891BBDE35B00CBF170 /* MainMenu.xib */; };
 		2AABE7941BBDE9BF00CBF170 /* 16.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AABE78D1BBDE9BF00CBF170 /* 16.png */; };
@@ -52,7 +59,10 @@
 		2AB718981BE0393C00A75867 /* ACOpenMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB718971BE0393C00A75867 /* ACOpenMapView.swift */; };
 		2ABD826A1BDB3D8F001AA63A /* load.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ABD82681BDB3D8F001AA63A /* load.png */; };
 		2ABD826B1BDB3D8F001AA63A /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ABD82691BDB3D8F001AA63A /* save.png */; };
+		2ACD1ECB1BFA608400B5A48E /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ACD1ECA1BFA608400B5A48E /* play.png */; };
+		2ACD1ECD1BFA608800B5A48E /* step.png in Resources */ = {isa = PBXBuildFile; fileRef = 2ACD1ECC1BFA608800B5A48E /* step.png */; };
 		2AD821811BE7D330006BB1C8 /* CryptAnalysisTileset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AD821801BE7D330006BB1C8 /* CryptAnalysisTileset.plist */; };
+		2AE11A6A1BFBA8F100ADD36B /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE11A691BFBA8F100ADD36B /* Queue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,8 +78,12 @@
 /* Begin PBXFileReference section */
 		2A0537DF1BBED9D8005C1A36 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2A08D7001BE3C73D0004A0D5 /* AnalysisScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisScene.swift; sourceTree = "<group>"; };
+		2A15661F1BF43BBF0046C63B /* SimilarityScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimilarityScene.swift; sourceTree = "<group>"; };
 		2A15DE401BE30FAA002E4641 /* ACTileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACTileButton.swift; sourceTree = "<group>"; };
 		2A1677521BEAD7DB00CADA2C /* Stopwatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
+		2A1677551BEAE15D00CADA2C /* CreationScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreationScene.swift; sourceTree = "<group>"; };
+		2A1677571BEAFA2200CADA2C /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pause.png; path = "Resources/UI Icons/pause.png"; sourceTree = "<group>"; };
+		2A1677591BEB00B400CADA2C /* CryptStaticTileset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = CryptStaticTileset.plist; path = Resources/Tilesets/CryptStaticTileset.plist; sourceTree = "<group>"; };
 		2A3014591BBF0D5200B91E5F /* IsoTileMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoTileMap.swift; sourceTree = "<group>"; };
 		2A30145C1BBF293400B91E5F /* Matrix3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix3D.swift; sourceTree = "<group>"; };
 		2A3014671BC06ED600B91E5F /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
@@ -77,6 +91,8 @@
 		2A31087C1BBEDFDD006CBA48 /* RandomUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomUtility.swift; sourceTree = "<group>"; };
 		2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix2D.swift; sourceTree = "<group>"; };
 		2A3B5C041BE854F4002E4B78 /* Common.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = Common.atlas; path = Resources/Common.atlas; sourceTree = "<group>"; };
+		2A5245CE1BFA9BC1006721B5 /* Atlas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Atlas.swift; sourceTree = "<group>"; };
+		2A5245D01BFA9ED2006721B5 /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		2A5A8A191BE074A1001C3470 /* ACQuickButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACQuickButton.swift; sourceTree = "<group>"; };
 		2A67BEA91BE093C20057C790 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add.png; path = "Resources/UI Icons/add.png"; sourceTree = "<group>"; };
 		2A67BEAB1BE117B60057C790 /* ACNewMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACNewMapView.swift; sourceTree = "<group>"; };
@@ -95,6 +111,7 @@
 		2A96B2C11BD52BB50079B2F2 /* DirectoryUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryUtility.swift; sourceTree = "<group>"; };
 		2A9721791BCD7E8900CB282E /* Tileset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tileset.swift; sourceTree = "<group>"; };
 		2A97217E1BCD7F0900CB282E /* CryptTileset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = CryptTileset.plist; path = Resources/Tilesets/CryptTileset.plist; sourceTree = "<group>"; };
+		2AA5AF8B1BEBCA86007BC950 /* IntUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntUtility.swift; sourceTree = "<group>"; };
 		2AA690041BCF4676005D0D61 /* Crypt.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = Crypt.atlas; path = Resources/Tilesets/Crypt.atlas; sourceTree = "<group>"; };
 		2AABE78A1BBDE35B00CBF170 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		2AABE78D1BBDE9BF00CBF170 /* 16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 16.png; path = Resources/Icons/16.png; sourceTree = "<group>"; };
@@ -110,7 +127,10 @@
 		2AB718971BE0393C00A75867 /* ACOpenMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACOpenMapView.swift; sourceTree = "<group>"; };
 		2ABD82681BDB3D8F001AA63A /* load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = load.png; path = "Resources/UI Icons/load.png"; sourceTree = "<group>"; };
 		2ABD82691BDB3D8F001AA63A /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = save.png; path = "Resources/UI Icons/save.png"; sourceTree = "<group>"; };
+		2ACD1ECA1BFA608400B5A48E /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = play.png; path = "Resources/UI Icons/play.png"; sourceTree = "<group>"; };
+		2ACD1ECC1BFA608800B5A48E /* step.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = step.png; path = "Resources/UI Icons/step.png"; sourceTree = "<group>"; };
 		2AD821801BE7D330006BB1C8 /* CryptAnalysisTileset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = CryptAnalysisTileset.plist; path = Resources/Tilesets/CryptAnalysisTileset.plist; sourceTree = "<group>"; };
+		2AE11A691BFBA8F100ADD36B /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +177,8 @@
 				2A3108811BBEEBA1006CBA48 /* Matrix2D.swift */,
 				2A30145C1BBF293400B91E5F /* Matrix3D.swift */,
 				2A3014671BC06ED600B91E5F /* Coordinate.swift */,
+				2A5245D01BFA9ED2006721B5 /* Stack.swift */,
+				2AE11A691BFBA8F100ADD36B /* Queue.swift */,
 			);
 			name = "Data Structures";
 			sourceTree = "<group>";
@@ -166,6 +188,14 @@
 			children = (
 			);
 			name = Analysis;
+			sourceTree = "<group>";
+		};
+		2A5245CD1BFA9BAD006721B5 /* Atlas Engine */ = {
+			isa = PBXGroup;
+			children = (
+				2A5245CE1BFA9BC1006721B5 /* Atlas.swift */,
+			);
+			name = "Atlas Engine";
 			sourceTree = "<group>";
 		};
 		2A8715931BDBD3230056A814 /* UI */ = {
@@ -202,6 +232,7 @@
 		2A93C7BB1BBCB4DF00B8291E /* Atlas */ = {
 			isa = PBXGroup;
 			children = (
+				2A5245CD1BFA9BAD006721B5 /* Atlas Engine */,
 				2A51389F1BE3C38D00C1700D /* Analysis */,
 				2A30145B1BBF23D000B91E5F /* View */,
 				2A3014581BBF0D3D00B91E5F /* Model */,
@@ -211,6 +242,8 @@
 				2A93C7BC1BBCB4DF00B8291E /* AppDelegate.swift */,
 				2A93C7BE1BBCB4DF00B8291E /* EditorScene.swift */,
 				2A08D7001BE3C73D0004A0D5 /* AnalysisScene.swift */,
+				2A15661F1BF43BBF0046C63B /* SimilarityScene.swift */,
+				2A1677551BEAE15D00CADA2C /* CreationScene.swift */,
 				2AABE7891BBDE35B00CBF170 /* MainMenu.xib */,
 				2A93C7C71BBCB4DF00B8291E /* Info.plist */,
 				2A0537DF1BBED9D8005C1A36 /* Images.xcassets */,
@@ -255,9 +288,12 @@
 		2ABD82671BDB3D74001AA63A /* UI Icons */ = {
 			isa = PBXGroup;
 			children = (
+				2A1677571BEAFA2200CADA2C /* pause.png */,
+				2ACD1ECA1BFA608400B5A48E /* play.png */,
 				2A67BEA91BE093C20057C790 /* add.png */,
 				2ABD82681BDB3D8F001AA63A /* load.png */,
 				2ABD82691BDB3D8F001AA63A /* save.png */,
+				2ACD1ECC1BFA608800B5A48E /* step.png */,
 			);
 			name = "UI Icons";
 			sourceTree = "<group>";
@@ -266,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				2A97217E1BCD7F0900CB282E /* CryptTileset.plist */,
+				2A1677591BEB00B400CADA2C /* CryptStaticTileset.plist */,
 				2AD821801BE7D330006BB1C8 /* CryptAnalysisTileset.plist */,
 				2AA690041BCF4676005D0D61 /* Crypt.atlas */,
 			);
@@ -282,6 +319,7 @@
 				2AAD20B71BC9E53400D960FB /* ColorUtility.swift */,
 				2A96B2C11BD52BB50079B2F2 /* DirectoryUtility.swift */,
 				2A1677521BEAD7DB00CADA2C /* Stopwatch.swift */,
+				2AA5AF8B1BEBCA86007BC950 /* IntUtility.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -374,12 +412,16 @@
 				2A3B5C051BE854F4002E4B78 /* Common.atlas in Resources */,
 				2AABE7961BBDE9BF00CBF170 /* 64.png in Resources */,
 				2AABE7991BBDE9BF00CBF170 /* 512.png in Resources */,
+				2A16775A1BEB00B400CADA2C /* CryptStaticTileset.plist in Resources */,
 				2AABE78B1BBDE35B00CBF170 /* MainMenu.xib in Resources */,
 				2AABE7971BBDE9BF00CBF170 /* 128.png in Resources */,
+				2ACD1ECD1BFA608800B5A48E /* step.png in Resources */,
 				2ABD826B1BDB3D8F001AA63A /* save.png in Resources */,
+				2ACD1ECB1BFA608400B5A48E /* play.png in Resources */,
 				2A97217F1BCD7F0900CB282E /* CryptTileset.plist in Resources */,
 				2ABD826A1BDB3D8F001AA63A /* load.png in Resources */,
 				2AD821811BE7D330006BB1C8 /* CryptAnalysisTileset.plist in Resources */,
+				2A1677581BEAFA2200CADA2C /* pause.png in Resources */,
 				2AABE7951BBDE9BF00CBF170 /* 32.png in Resources */,
 				2AABE7941BBDE9BF00CBF170 /* 16.png in Resources */,
 			);
@@ -403,22 +445,28 @@
 				2AAD20B81BC9E53400D960FB /* ColorUtility.swift in Sources */,
 				2A7FC0E91BE2952C001A800A /* ACSaveMapView.swift in Sources */,
 				2A15DE411BE30FAA002E4641 /* ACTileButton.swift in Sources */,
+				2A1677561BEAE15D00CADA2C /* CreationScene.swift in Sources */,
 				2A766CD41BC94C01002C003D /* ACEaseUtility.swift in Sources */,
 				2A97217A1BCD7E8900CB282E /* Tileset.swift in Sources */,
 				2A766CD01BC77303002C003D /* ACTicker.swift in Sources */,
+				2AA5AF8C1BEBCA86007BC950 /* IntUtility.swift in Sources */,
 				2A5A8A1A1BE074A1001C3470 /* ACQuickButton.swift in Sources */,
 				2A67BEAC1BE117B60057C790 /* ACNewMapView.swift in Sources */,
 				2AACB2591BE7FFD100F47643 /* StaggeredPointMap.swift in Sources */,
+				2A1566201BF43BBF0046C63B /* SimilarityScene.swift in Sources */,
 				2A08D7011BE3C73D0004A0D5 /* AnalysisScene.swift in Sources */,
 				2A96B2C21BD52BB50079B2F2 /* DirectoryUtility.swift in Sources */,
+				2A5245CF1BFA9BC1006721B5 /* Atlas.swift in Sources */,
 				2A93C7BF1BBCB4DF00B8291E /* EditorScene.swift in Sources */,
 				2A766CD61BC980BD002C003D /* StandardTileMap.swift in Sources */,
 				2A3108821BBEEBA1006CBA48 /* Matrix2D.swift in Sources */,
 				2AB718981BE0393C00A75867 /* ACOpenMapView.swift in Sources */,
 				2A31087B1BBEDFA7006CBA48 /* SKSpriteNodeUtility.swift in Sources */,
 				2A93C7BD1BBCB4DF00B8291E /* AppDelegate.swift in Sources */,
+				2A5245D11BFA9ED2006721B5 /* Stack.swift in Sources */,
 				2A1677531BEAD7DB00CADA2C /* Stopwatch.swift in Sources */,
 				2A30145D1BBF293400B91E5F /* Matrix3D.swift in Sources */,
+				2AE11A6A1BFBA8F100ADD36B /* Queue.swift in Sources */,
 				2AAD20B41BC9C07A00D960FB /* TileMapLayer.swift in Sources */,
 				2A31087D1BBEDFDD006CBA48 /* RandomUtility.swift in Sources */,
 				2A3014681BC06ED600B91E5F /* Coordinate.swift in Sources */,

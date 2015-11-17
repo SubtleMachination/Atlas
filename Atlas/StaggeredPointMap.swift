@@ -32,6 +32,17 @@ public class StaggeredPointMap
         grid = Matrix2D<Int>(xMax:(xTileWidth*2)+1, yMax:(yTileHeight*2)+1, filler:filler)
     }
     
+    func fill(value:Int)
+    {
+        for x in 0..<grid.xMax
+        {
+            for y in 0..<grid.yMax
+            {
+                grid[x,y] = value
+            }
+        }
+    }
+    
     // Checks whether the staggered coord is within bounds (also must be valid -- both even or both odd)
     func isWithinBounds(coord:DiscreteStaggeredCoord) -> Bool
     {
@@ -363,16 +374,21 @@ public class StaggeredPointMap
             // Keep expanding
             returnValue = 0
         }
+        else if (info.hasEmptyCornerWithOccupiedSide())
+        {
+            // Critical point
+            returnValue = 1
+        }
         else if (info.corners == 4 || info.sides > 2)
         {
             // Critical point
             returnValue = 1
         }
-        else if (info.oppositeCorners() && info.sidesBetweenCorners() < info.sides)
-        {
-            // Critical point
-            returnValue = 1
-        }
+//        else if (info.oppositeCorners() && info.sidesBetweenCorners() < info.sides)
+//        {
+//            // Critical point
+//            returnValue = 1
+//        }
         else if (info.oppositeSides())
         {
             // Critical point
@@ -430,6 +446,7 @@ public class StaggeredPointMap
                 if (type != .INVALID)
                 {
                     let strength = grid[staggered_x, staggered_y]
+                    
                     if (strength > 0)
                     {
                         totalNonZeroPoints++

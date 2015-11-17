@@ -208,6 +208,33 @@ public struct ACTileSurround
     
         return sidesBetween
     }
+    
+    func hasEmptyCornerWithOccupiedSide() -> Bool
+    {
+        var emptyCornerWithOccupiedSide = false
+        
+        if (corners == 3)
+        {
+            if !upperLeft
+            {
+                emptyCornerWithOccupiedSide = left || up
+            }
+            else if !upperRight
+            {
+                emptyCornerWithOccupiedSide = right || up
+            }
+            else if !lowerRight
+            {
+                emptyCornerWithOccupiedSide = right || down
+            }
+            else if !lowerLeft
+            {
+                emptyCornerWithOccupiedSide = left || down
+            }
+        }
+        
+        return emptyCornerWithOccupiedSide
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

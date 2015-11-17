@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate
     
     func applicationDidFinishLaunching(aNotification: NSNotification)
     {
-        let scene = AnalysisScene(size:(window.contentView?.frame.size)!)
+        let scene = CreationScene(size:(window.contentView?.frame.size)!)
         
         scene.scaleMode = .AspectFill
         

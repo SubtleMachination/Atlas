@@ -58,14 +58,15 @@ class AnalysisScene: SKScene, ButtonDelegate, ACMapOpenerDelegate
         ui_analyzeButton.zPosition = 1001
         
         tileMap = StandardTileMap()
-        tileMapView = TileMapLayer(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(35), tileHeight:CGFloat(35), tileMap:tileMap)
+        tileMapView = TileMapLayer(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(30), tileHeight:CGFloat(30), tileMap:tileMap)
         
         self.ticker = ACTicker()
         ticker.addTickable(tileMapView)
         
         super.init(size:size)
         
-        reloadMap(nil)
+//        reloadMap(nil)
+        reloadRandom(20, y:15)
         
         ui_loadButton.setButtonDelegate(self)
         ui_analyzeButton.setButtonDelegate(self)
@@ -150,6 +151,16 @@ class AnalysisScene: SKScene, ButtonDelegate, ACMapOpenerDelegate
         }
     }
     
+    func reloadRandom(x:Int, y:Int)
+    {
+        let plistName = (mode == .Analyze) ? "CryptAnalysisTileset" : "CryptTileset"
+        let tileset = Tileset(plistName:plistName)
+        
+        tileMap.loadRandom(x, yMax:y)
+        
+        tileMapView.reloadMapWithNewTileset(tileset)
+    }
+    
     func reloadMap(name:String?)
     {
         let plistName = (mode == .Analyze) ? "CryptAnalysisTileset" : "CryptTileset"
@@ -165,6 +176,11 @@ class AnalysisScene: SKScene, ButtonDelegate, ACMapOpenerDelegate
         }
         
         tileMapView.reloadMapWithNewTileset(tileset)
+        
+//        for (strength, value) in tileMapView.flowMap.strengthDistribution()
+//        {
+//            print("\(strength): \(value)")
+//        }
     }
     
     func analyzeMap()

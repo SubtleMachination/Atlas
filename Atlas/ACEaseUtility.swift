@@ -57,6 +57,42 @@ func scaleToSize(node:SKSpriteNode, size:CGSize, duration:CGFloat, type:CurveTyp
     return SKAction.customActionWithDuration(NSTimeInterval(duration), actionBlock:actionBlock)
 }
 
+func moveTo(node:SKNode, destination:CGPoint, duration:CGFloat, type:CurveType) -> SKAction
+{
+    let initial_x = node.position.x
+    let initial_y = node.position.y
+    
+    let actionBlock = {(node:SKNode, elapsedTime:CGFloat) -> Void in
+        let t = elapsedTime/duration
+        let d = applyCurve(t, type:type)
+        let new_x = initial_x*(1-d) + destination.x * d
+        let new_y = initial_y*(1-d) + destination.y * d
+        
+        node.position.x = new_x
+        node.position.y = new_y
+    }
+    
+    return SKAction.customActionWithDuration(NSTimeInterval(duration), actionBlock:actionBlock)
+}
+
+func moveBy(node:SKNode, delta:CGPoint, duration:CGFloat, type:CurveType) -> SKAction
+{
+    let initial_x = node.position.x
+    let initial_y = node.position.y
+    
+    let actionBlock = {(node:SKNode, elapsedTime:CGFloat) -> Void in
+        let t = elapsedTime/duration
+        let d = applyCurve(t, type:type)
+        let new_x = initial_x + (delta.x * d)
+        let new_y = initial_y + (delta.y * d)
+        
+        node.position.x = new_x
+        node.position.y = new_y
+    }
+    
+    return SKAction.customActionWithDuration(NSTimeInterval(duration), actionBlock:actionBlock)
+}
+
 func fadeTo(node:SKNode, alpha:CGFloat, duration:CGFloat, type:CurveType) -> SKAction
 {
     let initialAlpha = node.alpha

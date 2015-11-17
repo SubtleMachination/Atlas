@@ -16,6 +16,7 @@ public class StandardTileMap
 {
     var grid:Matrix2D<Int>
     var dimensions:DiscreteStandardCoord
+    var updateNeeded:Bool
 
     // "Default" map
     convenience init()
@@ -27,6 +28,7 @@ public class StandardTileMap
     {
         grid = Matrix2D<Int>(xMax:x, yMax:y, filler:filler)
         dimensions = DiscreteStandardCoord(x:x, y:y)
+        updateNeeded = false
     }
     
     func fetchDimensions() -> DiscreteStandardCoord
@@ -70,8 +72,22 @@ public class StandardTileMap
     {
         if (grid.isWithinBounds(x, y:y))
         {
-            grid[x,y] = value
+            if (value != grid[x,y])
+            {
+                grid[x,y] = value
+                updateNeeded = true
+            }
         }
+    }
+    
+    func randomTile() -> DiscreteStandardCoord
+    {
+        return DiscreteStandardCoord(x:randIntBetween(0, stop:grid.xMax-1), y:randIntBetween(0, stop:grid.yMax-1))
+    }
+    
+    func clearChanges()
+    {
+        updateNeeded = false
     }
     
     // 0: unpathable, 1: pathable
@@ -93,6 +109,40 @@ public class StandardTileMap
         return paths
     }
     
+    // 0.0 = anti-symmetric, 1.0 = fully-symmetric
+    func computeSymmetry() -> Double
+    {
+        var symmetricTileCount = 0
+        var totalTileCount = 0
+        
+        // Because this is symmetry, we only need to compute for half of the map
+        let horizontal_center = Int(floor(Double(grid.xMax)/2))
+        
+        for x in 0..<horizontal_center
+        {
+            for y in 0..<grid.yMax
+            {
+                let coord = DiscreteStandardCoord(x:x, y:y)
+                let value = tileAt(coord)!
+                let symmetricValue = tileAt(symmetricPos(coord))
+                
+                if (value == symmetricValue)
+                {
+                    symmetricTileCount++
+                }
+                
+                totalTileCount++
+            }
+        }
+        
+        return Double(symmetricTileCount) / Double(totalTileCount)
+    }
+    
+    func symmetricPos(origin:DiscreteStandardCoord) -> DiscreteStandardCoord
+    {
+        return DiscreteStandardCoord(x:(grid.xMax - 1) - origin.x, y:origin.y)
+    }
+    
     //////////////////////////////////////////////////////////////////////////////////////////
     // Load TileMap from File
     //////////////////////////////////////////////////////////////////////////////////////////
@@ -107,6 +157,20 @@ public class StandardTileMap
     {
         grid = Matrix2D<Int>(xMax:xMax, yMax:yMax, filler:filler)
         dimensions = DiscreteStandardCoord(x:xMax, y:yMax)
+    }
+    
+    func loadRandom(xMax:Int, yMax:Int)
+    {
+        grid = Matrix2D<Int>(xMax:xMax, yMax:yMax, filler:0)
+        dimensions = DiscreteStandardCoord(x:xMax, y:yMax)
+        
+        for x in 0..<xMax
+        {
+            for y in 0..<yMax
+            {
+                grid[x, y] = randIntBetween(0, stop:2)
+            }
+        }
     }
     
     func loadFromFile(mapName:String)

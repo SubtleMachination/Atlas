@@ -154,14 +154,14 @@ public class TileMapLayer : SKNode, ACTickable
     
     func changeTilesetAndRefresh(tileset:Tileset)
     {
+        changeTileset(tileset)
+        refreshVisuals()
+    }
+    
+    func changeTileset(tileset:Tileset)
+    {
         self.tileset = tileset
         self.tilesetAtlas = SKTextureAtlas(named:self.tileset.atlas)
-        
-        removeAllTiles()
-        regenerateTiles(false)
-        
-        removeAllPoints()
-        regeneratePoints()
     }
     
     func reloadMap()
@@ -169,15 +169,36 @@ public class TileMapLayer : SKNode, ACTickable
         // Defaults to the center of the map
         cameraPos = StandardCoord(x:Double(tileMap.fetchDimensions().x)/2, y:Double(tileMap.fetchDimensions().y)/2)
         
+        refreshTiles()
+        
+        // Regenerate flow map from current tileMap
+        flowMap = StaggeredPointMap(xTileWidth:tileMap.fetchDimensions().x, yTileHeight:tileMap.fetchDimensions().y, filler:0)
+        recalculateFlows()
+        refreshFlows()
+    }
+    
+    func refreshVisuals()
+    {
+        refreshTiles()
+        refreshFlows()
+    }
+    
+    func recalculateFlows()
+    {
+        flowMap.fill(0)
+        flowMap.computeSkeletonFromPathMap(tileMap.binaryPaths())
+    }
+    
+    func refreshTiles()
+    {
         updateTileViewBounds()
         
         removeAllTiles()
         regenerateTiles(false)
-        
-        // Regenerate flow map from current tileMap
-        flowMap = StaggeredPointMap(xTileWidth:tileMap.fetchDimensions().x, yTileHeight:tileMap.fetchDimensions().y, filler:0)
-        flowMap.computeSkeletonFromPathMap(tileMap.binaryPaths())
-        
+    }
+    
+    func refreshFlows()
+    {
         updateFlowViewBounds()
         
         removeAllPoints()
@@ -233,16 +254,21 @@ public class TileMapLayer : SKNode, ACTickable
         {
             for staggered_y in flowViewBounds.down...flowViewBounds.up
             {
-                let x_even = staggered_x % 2 == 0
-                let y_even = staggered_y % 2 == 0
-                
-                if ((x_even && y_even) || (!x_even && !y_even))
+                if (flowMap.isWithinBounds(staggered_x, staggered_y:staggered_y))
                 {
-                    let staggered_coord = DiscreteStaggeredCoord(x:staggered_x, y:staggered_y)
+                    let type = flowMap.pointType(staggered_x, staggered_y:staggered_y)
                     
-                    if flowPoints[staggered_coord] == nil
+                    if (type != .INVALID)
                     {
-                        addPointToView(staggered_coord)
+                        let staggered_coord = DiscreteStaggeredCoord(x:staggered_x, y:staggered_y)
+                        
+                        if (flowMap.tileAt(staggered_coord)! > 0)
+                        {
+                            if flowPoints[staggered_coord] == nil
+                            {
+                                addPointToView(staggered_coord)
+                            }
+                        }
                     }
                 }
             }
