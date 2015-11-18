@@ -46,16 +46,32 @@ struct Action
     var x:Int
     var y:Int
     var val:Int
+    var relatedTask:Task
 }
 
 enum TaskType
 {
-    case RANDOMNESS, SQUARE, RECTANGLE, CONNECTOBJECTS
+    case RANDOMNESS, BUNCHOFROOMS, ROOM, CONNECTROOMS
 }
 
-struct Task
+class Task
 {
     let type:TaskType
+    var subtasks:[Task]
+    var completed:Bool
+    var supertask:Task?
+    
+    init(type:TaskType)
+    {
+        self.type = type
+        self.subtasks = [Task]()
+        self.completed = false
+    }
+}
+
+struct Region
+{
+    
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,8 +134,6 @@ class Atlas
     {
         incrementTick()
         
-//        print("LC")
-        
         if (runningState == .RUNNING)
         {
             // Perform a single action (rate-limited)
@@ -136,24 +150,32 @@ class Atlas
                 if (tick % thoughRateLimit == 0)
                 {
                     // Decide what to do next
-                    if (tasks.count == 0)
-                    {
-                        // No more tasks, halt.
-                        self.pause()
-                    }
-                    else
+                    if (tasks.count > 0)
                     {
                         if (actions.count < actionThreshold)
                         {
                             getNextTask()
-                            proceedWithTask()
+                            
+                            if (currentTask != nil)
+                            {
+                                proceedWithTask()
+                            }
+                            else
+                            {
+                                // All tasks completed. Wait for further instructions
+                                print("JOB DONE!")
+                                pause()
+                            }
                         }
                         else
                         {
                             // Hold your horses -- you've got too many actions queued up.
                             // Give them a chance to clear out before you decide what to do next.
-//                            print("Holding up")
                         }
+                    }
+                    else
+                    {
+                        
                     }
                 }
             }
@@ -169,23 +191,65 @@ class Atlas
     // Assumes that Atlas CAN and SHOULD act
     func proceedWithTask()
     {
-//        print("    Proceeding with Task")
         operatingState = .BUSY
         
         // Let's take a look at the next task on our list
-        if (currentTask!.type == .RANDOMNESS)
+        if (currentTask!.type == .BUNCHOFROOMS)
         {
-            // It's a square. How's our square coming, by the way?
-            
-            // Let's perform 1000 random actions to stress the logical core.
-            // In theory, that could end up making a perfect square, right? ... right?
-            for _ in 1...100
+            // Break the task down into subtasks
+            let roomCount = randIntBetween(3, stop:5)
+            for _ in 0..<roomCount
             {
-                randomAction()
+                let roomTask = Task(type:TaskType.ROOM)
+                roomTask.supertask = currentTask
+                
+                currentTask!.subtasks.append(roomTask)
             }
         }
         
+        if (currentTask!.type == .ROOM)
+        {
+            createRandomRectangle()
+            currentTask!.completed = true
+        }
+        
         operatingState = .READY
+    }
+    
+    
+    func createRandomSquare()
+    {
+        // Right now, not very sensitive to what is already on the board
+        let randomRadius = randIntBetween(1, stop:3)
+        let randomCenterX = randIntBetween(0+randomRadius, stop:bounds.width-1-randomRadius)
+        let randomCenterY = randIntBetween(0+randomRadius, stop:bounds.height-1-randomRadius)
+        
+        for x in randomCenterX-randomRadius...randomCenterX+randomRadius
+        {
+            for y in randomCenterY-randomRadius...randomCenterY+randomRadius
+            {
+                let action = Action(x:x, y:y, val:1, relatedTask:currentTask!)
+                actions.enqueue(action)
+            }
+        }
+    }
+    
+    func createRandomRectangle()
+    {
+        // Right now, not very sensitive to what is already on the board
+        let randomXRadius = randIntBetween(1, stop:3)
+        let randomYRadius = randIntBetween(1, stop:3)
+        let randomCenterX = randIntBetween(0+randomXRadius, stop:bounds.width-1-randomXRadius)
+        let randomCenterY = randIntBetween(0+randomYRadius, stop:bounds.height-1-randomYRadius)
+        
+        for x in randomCenterX-randomXRadius...randomCenterX+randomXRadius
+        {
+            for y in randomCenterY-randomYRadius...randomCenterY+randomYRadius
+            {
+                let action = Action(x:x, y:y, val:1, relatedTask:currentTask!)
+                actions.enqueue(action)
+            }
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,14 +258,42 @@ class Atlas
     
     func getNextTask()
     {
-        if (currentTask == nil)
+        // Get the next task
+        if let nextTask = tasks.peek()
         {
-            // Get the next task
-            if let nextTask = tasks.peek()
+            currentTask = smallestIncompleteSubtask(nextTask)
+        }
+    }
+    
+    func smallestIncompleteSubtask(root:Task) -> Task?
+    {
+        if (root.completed)
+        {
+            return nil
+        }
+        else
+        {
+            // No children, return self
+            if (root.subtasks.count == 0)
             {
-                currentTask = nextTask
+                return root
+            }
+            else
+            {
+                // Get the FIRST INCOMPLETE CHILD
+                for subtask in root.subtasks
+                {
+                    if (!subtask.completed)
+                    {
+                        return smallestIncompleteSubtask(subtask)
+                    }
+                }
             }
         }
+        
+        // Because we make the assumption that an incomplete parent MUST have at least one incomplete child,
+        // This return statement should never fire
+        return nil
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,7 +307,7 @@ class Atlas
         let randomY = randIntBetween(0, stop:bounds.height-1)
         let randomValue = randIntBetween(tileInfo.min, stop:tileInfo.max)
         
-        let action = Action(x:randomX, y:randomY, val:randomValue)
+        let action = Action(x:randomX, y:randomY, val:randomValue, relatedTask:currentTask!)
         actions.enqueue(action)
     }
     
@@ -282,6 +374,6 @@ class Atlas
     
     func assignTask()
     {
-        tasks.enqueue(Task(type:TaskType.RANDOMNESS))
+        tasks.enqueue(Task(type:TaskType.BUNCHOFROOMS))
     }
 }
