@@ -75,7 +75,7 @@ class CreationScene: SKScene, ButtonDelegate, MapDelegate
         let tileset = Tileset(plistName:"CryptStaticTileset")
         tileMapView.changeTileset(tileset)
         
-        tileMap.loadBlank(15, yMax:10, filler:0)
+        tileMap.loadBlank(20, yMax:15, filler:0)
         tileMapView.reloadMap()
         
         ui_pauseButton.setButtonDelegate(self)

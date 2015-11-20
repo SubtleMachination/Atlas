@@ -33,7 +33,7 @@ enum OperatingState
 {
     // READY indicates that Atlas has done thinking and is ready to decide on future steps
     // BUSY indicates that Atlas is still deciding what to do next
-    case READY, BUSY
+    case READY, BUSY, DONE
 }
 
 enum ResourceState
@@ -51,7 +51,7 @@ struct Action
 
 enum TaskType
 {
-    case RANDOMNESS, BUNCHOFROOMS, ROOM, CONNECTROOMS
+    case RANDOMNESS, BUNCHOFROOMS, ROOM, CONNECTROOMS, PLACEWALLS
 }
 
 class Task
@@ -60,6 +60,7 @@ class Task
     var subtasks:[Task]
     var completed:Bool
     var supertask:Task?
+    var conceptualRef:Region?
     
     init(type:TaskType)
     {
@@ -71,7 +72,8 @@ class Task
 
 struct Region
 {
-    
+    var center:(x:Int, y:Int)
+    var size:(xRad:Int, yRad:Int)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +95,7 @@ class Atlas
     //////////////////////////////////////////////////////////////////////////////////////////
     // Deliberate slowdown to a human-observable pace. 1 = 60fps, 2 = 30fps, 3 = 20fps...
     var tick:Int = 0
-    var actionRateLimit:Int = 5
+    var actionRateLimit:Int = 4
     var thoughRateLimit:Int = 2
     //////////////////////////////////////////////////////////////////////////////////////////
     
@@ -107,6 +109,8 @@ class Atlas
     var actionThreshold:Int
     var currentTask:Task?
     
+    var conceptualBlobs:[Region]
+    
     init()
     {
         bounds = (width:0, height:0)
@@ -114,6 +118,8 @@ class Atlas
         
         tasks = Queue<Task>()
         actions = Queue<Action>()
+        
+        conceptualBlobs = [Region]()
         
         actionThreshold = 10
 
@@ -163,8 +169,8 @@ class Atlas
                             else
                             {
                                 // All tasks completed. Wait for further instructions
-                                print("JOB DONE!")
-                                pause()
+//                                print("JOB DONE! CURRENT TASK IS NULL")
+//                                operatingState == .DONE
                             }
                         }
                         else
@@ -175,7 +181,9 @@ class Atlas
                     }
                     else
                     {
-                        
+                        // No more tasks
+                        print("JOB DONE! NO MORE TASK")
+                        operatingState == .DONE
                     }
                 }
             }
@@ -197,25 +205,220 @@ class Atlas
         if (currentTask!.type == .BUNCHOFROOMS)
         {
             // Break the task down into subtasks
-            let roomCount = randIntBetween(3, stop:5)
-            for _ in 0..<roomCount
+            let roomTask = Task(type:TaskType.ROOM)
+            roomTask.supertask = currentTask
+            
+            createRandomRectRefs()
+            
+            for conceptRegion in conceptualBlobs
             {
                 let roomTask = Task(type:TaskType.ROOM)
                 roomTask.supertask = currentTask
-                
+                roomTask.conceptualRef = conceptRegion
+
                 currentTask!.subtasks.append(roomTask)
             }
+            
+            let connectionTask = Task(type:TaskType.CONNECTROOMS)
+            connectionTask.supertask = currentTask
+            currentTask!.subtasks.append(connectionTask)
+            
+            let wallsTask = Task(type:TaskType.PLACEWALLS)
+            wallsTask.supertask = currentTask
+            currentTask!.subtasks.append(wallsTask)
         }
-        
-        if (currentTask!.type == .ROOM)
+        else if (currentTask!.type == .ROOM)
         {
-            createRandomRectangle()
+            createRoom()
+            currentTask!.completed = true
+        }
+        else if (currentTask!.type == .CONNECTROOMS)
+        {
+            connectAllRooms()
+            currentTask!.completed = true
+        }
+        else if (currentTask!.type == .PLACEWALLS)
+        {
+            placeWalls()
             currentTask!.completed = true
         }
         
         operatingState = .READY
     }
     
+    func placeWalls()
+    {
+        print("PLACING WALLS")
+        
+//        let region1 = conceptualBlobs[0]
+//        var corner1 = (x:region1.center.x - region1.size.xRad, y:region1.center.y + region1.size.yRad)
+        
+        for _ in 0..<10
+        {
+//            if let value mapDelegate!.valueAt(corner1.x, y:corner1.y+1)
+//            {
+//                
+//            }
+        }
+    }
+    
+    func connectAllRooms()
+    {
+        print("CONNECTING ROOMS")
+        // Connect the first two regions
+        let region1 = conceptualBlobs[0]
+        let region2 = conceptualBlobs[1]
+        let region3 = conceptualBlobs[2]
+        
+        connectRooms(region1, b:region2)
+        connectRooms(region2, b:region3)
+        connectRooms(region3, b:region1)
+    }
+    
+    func connectRooms(a:Region, b:Region)
+    {
+        if (a.center.y != b.center.y)
+        {
+            if (a.center.y < b.center.y)
+            {
+                for y in a.center.y...b.center.y
+                {
+                    let action = Action(x:a.center.x, y:y, val:1, relatedTask:currentTask!)
+                    actions.enqueue(action)
+                }
+            }
+            else
+            {
+                for y in b.center.y...a.center.y
+                {
+                    let action = Action(x:a.center.x, y:y, val:1, relatedTask:currentTask!)
+                    actions.enqueue(action)
+                }
+            }
+        }
+        
+        if (a.center.x != b.center.x)
+        {
+            if (a.center.x < b.center.x)
+            {
+                for x in a.center.x...b.center.x
+                {
+                    let action = Action(x:x, y:b.center.y, val:1, relatedTask:currentTask!)
+                    actions.enqueue(action)
+                }
+            }
+            else
+            {
+                for x in b.center.x...a.center.x
+                {
+                    let action = Action(x:x, y:b.center.y, val:1, relatedTask:currentTask!)
+                    actions.enqueue(action)
+                }
+            }
+            
+        }
+    }
+    
+    func createRoom()
+    {
+        let region = currentTask!.conceptualRef!
+        print("createRoom:\(region), vol:\((region.size.xRad)*2+1)*\(region.size.yRad*2+1)")
+        
+        for x in region.center.x-region.size.xRad...region.center.x+region.size.xRad
+        {
+            for y in region.center.y-region.size.yRad...region.center.y+region.size.yRad
+            {
+                let action = Action(x:x, y:y, val:1, relatedTask:currentTask!)
+                actions.enqueue(action)
+            }
+        }
+    }
+    
+    func createRandomRectRefs()
+    {
+//        let roomCount = randIntBetween(3, stop:4)
+//        print(roomCount)
+        let roomCount = 3
+        
+        for _ in 0..<roomCount
+        {
+            let conceptualRegion = Region(center:(x:0, y:0), size:(xRad:0, yRad:0))
+            conceptualBlobs.append(conceptualRegion)
+        }
+        
+        var goodCriteriaFound = false
+        while (!goodCriteriaFound)
+        {
+            for blobIndex in 0..<roomCount
+            {
+                let randomXRadius = randIntBetween(1, stop:3)
+                let randomYRadius = randIntBetween(1, stop:3)
+                let randomCenterX = randIntBetween(2+randomXRadius, stop:bounds.width-1-randomXRadius)
+                let randomCenterY = randIntBetween(2+randomYRadius, stop:bounds.height-1-randomYRadius)
+                
+                conceptualBlobs[blobIndex].center = (x:randomCenterX, y:randomCenterY)
+                conceptualBlobs[blobIndex].size = (xRad:randomXRadius, yRad:randomYRadius)
+            }
+            
+            var goodCriteria = true
+            // Evaluate our blobs for goodness
+            for blobIndex in 0..<conceptualBlobs.count
+            {
+                for comparableBlobIndex in 0..<conceptualBlobs.count
+                {
+                    if (blobIndex != comparableBlobIndex)
+                    {
+                        let blobA = conceptualBlobs[blobIndex]
+                        let blobB = conceptualBlobs[comparableBlobIndex]
+                        
+                        let blobAModified = Region(center:blobA.center, size:(xRad:blobA.size.xRad+1, yRad:blobA.size.yRad+1))
+                        let blobBModified = Region(center:blobB.center, size:(xRad:blobB.size.xRad+1, yRad:blobB.size.yRad+1))
+                        
+                        if (regionsIntersect(blobAModified, regionB:blobBModified))
+                        {
+                            goodCriteria = false
+                            break
+                        }
+                    }
+                }
+                
+                if (!goodCriteria)
+                {
+                    break
+                }
+            }
+            
+            if (goodCriteria)
+            {
+                goodCriteriaFound = true
+            }
+        }
+    }
+    
+    func regionsIntersect(regionA:Region, regionB:Region) -> Bool
+    {
+        let rightA = regionA.center.x + regionA.size.xRad
+        let leftA = regionA.center.x - regionA.size.xRad
+        let topA = regionA.center.y + regionA.size.yRad
+        let bottomA = regionA.center.y - regionA.size.yRad
+        
+        let rightB = regionB.center.x + regionB.size.xRad
+        let leftB = regionB.center.x - regionB.size.xRad
+        let topB = regionB.center.y + regionB.size.yRad
+        let bottomB = regionB.center.y - regionB.size.yRad
+        
+        let a_h = atLeastOneOverlap(leftA, a2:rightA, b1:leftB, b2:rightB)
+        let a_v = atLeastOneOverlap(bottomA, a2:topA, b1:bottomB, b2:topB)
+        let b_h = atLeastOneOverlap(leftB, a2:rightB, b1:leftA, b2:rightA)
+        let b_v = atLeastOneOverlap(bottomB, a2:topB, b1:bottomA, b2:topA)
+        
+        return (a_h && a_v) || (b_h && b_v) || (a_h && b_v) || (a_v && b_h)
+    }
+    
+    func atLeastOneOverlap(a1:Int, a2:Int, b1:Int, b2:Int) -> Bool
+    {
+        return (a1 >= b1 && a1 <= b2) || (a2 >= b1 && a2 <= b2)
+    }
     
     func createRandomSquare()
     {
