@@ -27,7 +27,6 @@ class CreationScene: SKScene, ButtonDelegate, MapDelegate
     var ui_menuBG:SKSpriteNode
     var ui_pauseButton:ACHoverButton
     var ui_stepButton:ACHoverButton
-//    var ui_trollButton:ACHoverButton
     
     var dragStart:CGPoint
     
@@ -58,8 +57,6 @@ class CreationScene: SKScene, ButtonDelegate, MapDelegate
         ui_stepButton = ACHoverButton(size:hoverButtonSize, iconName:"step", identifier:"step")
         ui_stepButton.position = CGPointMake(iconSize*2.5, size.height - menuBarHeight/2)
         ui_stepButton.zPosition = 1001
-        
-//        ui_trollButton = ACHoverButton(size:hoverButtonSize, iconName:""
         
         tileMap = StandardTileMap()
         tileMapView = TileMapLayer(viewSize:CGSizeMake(size.width*0.7, size.height*0.7), tileWidth:CGFloat(30), tileHeight:CGFloat(30), tileMap:tileMap)
